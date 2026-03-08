@@ -12,7 +12,7 @@ function getStore(): TranslatedWork[] {
   if (!global.__worksStore) {
     global.__worksStore = JSON.parse(JSON.stringify(initialWorks));
   }
-  return global.__worksStore;
+  return global.__worksStore!;
 }
 
 export function getAllWorks(): TranslatedWork[] {

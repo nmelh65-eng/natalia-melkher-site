@@ -128,9 +128,7 @@ export default function WorkEditorPage() {
               {activeLang === "ru" ? (
                 <>
                   {input("Заголовок (RU)", work.title, v => setField("title", v), { placeholder:"Название произведения" })}
-                  {input("Текст", work.content, v => setField("content", v), { rows:18, placeholder:"Текст произведения...
-
-Разделяйте строфы двойным переносом строки" })}
+                  {input("Текст", work.content, v => setField("content", v), { rows:18, placeholder:"Текст произведения...\n\nРазделяйте строфы двойным переносом строки" })}
                   {input("Краткое описание", work.excerpt, v => setField("excerpt", v), { placeholder:"Первые строки (автозаполнение если пусто)" })}
                 </>
               ) : (
