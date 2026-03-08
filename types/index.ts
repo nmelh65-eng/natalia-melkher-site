@@ -44,3 +44,7 @@ export interface TranslationStrings {
 }
 
 export type Translations = Record<Language, TranslationStrings>;
+
+export interface AdminWork extends TranslatedWork {
+  _draft?: boolean;
+}

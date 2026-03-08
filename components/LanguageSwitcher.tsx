@@ -1,21 +1,16 @@
 "use client";
-
 import React, { useState, useRef, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { languages } from "@/data/translations";
-
 export default function LanguageSwitcher() {
   const { language, setLanguage } = useLanguage();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const current = languages.find((l) => l.code === language);
-
   useEffect(() => {
     const h = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
-    document.addEventListener("mousedown", h);
-    return () => document.removeEventListener("mousedown", h);
+    document.addEventListener("mousedown", h); return () => document.removeEventListener("mousedown", h);
   }, []);
-
   return (
     <div className="relative" ref={ref}>
       <button onClick={() => setOpen(!open)}

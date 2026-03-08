@@ -1,50 +1,92 @@
 "use client";
-
 import React, { useState } from "react";
+import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import type { TranslatedWork } from "@/types";
 import { formatDate, getLocale } from "@/lib/utils";
 
 export default function PoemCard({ work, index = 0 }: { work: TranslatedWork; index?: number }) {
   const { language, t } = useLanguage();
-  const [expanded, setExpanded] = useState(false);
   const [likes, setLikes] = useState(work.likes);
   const [liked, setLiked] = useState(false);
 
-  const tr = language !== "ru" ? work.translations[language] : undefined;
-  const title = tr?.title || work.title;
-  const content = tr?.content || work.content;
-  const excerpt = tr?.excerpt || work.excerpt;
+  const tr      = language !== "ru" ? work.translations[language] : undefined;
+  const title   = tr?.title   ?? work.title;
+  const excerpt = tr?.excerpt ?? work.excerpt;
 
   return (
-    <article className="bg-white/[0.03] backdrop-blur border border-white/10 rounded-3xl overflow-hidden hover:border-purple-500/30 hover:-translate-y-1 transition-all duration-500">
-      <div className="h-1 bg-gradient-to-r from-purple-500 via-purple-400 to-amber-500" />
-      <div className="p-6 sm:p-8">
-        <div className="flex items-start justify-between mb-4">
-          <span className="px-3 py-1 text-xs rounded-full bg-purple-500/20 text-purple-400">{t.sections.poetry}</span>
-          <time className="text-xs text-gray-600">{formatDate(work.createdAt, getLocale(language))}</time>
+    <article className="group relative bg-white/[0.025] backdrop-blur border border-white/[0.07] rounded-3xl overflow-hidden card-hover">
+      {/* Top accent */}
+      <div className="poem-accent" />
+
+      {/* Hover glow */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 via-purple-500/0 to-amber-500/0 group-hover:from-purple-500/[0.03] group-hover:to-amber-500/[0.03] transition-all duration-500 pointer-events-none rounded-3xl" />
+
+      <div className="relative p-6 sm:p-8">
+        {/* Header */}
+        <div className="flex items-start justify-between mb-5">
+          <span className="px-3 py-1 text-[11px] font-semibold rounded-full bg-purple-500/15 text-purple-400 border border-purple-500/20 tracking-wide uppercase">
+            {t.sections.poetry}
+          </span>
+          <div className="flex items-center gap-3 text-xs text-gray-600">
+            <span>{work.readingTime} {t.sections.minuteRead}</span>
+            <span>·</span>
+            <time>{formatDate(work.createdAt, getLocale(language))}</time>
+          </div>
         </div>
-        <h3 className="text-2xl font-bold text-gray-100 hover:text-purple-300 transition-colors mb-4">{title}</h3>
-        <div className="flex items-center gap-3 mb-4 opacity-40">
-          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent" />
-          <span className="text-purple-400">✦</span>
-          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent" />
+
+        {/* Title */}
+        <Link href={`/poetry/${work.id}`}>
+          <h3 className="font-display text-2xl font-bold text-gray-100 group-hover:text-purple-200 transition-colors duration-300 mb-4 leading-snug">
+            {title}
+          </h3>
+        </Link>
+
+        {/* Divider */}
+        <div className="flex items-center gap-3 mb-5 opacity-30">
+          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-purple-400 to-transparent" />
+          <span className="text-purple-400 text-sm">✦</span>
+          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-purple-400 to-transparent" />
         </div>
-        <div className="text-gray-300 leading-relaxed" style={{ whiteSpace: "pre-line" }}>
-          {expanded ? content : excerpt}
+
+        {/* Excerpt */}
+        <p className="text-gray-400 leading-relaxed font-serif italic text-sm line-clamp-3 mb-5">
+          {excerpt}
+        </p>
+
+        {/* Read more */}
+        <Link href={`/poetry/${work.id}`}
+          className="inline-flex items-center gap-1.5 text-sm text-purple-400 hover:text-purple-300 transition-colors font-medium group/link">
+          <span>{t.sections.readMore}</span>
+          <span className="group-hover/link:translate-x-1 transition-transform inline-block">→</span>
+        </Link>
+
+        {/* Tags */}
+        <div className="flex flex-wrap gap-1.5 mt-5">
+          {work.tags.slice(0, 4).map((tag) => (
+            <Link key={tag} href={`/poetry?tag=${encodeURIComponent(tag)}`} className="tag-pill">
+              #{tag}
+            </Link>
+          ))}
         </div>
-        <button onClick={() => setExpanded(!expanded)} className="mt-4 text-sm text-purple-400 hover:text-purple-300">
-          {expanded ? t.common.close : t.sections.readMore}
-        </button>
-        <div className="flex flex-wrap gap-2 mt-4">
-          {work.tags.map((tag) => <span key={tag} className="px-2 py-0.5 text-[10px] rounded-full bg-white/5 text-gray-500">#{tag}</span>)}
-        </div>
-        <div className="flex items-center gap-4 mt-6 pt-4 border-t border-white/5">
-          <button onClick={() => { setLiked(!liked); setLikes(p => liked ? p-1 : p+1); }}
-            className={"text-sm " + (liked ? "text-red-400" : "text-gray-500")}>
-            {liked ? "❤️" : "🤍"} {likes}
+
+        {/* Footer */}
+        <div className="flex items-center gap-4 mt-5 pt-4 border-t border-white/[0.04]">
+          <button
+            onClick={() => { setLiked(!liked); setLikes(p => liked ? p-1 : p+1); }}
+            className={`flex items-center gap-1.5 text-sm transition-all duration-200 ${liked ? "text-red-400 scale-110" : "text-gray-600 hover:text-red-400"}`}>
+            <span>{liked ? "❤️" : "🤍"}</span>
+            <span className="font-medium">{likes}</span>
           </button>
-          <span className="text-sm text-gray-500">👁 {work.views}</span>
+          <span className="flex items-center gap-1.5 text-sm text-gray-600">
+            <span>👁</span>
+            <span>{work.views.toLocaleString()}</span>
+          </span>
+          <div className="ml-auto">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500/20 to-amber-500/20 border border-white/5 flex items-center justify-center text-xs text-gray-500 group-hover:border-purple-500/30 transition-colors">
+              ✦
+            </div>
+          </div>
         </div>
       </div>
     </article>
