@@ -120,7 +120,7 @@ export default function March8Greeting() {
 
             {/* Floating badge */}
             <div className="absolute top-4 right-4 bg-gradient-to-r from-purple-500/80 to-fuchsia-500/80 backdrop-blur-sm rounded-2xl px-4 py-2 border border-purple-400/30">
-              <span className="text-white font-bold text-sm tracking-wider">🌸 8 МАРТА 2025</span>
+              <span className="text-white font-bold text-sm tracking-wider">🌸 8 МАРТА 2026</span>
             </div>
           </div>
 
