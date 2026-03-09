@@ -3,7 +3,30 @@ import { cookies } from "next/headers";
 const SECRET = process.env.ADMIN_SECRET || "dev-secret-change-me";
 const PASSWORD = process.env.ADMIN_PASSWORD || "natalia2026";
 
-// Simple HMAC-based token (no external deps needed beyond Node built-ins)
+function toBase64Url(str: string): string {
+  const encoder = new TextEncoder();
+  const bytes = encoder.encode(str);
+  let binary = "";
+  bytes.forEach(b => binary += String.fromCharCode(b));
+  const raw = btoa(binary);
+  return raw.split("+").join("-").split("/").join("_").replace(/=+$/, "");
+}
+
+function fromBase64Url(b64: string): string {
+  const padded = b64.split("-").join("+").split("_").join("/");
+  const binary = atob(padded);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+
+function uint8ToBase64Url(buf: Uint8Array): string {
+  let binary = "";
+  buf.forEach(b => binary += String.fromCharCode(b));
+  const raw = btoa(binary);
+  return raw.split("+").join("-").split("/").join("_").replace(/=+$/, "");
+}
+
 async function sign(payload: string): Promise<string> {
   const encoder = new TextEncoder();
   const key = await crypto.subtle.importKey(
@@ -11,29 +34,26 @@ async function sign(payload: string): Promise<string> {
     { name: "HMAC", hash: "SHA-256" }, false, ["sign"]
   );
   const sig = await crypto.subtle.sign("HMAC", key, encoder.encode(payload));
-  return Buffer.from(sig).toString("base64url");
-}
-
-async function verify(payload: string, sig: string): Promise<boolean> {
-  const expected = await sign(payload);
-  return expected === sig;
+  return uint8ToBase64Url(new Uint8Array(sig));
 }
 
 export async function createToken(): Promise<string> {
   const payload = JSON.stringify({ role: "admin", exp: Date.now() + 24 * 60 * 60 * 1000 });
-  const b64 = Buffer.from(payload).toString("base64url");
+  const b64 = toBase64Url(payload);
   const sig = await sign(b64);
   return b64 + "." + sig;
 }
 
 export async function verifyToken(token: string): Promise<boolean> {
   try {
-    const [b64, sig] = token.split(".");
+    const parts = token.split(".");
+    const b64 = parts[0];
+    const sig = parts[1];
     if (!b64 || !sig) return false;
-    const ok = await verify(b64, sig);
-    if (!ok) return false;
-    const { exp } = JSON.parse(Buffer.from(b64, "base64url").toString());
-    return Date.now() < exp;
+    const expected = await sign(b64);
+    if (expected !== sig) return false;
+    const data = JSON.parse(fromBase64Url(b64));
+    return Date.now() < data.exp;
   } catch { return false; }
 }
 
