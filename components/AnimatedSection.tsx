@@ -1,47 +1,85 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
-interface Props {
-  children:   React.ReactNode;
+interface AnimatedSectionProps {
+  children: ReactNode;
+  delay?: number;
   className?: string;
-  delay?:     number;
+  direction?: "up" | "down" | "left" | "right" | "fade";
 }
 
 export default function AnimatedSection({
   children,
-  className = "",
   delay = 0,
-}: Props) {
+  className = "",
+  direction = "up",
+}: AnimatedSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [prefersReduced, setPrefersReduced] = useState(false);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
+    // Уважаем настройки пользователя
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (motionQuery.matches) {
+      setPrefersReduced(true);
+      setIsVisible(true);
+      return;
+    }
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      setPrefersReduced(e.matches);
+      if (e.matches) setIsVisible(true);
+    };
+    motionQuery.addEventListener("change", handleChange);
+
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setVisible(true);
-          obs.unobserve(el);
+          setTimeout(() => setIsVisible(true), delay);
+          observer.unobserve(element);
         }
       },
-      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      }
     );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
+
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+      motionQuery.removeEventListener("change", handleChange);
+    };
+  }, [delay]);
+
+  const getInitialTransform = (): string => {
+    switch (direction) {
+      case "up":    return "translate3d(0, 40px, 0)";
+      case "down":  return "translate3d(0, -40px, 0)";
+      case "left":  return "translate3d(40px, 0, 0)";
+      case "right": return "translate3d(-40px, 0, 0)";
+      case "fade":  return "translate3d(0, 0, 0)";
+      default:      return "translate3d(0, 40px, 0)";
+    }
+  };
 
   return (
     <div
       ref={ref}
       className={className}
-      suppressHydrationWarning
       style={{
-        opacity:    visible ? 1 : 0,
-        transform:  visible ? "translateY(0)" : "translateY(28px)",
-        transition: `opacity 0.65s cubic-bezier(0.16,1,0.3,1) ${delay}ms,
-                     transform 0.65s cubic-bezier(0.16,1,0.3,1) ${delay}ms`,
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? "translate3d(0, 0, 0)" : getInitialTransform(),
+        transition: prefersReduced
+          ? "none"
+          : "opacity 0.6s ease-out, transform 0.6s ease-out",
+        willChange: isVisible ? "auto" : "opacity, transform",
       }}
     >
       {children}
