@@ -235,3 +235,19 @@ section h1 {
   font-size: revert;
   margin: revert;
 }
+
+/* -- Hero Name Enhancement ---------------------------------- */
+.hero-name {
+  animation: hero-glow 6s ease-in-out infinite;
+}
+
+@keyframes hero-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 40px rgba(168, 85, 247, 0.25))
+            drop-shadow(0 0 80px rgba(245, 158, 11, 0.1));
+  }
+  50% {
+    filter: drop-shadow(0 0 60px rgba(168, 85, 247, 0.4))
+            drop-shadow(0 0 100px rgba(245, 158, 11, 0.25));
+  }
+}

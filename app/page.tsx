@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import Link from "next/link";
@@ -22,11 +22,11 @@ export default function HomePage() {
         <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] bg-amber-500/5 rounded-full blur-[120px] pointer-events-none" />
 
         <AnimatedSection delay={200}>
-          <p className="font-serif text-xl sm:text-2xl text-purple-400/80 mb-4 italic tracking-wide">{t.hero.greeting}</p>
+          <p className="font-serif text-xl sm:text-2xl text-purple-400/80 mb-2 italic tracking-wide">{t.hero.greeting}</p>
         </AnimatedSection>
 
         <AnimatedSection delay={400}>
-          <h1 className="font-display text-6xl sm:text-7xl md:text-9xl font-bold gradient-text mb-6 leading-[0.9] tracking-tight">
+          <h1 className="font-display text-7xl sm:text-8xl md:text-9xl lg:text-[10rem] xl:text-[12rem] font-bold gradient-text hero-name mb-8 leading-[0.85] tracking-tight">
             {t.hero.title}
           </h1>
         </AnimatedSection>
@@ -57,7 +57,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 🌹 Поздравление с 8 Марта 2026 */}
+      {/* рџЊ№ РџРѕР·РґСЂР°РІР»РµРЅРёРµ СЃ 8 РњР°СЂС‚Р° 2026 */}
       <AnimatedSection delay={200}>
         <March8Greeting />
       </AnimatedSection>
@@ -68,11 +68,11 @@ export default function HomePage() {
           <div className="relative text-center py-16">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 text-8xl text-purple-500/10 font-display select-none">&ldquo;</div>
             <blockquote className="font-serif text-2xl sm:text-3xl md:text-4xl font-light text-gray-300 italic leading-relaxed">
-              Слово — это самый мощный инструмент, данный человеку. Оно способно исцелять, вдохновлять, пробуждать.
+              РЎР»РѕРІРѕ вЂ” СЌС‚Рѕ СЃР°РјС‹Р№ РјРѕС‰РЅС‹Р№ РёРЅСЃС‚СЂСѓРјРµРЅС‚, РґР°РЅРЅС‹Р№ С‡РµР»РѕРІРµРєСѓ. РћРЅРѕ СЃРїРѕСЃРѕР±РЅРѕ РёСЃС†РµР»СЏС‚СЊ, РІРґРѕС…РЅРѕРІР»СЏС‚СЊ, РїСЂРѕР±СѓР¶РґР°С‚СЊ.
             </blockquote>
             <div className="mt-8 flex items-center justify-center gap-4">
               <div className="h-px w-16 bg-gradient-to-r from-transparent to-purple-500/50" />
-              <p className="text-lg text-purple-400 italic font-serif">Наталья Мельхер</p>
+              <p className="text-lg text-purple-400 italic font-serif">РќР°С‚Р°Р»СЊСЏ РњРµР»СЊС…РµСЂ</p>
               <div className="h-px w-16 bg-gradient-to-l from-transparent to-purple-500/50" />
             </div>
           </div>
@@ -85,7 +85,7 @@ export default function HomePage() {
           <div className="flex items-center justify-between mb-10">
             <h2 className="font-display text-3xl sm:text-4xl font-bold text-gray-100">{t.sections.poetry}</h2>
             <Link href="/poetry" className="text-purple-400 hover:text-purple-300 transition-colors font-medium">
-              {t.sections.allWorks} →
+              {t.sections.allWorks} в†’
             </Link>
           </div>
         </AnimatedSection>
@@ -104,7 +104,7 @@ export default function HomePage() {
           <div className="flex items-center justify-between mb-10">
             <h2 className="font-display text-3xl sm:text-4xl font-bold text-gray-100">{t.sections.prose}</h2>
             <Link href="/prose" className="text-amber-400 hover:text-amber-300 transition-colors font-medium">
-              {t.sections.allWorks} →
+              {t.sections.allWorks} в†’
             </Link>
           </div>
         </AnimatedSection>
