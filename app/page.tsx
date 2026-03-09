@@ -26,7 +26,7 @@ export default function HomePage() {
         </AnimatedSection>
 
         <AnimatedSection delay={400}>
-          <h1 className="font-display text-7xl sm:text-8xl md:text-9xl lg:text-[10rem] xl:text-[12rem] font-bold gradient-text hero-name mb-8 leading-[0.85] tracking-tight">
+          <h1 className="font-display text-[3.5rem] sm:text-[5rem] md:text-[7rem] lg:text-[9rem] xl:text-[12rem] font-bold gradient-text hero-name mb-8 leading-[0.85] tracking-tight">
             {t.hero.title}
           </h1>
         </AnimatedSection>
