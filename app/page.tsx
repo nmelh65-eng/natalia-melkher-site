@@ -1,12 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import { getWorksByCategory } from "@/data/works";
 import PoemCard from "@/components/PoemCard";
 import ProseCard from "@/components/ProseCard";
 import AnimatedSection from "@/components/AnimatedSection";
+import AIWritingAgent from "@/components/AIWritingAgent";
 
 function shouldShowMarch8(): boolean {
   const now = new Date();
@@ -15,12 +16,13 @@ function shouldShowMarch8(): boolean {
 
 export default function HomePage() {
   const { t } = useLanguage();
+  const [showAI, setShowAI] = useState(false);
   const latestPoems = getWorksByCategory("poetry").slice(0, 2);
   const latestProse = getWorksByCategory("prose").slice(0, 1);
 
   return (
     <div className="relative min-h-screen">
-      {/* Hero Section */}
+      {/* ═══════════════════ Hero Section ═══════════════════ */}
       <section
         aria-label="Hero"
         className="relative flex flex-col items-center justify-center min-h-[90vh] text-center px-4"
@@ -38,28 +40,48 @@ export default function HomePage() {
                      blur-[120px] pointer-events-none"
         />
 
+        {/* Приветствие */}
         <AnimatedSection delay={200}>
-          <p className="font-serif text-xl sm:text-2xl text-purple-400/80 mb-2 italic tracking-wide">
+          <p className="font-serif text-xl sm:text-2xl md:text-3xl text-purple-400/80 mb-6 italic tracking-wide">
             {t.hero.greeting}
           </p>
         </AnimatedSection>
 
+        {/* ═══════ ИМЯ — главный элемент ═══════ */}
         <AnimatedSection delay={400}>
-          <h1
-            className="font-display text-[3.5rem] sm:text-[5rem] md:text-[7rem]
-                       lg:text-[9rem] xl:text-[12rem] font-bold gradient-text
-                       hero-name mb-8 leading-[0.85] tracking-tight"
-          >
-            {t.hero.title}
+          <h1 className="font-display font-bold mb-10 leading-[0.9] tracking-tight">
+            {/* Первое слово — Натальи */}
+            <span
+              className="block text-[4rem] sm:text-[6rem] md:text-[8rem]
+                         lg:text-[10rem] xl:text-[12rem]
+                         bg-gradient-to-r from-fuchsia-400 via-purple-400 to-pink-400
+                         bg-clip-text text-transparent
+                         drop-shadow-[0_0_40px_rgba(168,85,247,0.3)]
+                         mb-1 sm:mb-2"
+            >
+              Натальи
+            </span>
+            {/* Второе слово — Мельхер */}
+            <span
+              className="block text-[4rem] sm:text-[6rem] md:text-[8rem]
+                         lg:text-[10rem] xl:text-[12rem]
+                         bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-300
+                         bg-clip-text text-transparent
+                         drop-shadow-[0_0_40px_rgba(245,158,11,0.3)]"
+            >
+              Мельхер
+            </span>
           </h1>
         </AnimatedSection>
 
+        {/* Подзаголовок */}
         <AnimatedSection delay={600}>
-          <p className="font-serif max-w-2xl text-lg sm:text-xl text-gray-400 leading-relaxed mb-12">
+          <p className="font-serif max-w-2xl text-lg sm:text-xl md:text-2xl text-gray-400 leading-relaxed mb-12">
             {t.hero.subtitle}
           </p>
         </AnimatedSection>
 
+        {/* Кнопки */}
         <AnimatedSection delay={800}>
           <div className="flex flex-col sm:flex-row gap-4">
             <Link
@@ -90,6 +112,22 @@ export default function HomePage() {
             >
               {t.hero.ctaSecondary}
             </Link>
+
+            {/* Кнопка AI-Агента */}
+            <button
+              onClick={() => setShowAI(true)}
+              className="px-10 py-4 rounded-2xl
+                         bg-gradient-to-r from-emerald-600/80 to-teal-500/80
+                         text-white font-semibold text-lg
+                         hover:scale-105 hover:shadow-xl hover:shadow-emerald-500/25
+                         transition-all
+                         focus:outline-none focus:ring-2 focus:ring-emerald-400
+                         focus:ring-offset-2 focus:ring-offset-black
+                         flex items-center gap-2 justify-center"
+            >
+              <span aria-hidden="true">🤖</span>
+              <span>AI-Помощник</span>
+            </button>
           </div>
         </AnimatedSection>
 
@@ -105,7 +143,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Quote Section */}
+      {/* ═══════════════════ AI Writing Agent Modal ═══════════════════ */}
+      {showAI && <AIWritingAgent onClose={() => setShowAI(false)} />}
+
+      {/* ═══════════════════ Цитата ═══════════════════ */}
       <section className="max-w-4xl mx-auto px-4 py-20">
         <AnimatedSection>
           <figure className="relative text-center py-16">
@@ -134,7 +175,7 @@ export default function HomePage() {
         </AnimatedSection>
       </section>
 
-      {/* Latest Poetry */}
+      {/* ═══════════════════ Poetry ═══════════════════ */}
       <section aria-labelledby="poetry-heading" className="max-w-5xl mx-auto px-4 py-16">
         <AnimatedSection>
           <div className="flex items-center justify-between mb-10">
@@ -161,7 +202,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Latest Prose */}
+      {/* ═══════════════════ Prose ═══════════════════ */}
       <section aria-labelledby="prose-heading" className="max-w-4xl mx-auto px-4 py-16">
         <AnimatedSection>
           <div className="flex items-center justify-between mb-10">
@@ -185,6 +226,27 @@ export default function HomePage() {
           </AnimatedSection>
         ))}
       </section>
+
+      {/* ═══════════════════ Плавающая кнопка AI ═══════════════════ */}
+      {!showAI && (
+        <button
+          onClick={() => setShowAI(true)}
+          aria-label="Открыть AI-помощник для написания статей"
+          className="fixed bottom-6 right-6 z-50
+                     w-16 h-16 rounded-full
+                     bg-gradient-to-br from-emerald-500 to-teal-600
+                     text-white text-2xl
+                     shadow-2xl shadow-emerald-500/30
+                     hover:scale-110 hover:shadow-emerald-500/50
+                     active:scale-95
+                     transition-all duration-300
+                     flex items-center justify-center
+                     focus:outline-none focus:ring-4 focus:ring-emerald-400/50
+                     animate-pulse hover:animate-none"
+        >
+          🤖
+        </button>
+      )}
     </div>
   );
 }

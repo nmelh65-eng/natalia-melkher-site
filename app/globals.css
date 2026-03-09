@@ -251,3 +251,48 @@ section h1 {
             drop-shadow(0 0 100px rgba(245, 158, 11, 0.25));
   }
 }
+
+/* ═══════ AI Agent Modal Animation ═══════ */
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.4s ease-out forwards;
+}
+
+/* ═══════ Hero Name Enhancement ═══════ */
+.hero-name-glow {
+  filter: drop-shadow(0 0 60px rgba(168, 85, 247, 0.2));
+}
+
+/* ═══════ Glass Gold variant ═══════ */
+.glass-gold {
+  background: rgba(245, 158, 11, 0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(245, 158, 11, 0.08);
+}
+
+/* ═══════ Scrollbar for chat ═══════ */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+/* ═══════ Tag pill ═══════ */
+.tag-pill {
+  @apply px-4 py-1.5 rounded-full text-sm bg-white/5 border border-white/10 text-gray-400 transition-all;
+}
