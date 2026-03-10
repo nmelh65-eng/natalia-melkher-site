@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import ParticleBackground from "@/components/ParticleBackground";
 import HtmlLangSetter from "@/components/HtmlLangSetter";
 import SkipToContent from "@/components/SkipToContent";
+import GlobalAIButton from "@/components/GlobalAIButton";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -38,22 +39,16 @@ export const metadata: Metadata = {
     "Личный сайт поэтессы и писательницы Натальи Мельхер. " +
     "Поэзия, проза и вдохновение на шести языках.",
   keywords: [
-    "Наталья Мельхер",
-    "поэзия",
-    "стихи",
-    "проза",
-    "Natalia Melkher",
-    "poetry",
+    "Наталья Мельхер", "поэзия", "стихи", "проза",
+    "Natalia Melkher", "poetry",
   ],
   authors: [{ name: "Наталья Мельхер", url: BASE }],
   creator: "Наталья Мельхер",
   publisher: "Наталья Мельхер",
   robots: {
-    index: true,
-    follow: true,
+    index: true, follow: true,
     googleBot: {
-      index: true,
-      follow: true,
+      index: true, follow: true,
       "max-image-preview": "large",
       "max-snippet": -1,
     },
@@ -66,14 +61,11 @@ export const metadata: Metadata = {
     siteName: "Наталья Мельхер",
     title: "Наталья Мельхер — Поэзия и Вдохновение",
     description: "Пространство вдохновения, где слова обретают крылья",
-    images: [
-      {
-        url: "/og-default.png",
-        width: 1200,
-        height: 630,
-        alt: "Наталья Мельхер — Поэзия",
-      },
-    ],
+    images: [{
+      url: "/og-default.png",
+      width: 1200, height: 630,
+      alt: "Наталья Мельхер — Поэзия",
+    }],
   },
   twitter: {
     card: "summary_large_image",
@@ -113,6 +105,8 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          {/* Плавающая кнопка AI — поверх всего */}
+          <GlobalAIButton />
         </LanguageProvider>
       </body>
     </html>

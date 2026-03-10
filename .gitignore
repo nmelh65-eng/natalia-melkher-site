@@ -23,3 +23,6 @@ Thumbs.db
 
 # Output
 output.txt
+.env.local
+.env
+.env*.local
