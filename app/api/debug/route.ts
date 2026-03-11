@@ -1,42 +1,44 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@vercel/kv";
+import Redis from "ioredis";
 
 export async function GET() {
-  const envCheck = {
-    STORAGE_URL: !!process.env.STORAGE_URL,
-    STORAGE_REST_API_URL: !!process.env.STORAGE_REST_API_URL,
-    STORAGE_REST_API_TOKEN: !!process.env.STORAGE_REST_API_TOKEN,
-    KV_URL: !!process.env.KV_URL,
-    KV_REST_API_URL: !!process.env.KV_REST_API_URL,
-    KV_REST_API_TOKEN: !!process.env.KV_REST_API_TOKEN,
-    ADMIN_PASSWORD: !!process.env.ADMIN_PASSWORD,
-    OPENROUTER_API_KEY: !!process.env.OPENROUTER_API_KEY,
-  };
-
-  let redisStatus = "not configured";
-  let redisData = null;
-
-  const url = process.env.STORAGE_URL
-    || process.env.STORAGE_REST_API_URL
-    || process.env.KV_REST_API_URL
+  const url = process.env.REDIS_URL
+    || process.env.STORAGE_URL
     || process.env.KV_URL;
-  const token = process.env.STORAGE_REST_API_TOKEN
-    || process.env.KV_REST_API_TOKEN;
 
-  if (url && token) {
+  let redisStatus = "no URL configured";
+  let worksCount = 0;
+
+  if (url) {
     try {
-      const kv = createClient({ url, token });
-      const data = await kv.get("natalia:works:v2");
+      const redis = new Redis(url, {
+        connectTimeout: 5000,
+        maxRetriesPerRequest: 1,
+        tls: url.startsWith("rediss://") ? {} : undefined,
+      });
+      const data = await redis.get("natalia:works:v3");
+      if (data) {
+        const parsed = JSON.parse(data);
+        worksCount = Array.isArray(parsed) ? parsed.length : 0;
+      }
+      await redis.quit();
       redisStatus = "connected";
-      redisData = Array.isArray(data) ? `${data.length} works` : "empty";
     } catch (e: any) {
       redisStatus = "error: " + e.message;
     }
   }
 
   return NextResponse.json({
-    env: envCheck,
-    redis: { status: redisStatus, data: redisData },
-    timestamp: new Date().toISOString(),
+    env: {
+      REDIS_URL: !!process.env.REDIS_URL,
+      STORAGE_URL: !!process.env.STORAGE_URL,
+      KV_URL: !!process.env.KV_URL,
+      ADMIN_PASSWORD: !!process.env.ADMIN_PASSWORD,
+      OPENROUTER_API_KEY: !!process.env.OPENROUTER_API_KEY,
+    },
+    redis: {
+      status: redisStatus,
+      customWorks: worksCount,
+    },
   });
 }

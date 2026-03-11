@@ -1,63 +1,63 @@
-import { createClient } from "@vercel/kv";
+import Redis from "ioredis";
 import type { TranslatedWork } from "@/types";
 import { works as initialWorks } from "@/data/works";
 
-const WORKS_KEY = "natalia:works:v2";
+const WORKS_KEY = "natalia:works:v3";
 
-function getKV() {
-  // Пробуем все возможные имена переменных
-  const url = process.env.STORAGE_URL
-    || process.env.STORAGE_REST_API_URL
-    || process.env.KV_REST_API_URL
+let redisClient: Redis | null = null;
+
+function getRedis(): Redis | null {
+  if (redisClient) return redisClient;
+
+  const url = process.env.REDIS_URL
+    || process.env.STORAGE_URL
     || process.env.KV_URL;
-  const token = process.env.STORAGE_REST_API_TOKEN
-    || process.env.KV_REST_API_TOKEN;
 
-  if (!url || !token) {
-    console.warn("Redis KV not configured. Env vars:", {
-      STORAGE_URL: !!process.env.STORAGE_URL,
-      STORAGE_REST_API_URL: !!process.env.STORAGE_REST_API_URL,
-      KV_REST_API_URL: !!process.env.KV_REST_API_URL,
-      KV_URL: !!process.env.KV_URL,
-      STORAGE_REST_API_TOKEN: !!process.env.STORAGE_REST_API_TOKEN,
-      KV_REST_API_TOKEN: !!process.env.KV_REST_API_TOKEN,
-    });
+  if (!url) {
+    console.warn("No REDIS_URL found");
     return null;
   }
 
-  return createClient({ url, token });
-}
-
-/** Получить кастомные работы из Redis */
-async function getCustomWorks(): Promise<TranslatedWork[]> {
   try {
-    const kv = getKV();
-    if (!kv) return [];
-    const data = await kv.get<TranslatedWork[]>(WORKS_KEY);
-    return Array.isArray(data) ? data : [];
+    redisClient = new Redis(url, {
+      maxRetriesPerRequest: 2,
+      connectTimeout: 5000,
+      tls: url.startsWith("rediss://") ? {} : undefined,
+    });
+    return redisClient;
   } catch (e) {
-    console.error("Redis read error:", e);
-    return [];
+    console.error("Redis error:", e);
+    return null;
   }
 }
 
-/** Сохранить кастомные работы в Redis */
+async function getCustomWorks(): Promise<TranslatedWork[]> {
+  try {
+    const redis = getRedis();
+    if (!redis) return [];
+    const data = await redis.get(WORKS_KEY);
+    if (data) {
+      const parsed = JSON.parse(data);
+      return Array.isArray(parsed) ? parsed : [];
+    }
+  } catch (e) {
+    console.error("Redis read:", e);
+  }
+  return [];
+}
+
 async function saveCustomWorks(works: TranslatedWork[]): Promise<boolean> {
   try {
-    const kv = getKV();
-    if (!kv) {
-      console.error("Redis not available for saving");
-      return false;
-    }
-    await kv.set(WORKS_KEY, works);
+    const redis = getRedis();
+    if (!redis) return false;
+    await redis.set(WORKS_KEY, JSON.stringify(works));
     return true;
   } catch (e) {
-    console.error("Redis write error:", e);
+    console.error("Redis write:", e);
     return false;
   }
 }
 
-/** Получить ВСЕ работы */
 export async function getAllWorks(): Promise<TranslatedWork[]> {
   const custom = await getCustomWorks();
   const customIds = new Set(custom.map(w => w.id));
@@ -69,48 +69,33 @@ export async function getAllWorks(): Promise<TranslatedWork[]> {
   return all;
 }
 
-/** Получить опубликованные работы */
 export async function getPublishedWorks(): Promise<TranslatedWork[]> {
-  const all = await getAllWorks();
-  return all.filter(w => w.isPublished);
+  return (await getAllWorks()).filter(w => w.isPublished);
 }
 
-/** Получить работу по ID */
 export async function getWorkById(id: string): Promise<TranslatedWork | undefined> {
-  const all = await getAllWorks();
-  return all.find(w => w.id === id);
+  return (await getAllWorks()).find(w => w.id === id);
 }
 
-/** Создать или обновить работу */
 export async function upsertWork(work: TranslatedWork): Promise<boolean> {
   const custom = await getCustomWorks();
 
-  if (!work.id) {
-    work.id = (work.category || "work") + "-" + Date.now();
-  }
+  if (!work.id) work.id = (work.category || "work") + "-" + Date.now();
 
-  // Парсим теги
   if (typeof work.tags === "string") {
     work.tags = (work.tags as unknown as string)
-      .split(/[,#\s]+/)
-      .map(t => t.trim())
-      .filter(t => t.length > 0);
+      .split(/[,#\s]+/).map(t => t.trim()).filter(t => t.length > 0);
   }
-  if (!Array.isArray(work.tags)) {
-    work.tags = [];
-  }
+  if (!Array.isArray(work.tags)) work.tags = [];
 
-  // Время чтения
   work.readingTime = Math.max(1, Math.ceil(
     (work.content || "").split(/\s+/).length / 200
   ));
 
-  // Excerpt
   if (!work.excerpt && work.content) {
     work.excerpt = work.content.slice(0, 150).trim() + "...";
   }
 
-  // Значения по умолчанию
   if (!work.views) work.views = 0;
   if (!work.likes) work.likes = 0;
   if (!work.translations) work.translations = {};
@@ -120,31 +105,19 @@ export async function upsertWork(work: TranslatedWork): Promise<boolean> {
   if (idx >= 0) {
     custom[idx] = { ...custom[idx], ...work };
   } else {
-    // Проверяем дефолтную
     const def = initialWorks.find(w => w.id === work.id);
-    if (def) {
-      custom.push({ ...def, ...work });
-    } else {
-      custom.push(work);
-    }
+    custom.push(def ? { ...def, ...work } : work);
   }
 
   return saveCustomWorks(custom);
 }
 
-/** Удалить работу */
 export async function deleteWork(id: string): Promise<boolean> {
   const custom = await getCustomWorks();
-  const isDefault = initialWorks.some(w => w.id === id);
-  const inCustom = custom.some(w => w.id === id);
-
-  if (isDefault && !inCustom) return false;
-
   const filtered = custom.filter(w => w.id !== id);
   return saveCustomWorks(filtered);
 }
 
-/** Переключить публикацию */
 export async function togglePublish(id: string): Promise<TranslatedWork | null> {
   const custom = await getCustomWorks();
   const idx = custom.findIndex(w => w.id === id);
@@ -167,6 +140,5 @@ export async function togglePublish(id: string): Promise<TranslatedWork | null> 
     await saveCustomWorks(custom);
     return copy;
   }
-
   return null;
 }
