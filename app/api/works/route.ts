@@ -1,27 +1,60 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getPublishedWorks } from "@/lib/works-store";
+import { createClient } from "@vercel/kv";
+import { works as defaultWorks } from "@/data/works";
+import type { TranslatedWork } from "@/types";
 
-export async function GET(request: NextRequest) {
+const WORKS_KEY = "natalia:works";
+
+function getKV() {
+  const url = process.env.STORAGE_URL
+           || process.env.KV_REST_API_URL
+           || process.env.KV_URL;
+  const token = process.env.STORAGE_REST_API_TOKEN
+             || process.env.KV_REST_API_TOKEN;
+  if (!url || !token) return null;
+  return createClient({ url, token });
+}
+
+async function getAllWorks(): Promise<TranslatedWork[]> {
   try {
-    const { searchParams } = new URL(request.url);
-    const category = searchParams.get("category");
-    const query    = searchParams.get("q");
-    const id       = searchParams.get("id");
-
-    let results = getPublishedWorks();
-
-    if (id)       results = results.filter(w => w.id === id);
-    if (category) results = results.filter(w => w.category === category);
-    if (query) {
-      const q = query.toLowerCase();
-      results = results.filter(w =>
-        w.title.toLowerCase().includes(q) ||
-        w.content.toLowerCase().includes(q) ||
-        w.tags.some(t => t.toLowerCase().includes(q))
-      );
+    const kv = getKV();
+    if (kv) {
+      const custom = await kv.get<TranslatedWork[]>(WORKS_KEY);
+      if (custom && Array.isArray(custom)) {
+        const customIds = new Set(custom.map(w => w.id));
+        const defaults = defaultWorks.filter(w => !customIds.has(w.id));
+        return [...custom, ...defaults];
+      }
     }
-    return NextResponse.json({ success: true, data: results, total: results.length });
-  } catch {
-    return NextResponse.json({ success: false, error: "Server error" }, { status: 500 });
+  } catch (e) {
+    console.error("KV Error:", e);
   }
+  return defaultWorks;
+}
+
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const category = searchParams.get("category");
+  const id = searchParams.get("id");
+
+  const allWorks = await getAllWorks();
+
+  if (id) {
+    const work = allWorks.find(w => w.id === id);
+    if (!work) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+    return NextResponse.json(work);
+  }
+
+  let filtered = allWorks.filter(w => w.isPublished);
+  if (category) {
+    filtered = filtered.filter(w => w.category === category);
+  }
+
+  filtered.sort((a, b) =>
+    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+
+  return NextResponse.json(filtered);
 }
