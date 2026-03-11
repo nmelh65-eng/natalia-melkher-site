@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAllWorks, getWorkByIdAsync } from "@/lib/works-store";
+import { getAllWorks, getWorkById } from "@/lib/works-store";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
   const id = searchParams.get("id");
 
   if (id) {
-    const work = await getWorkByIdAsync(id);
+    const work = await getWorkById(id);
     if (!work) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }

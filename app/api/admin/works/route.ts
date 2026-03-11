@@ -12,7 +12,6 @@ async function guard() {
 export async function GET() {
   const err = await guard();
   if (err) return err;
-
   const works = await getAllWorks();
   return NextResponse.json({ data: works });
 }
@@ -25,12 +24,12 @@ export async function POST(req: NextRequest) {
     const work: TranslatedWork = await req.json();
     work.updatedAt = new Date().toISOString();
     if (!work.createdAt) work.createdAt = work.updatedAt;
-    if (!work.id) work.id = `${work.category}-${Date.now()}`;
+    if (!work.id) work.id = (work.category || "work") + "-" + Date.now();
 
     const saved = await upsertWork(work);
     if (!saved) {
       return NextResponse.json(
-        { error: "Не удалось сохранить. Проверьте Redis." },
+        { error: "Redis недоступен. Проверьте подключение." },
         { status: 500 }
       );
     }
@@ -47,30 +46,16 @@ export async function POST(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
   const err = await guard();
   if (err) return err;
-
   const { id } = await req.json();
-  const deleted = await deleteWork(id);
-
-  if (!deleted) {
-    return NextResponse.json(
-      { error: "Не найдено или нельзя удалить встроенное произведение" },
-      { status: 404 }
-    );
-  }
-
+  await deleteWork(id);
   return NextResponse.json({ ok: true });
 }
 
 export async function PATCH(req: NextRequest) {
   const err = await guard();
   if (err) return err;
-
   const { id } = await req.json();
   const work = await togglePublish(id);
-
-  if (!work) {
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
-  }
-
+  if (!work) return NextResponse.json({ error: "Not found" }, { status: 404 });
   return NextResponse.json({ ok: true, data: work });
 }
