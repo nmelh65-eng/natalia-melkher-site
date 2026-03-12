@@ -105,7 +105,7 @@ export default function HomePage() {
         <div
           role="presentation"
           aria-hidden="true"
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 animate-bounce z-10"
+          className="absolute bottom-4 left-1/2 -translate-x-1/2 animate-bounce z-10"
         >
           <div className="w-6 h-10 rounded-full border-2 border-white/20 flex justify-center pt-2">
             <div className="w-1.5 h-3 rounded-full bg-purple-400/60 animate-pulse" />
