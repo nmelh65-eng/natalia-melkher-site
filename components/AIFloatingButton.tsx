@@ -11,7 +11,7 @@ export default function AIFloatingButton({ onClick }: AIFloatingButtonProps) {
     <button
       onClick={onClick}
       aria-label="Открыть AI-Музу"
-      className="fixed bottom-6 right-6 z-[90]
+      className="fixed bottom-24 right-6 z-[90]
                  w-14 h-14 sm:w-16 sm:h-16
                  rounded-full
                  bg-gradient-to-br from-emerald-500 to-teal-600
