@@ -48,12 +48,13 @@ export default function HomePage() {
         <AnimatedSection delay={400}>
           <h1
             className="font-display
-                       text-[2.8rem] sm:text-[3.5rem] md:text-[4.5rem]
-                       lg:text-[5.5rem] xl:text-[6.5rem] 2xl:text-[7.5rem]
+                       text-[3.2rem] sm:text-[4rem] md:text-[5rem]
+                       lg:text-[5.5rem] xl:text-[6.5rem] 2xl:text-[7rem]
                        font-bold gradient-text hero-name
-                       mb-4 leading-[0.9] tracking-tight
-                       whitespace-nowrap"
+                       mb-5 leading-[0.88] tracking-tight"
           >
+            {t.hero.title}
+          </h1>
             {t.hero.title}
           </h1>
         </AnimatedSection>
