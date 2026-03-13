@@ -1,28 +1,45 @@
 import type { Metadata } from "next";
-import { getWorkById } from "@/data/works";
+import { getWorkById } from "@/lib/works-store";
 
-const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://natalia-melkher.vercel.app";
+const BASE =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://natalia-melkher.vercel.app";
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const work = getWorkById(params.id);
-  if (!work) return { title: "Стихотворение не найдено" };
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const work = await getWorkById(id);
 
-  const title = work.title;
-  const description = work.excerpt || work.content.slice(0, 155).replace(/\n/g, " ");
-  const url = `${BASE}/poetry/${work.id}`;
+  if (!work || work.category !== "poetry" || !work.isPublished) {
+    return {
+      title: "Стихотворение не найдено | Наталья Мельхер",
+      description: "Запрашиваемое стихотворение не найдено.",
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
+  }
 
   return {
-    title,
-    description,
-    keywords: [...work.tags, "поэзия", "стихи", "Наталья Мельхер"],
-    openGraph: {
-      title, description, url, type:"article",
-      publishedTime: work.createdAt, modifiedTime: work.updatedAt,
-      authors: ["Наталья Мельхер"],
-      tags: work.tags,
-      images: [{ url: `/poetry/${work.id}/opengraph-image`, width:1200, height:630 }],
+    title: `${work.title} | Поэзия | Наталья Мельхер`,
+    description: work.excerpt || work.content.slice(0, 160),
+    alternates: {
+      canonical: `${BASE}/poetry/${work.id}`,
     },
-    twitter: { card:"summary_large_image", title, description },
-    alternates: { canonical: url },
+    openGraph: {
+      title: work.title,
+      description: work.excerpt || work.content.slice(0, 160),
+      url: `${BASE}/poetry/${work.id}`,
+      type: "article",
+      siteName: "Наталья Мельхер",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: work.title,
+      description: work.excerpt || work.content.slice(0, 160),
+    },
   };
 }
