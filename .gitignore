@@ -26,3 +26,7 @@ output.txt
 .env.local
 .env
 .env*.local
+backup-before-api-fix/
+backup-before-detail-api-fix/
+backup-before-home-api-fix/
+backup-before-seo-fix/
