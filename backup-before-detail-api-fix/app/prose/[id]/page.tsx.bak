@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useLanguage } from "@/context/LanguageContext";
-import type { TranslatedWork } from "@/types";
+import { getWorkById, getWorksByCategory } from "@/data/works";
 import AnimatedSection from "@/components/AnimatedSection";
 import ReadingProgress from "@/components/ReadingProgress";
 import WorkStats from "@/components/WorkStats";
@@ -18,98 +18,20 @@ export default function ProsePiecePage() {
     typeof params.id === "string"
       ? params.id
       : Array.isArray(params.id)
-      ? params.id[0]
-      : "";
+        ? params.id[0]
+        : "";
 
-  const [work, setWork] = useState<TranslatedWork | null>(null);
-  const [allProse, setAllProse] = useState<TranslatedWork[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const work = getWorkById(id);
 
-  useEffect(() => {
-    let cancelled = false;
+  // Находим похожие произведения по тегам
+  const related = getWorksByCategory("prose")
+    .filter(
+      (p) =>
+        p.id !== id && p.tags.some((tag) => work?.tags.includes(tag))
+    )
+    .slice(0, 2);
 
-    async function loadData() {
-      try {
-        setLoading(true);
-        setError("");
-
-        const [workRes, proseRes] = await Promise.all([
-          fetch(`/api/works?id=${encodeURIComponent(id)}`, { cache: "no-store" }),
-          fetch("/api/works?category=prose", { cache: "no-store" }),
-        ]);
-
-        if (!workRes.ok) {
-          throw new Error("Не удалось загрузить произведение");
-        }
-
-        if (!proseRes.ok) {
-          throw new Error("Не удалось загрузить список прозы");
-        }
-
-        const workData = await workRes.json();
-        const proseData = await proseRes.json();
-
-        if (!cancelled) {
-          setWork(workData ?? null);
-          setAllProse(Array.isArray(proseData) ? proseData : []);
-        }
-      } catch (err) {
-        if (!cancelled) {
-          setError("Ошибка загрузки произведения");
-          setWork(null);
-          setAllProse([]);
-        }
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      }
-    }
-
-    if (id) {
-      loadData();
-    }
-
-    return () => {
-      cancelled = true;
-    };
-  }, [id]);
-
-  const related = useMemo(() => {
-    if (!work) return [];
-    return allProse
-      .filter(
-        (p) =>
-          p.id !== id &&
-          p.tags.some((tag) => work.tags.includes(tag))
-      )
-      .slice(0, 2);
-  }, [allProse, work, id]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 rounded-full border-2 border-amber-500 border-t-transparent animate-spin" />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-6 px-4 text-center">
-        <h1 className="text-3xl font-bold text-gray-300">Ошибка</h1>
-        <p className="text-gray-500 max-w-md">{error}</p>
-        <button
-          onClick={() => window.location.reload()}
-          className="px-8 py-3 rounded-2xl bg-amber-600 text-white hover:bg-amber-500 transition-colors"
-        >
-          {t.common.retry}
-        </button>
-      </div>
-    );
-  }
-
+  // 404
   if (!work || work.category !== "prose") {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-6 px-4 text-center">
@@ -124,7 +46,10 @@ export default function ProsePiecePage() {
         </p>
         <Link
           href="/prose"
-          className="px-8 py-3 rounded-2xl bg-amber-600 text-white hover:bg-amber-500 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-black"
+          className="px-8 py-3 rounded-2xl bg-amber-600 text-white
+                     hover:bg-amber-500 transition-colors
+                     focus:outline-none focus:ring-2 focus:ring-amber-400
+                     focus:ring-offset-2 focus:ring-offset-black"
         >
           &larr; {t.nav.prose}
         </Link>
@@ -132,7 +57,9 @@ export default function ProsePiecePage() {
     );
   }
 
-  const tr = language !== "ru" ? work.translations[language] : undefined;
+  // Перевод
+  const tr =
+    language !== "ru" ? work.translations[language] : undefined;
   const title = tr?.title ?? work.title;
   const content = tr?.content ?? work.content;
   const paragraphs = content.split(/\n\n+/).filter(Boolean);
@@ -141,16 +68,23 @@ export default function ProsePiecePage() {
     <div className="min-h-screen">
       <ReadingProgress />
 
+      {/* Фоновое свечение */}
       <div
         aria-hidden="true"
-        className="fixed top-0 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-amber-500/5 rounded-full blur-[140px] pointer-events-none"
+        className="fixed top-0 left-1/2 -translate-x-1/2
+                   w-[700px] h-[500px] bg-amber-500/5 rounded-full
+                   blur-[140px] pointer-events-none"
       />
 
       <div className="max-w-2xl mx-auto px-4 pt-16 pb-28 relative z-10">
+        {/* Кнопка назад */}
         <AnimatedSection delay={0}>
           <button
             onClick={() => router.back()}
-            className="inline-flex items-center gap-2 text-gray-600 hover:text-amber-400 transition-colors mb-14 group text-sm focus:outline-none focus:text-amber-400"
+            className="inline-flex items-center gap-2 text-gray-600
+                       hover:text-amber-400 transition-colors mb-14
+                       group text-sm
+                       focus:outline-none focus:text-amber-400"
           >
             <span
               className="group-hover:-translate-x-1 transition-transform inline-block"
@@ -162,9 +96,13 @@ export default function ProsePiecePage() {
           </button>
         </AnimatedSection>
 
+        {/* Заголовок */}
         <AnimatedSection delay={80}>
           <div className="mb-14">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 mb-8">
+            <div
+              className="inline-flex items-center gap-2 px-4 py-1.5
+                         rounded-full bg-amber-500/10 border border-amber-500/20 mb-8"
+            >
               <span className="text-amber-400 text-xs" aria-hidden="true">
                 ❧
               </span>
@@ -176,7 +114,10 @@ export default function ProsePiecePage() {
               </span>
             </div>
 
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight mb-8">
+            <h1
+              className="font-display text-4xl sm:text-5xl md:text-6xl
+                         font-bold text-white leading-tight mb-8"
+            >
               {title}
             </h1>
 
@@ -184,21 +125,22 @@ export default function ProsePiecePage() {
           </div>
         </AnimatedSection>
 
+        {/* Текст произведения */}
         <AnimatedSection delay={160}>
           <article className="glass-gold rounded-3xl overflow-hidden mb-10">
             <div
               aria-hidden="true"
               className="h-[2px] bg-gradient-to-r from-transparent via-amber-400 to-transparent"
             />
+
             <div className="p-8 sm:p-12 md:p-16 work-content">
               <div className="space-y-6">
                 {paragraphs.map((para, i) => {
                   const trimmed = para.trim();
                   const isQuote =
-                    trimmed.startsWith("«") ||
+                    trimmed.startsWith("\u00AB") ||
                     trimmed.startsWith('"') ||
-                    trimmed.startsWith("“");
-
+                    trimmed.startsWith("\u201C");
                   const isLetter = [
                     "Дорог",
                     "Dear",
@@ -239,6 +181,7 @@ export default function ProsePiecePage() {
                 })}
               </div>
             </div>
+
             <div
               aria-hidden="true"
               className="h-[2px] bg-gradient-to-r from-transparent via-purple-400/30 to-transparent"
@@ -246,13 +189,19 @@ export default function ProsePiecePage() {
           </article>
         </AnimatedSection>
 
+        {/* Теги */}
         <AnimatedSection delay={240}>
           <nav aria-label="Теги произведения" className="flex flex-wrap gap-2 mb-14">
             {work.tags.map((tag) => (
               <Link
                 key={tag}
                 href={`/prose?tag=${encodeURIComponent(tag)}`}
-                className="px-4 py-1.5 rounded-full text-sm bg-white/5 border border-white/10 text-gray-400 hover:bg-amber-500/10 hover:border-amber-500/30 hover:text-amber-400 transition-all focus:outline-none focus:ring-2 focus:ring-amber-400"
+                className="px-4 py-1.5 rounded-full text-sm
+                           bg-white/5 border border-white/10
+                           text-gray-400 hover:bg-amber-500/10
+                           hover:border-amber-500/30 hover:text-amber-400
+                           transition-all
+                           focus:outline-none focus:ring-2 focus:ring-amber-400"
               >
                 #{tag}
               </Link>
@@ -260,6 +209,7 @@ export default function ProsePiecePage() {
           </nav>
         </AnimatedSection>
 
+        {/* Похожие произведения */}
         {related.length > 0 && (
           <AnimatedSection delay={320}>
             <section
@@ -276,19 +226,31 @@ export default function ProsePiecePage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {related.map((piece) => {
                   const rTr =
-                    language !== "ru" ? piece.translations[language] : undefined;
+                    language !== "ru"
+                      ? piece.translations[language]
+                      : undefined;
 
                   return (
                     <Link
                       key={piece.id}
                       href={`/prose/${piece.id}`}
-                      className="glass rounded-2xl p-6 hover:border-amber-500/30 hover:-translate-y-1 transition-all group block focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-black"
+                      className="glass rounded-2xl p-6
+                                 hover:border-amber-500/30 hover:-translate-y-1
+                                 transition-all group block
+                                 focus:outline-none focus:ring-2
+                                 focus:ring-amber-400 focus:ring-offset-2
+                                 focus:ring-offset-black"
                     >
                       <div
                         aria-hidden="true"
-                        className="h-0.5 bg-gradient-to-r from-amber-500 to-purple-500 rounded-full mb-4 opacity-30 group-hover:opacity-80 transition-opacity"
+                        className="h-0.5 bg-gradient-to-r from-amber-500 to-purple-500
+                                   rounded-full mb-4 opacity-30
+                                   group-hover:opacity-80 transition-opacity"
                       />
-                      <h3 className="font-display text-lg font-bold text-gray-200 group-hover:text-amber-300 transition-colors">
+                      <h3
+                        className="font-display text-lg font-bold text-gray-200
+                                   group-hover:text-amber-300 transition-colors"
+                      >
                         {rTr?.title ?? piece.title}
                       </h3>
                       <p className="text-sm text-gray-600 mt-2 line-clamp-2 font-serif italic">
@@ -306,11 +268,17 @@ export default function ProsePiecePage() {
           </AnimatedSection>
         )}
 
+        {/* Кнопка «все произведения» */}
         <AnimatedSection delay={380}>
           <div>
             <Link
               href="/prose"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl glass text-amber-300 hover:text-white hover:bg-amber-500/20 transition-all font-medium focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-black"
+              className="inline-flex items-center gap-2 px-8 py-4
+                         rounded-2xl glass text-amber-300
+                         hover:text-white hover:bg-amber-500/20
+                         transition-all font-medium
+                         focus:outline-none focus:ring-2 focus:ring-amber-400
+                         focus:ring-offset-2 focus:ring-offset-black"
             >
               <span aria-hidden="true">&larr;</span>
               {t.sections.allWorks}
