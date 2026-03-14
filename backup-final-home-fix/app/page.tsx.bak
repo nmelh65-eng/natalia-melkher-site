@@ -69,41 +69,41 @@ export default function HomePage() {
     <div className="relative min-h-screen">
       <section
         aria-label="Hero"
-        className="relative flex flex-col items-center justify-center min-h-[62vh] sm:min-h-[82vh] px-4 pt-6 sm:pt-16 text-center"
+        className="relative flex flex-col items-center justify-center min-h-[74vh] sm:min-h-[86vh] px-4 pt-8 sm:pt-16 text-center"
       >
         <div
           aria-hidden="true"
           className="absolute inset-0 pointer-events-none overflow-hidden"
         >
-          <div className="absolute top-[18%] left-1/2 -translate-x-1/2 w-[220px] h-[220px] sm:w-[620px] sm:h-[620px] bg-purple-500/10 rounded-full blur-[70px] sm:blur-[150px]" />
-          <div className="absolute top-[28%] left-[14%] w-[90px] h-[90px] sm:w-[320px] sm:h-[320px] bg-amber-500/6 rounded-full blur-[40px] sm:blur-[110px]" />
-          <div className="absolute bottom-[10%] right-[10%] w-[70px] h-[70px] sm:w-[240px] sm:h-[240px] bg-fuchsia-500/5 rounded-full blur-[35px] sm:blur-[100px]" />
+          <div className="absolute top-[18%] left-1/2 -translate-x-1/2 w-[260px] h-[260px] sm:w-[620px] sm:h-[620px] bg-purple-500/10 rounded-full blur-[85px] sm:blur-[150px]" />
+          <div className="absolute top-[30%] left-[16%] w-[120px] h-[120px] sm:w-[320px] sm:h-[320px] bg-amber-500/6 rounded-full blur-[55px] sm:blur-[110px]" />
+          <div className="absolute bottom-[12%] right-[12%] w-[90px] h-[90px] sm:w-[240px] sm:h-[240px] bg-fuchsia-500/5 rounded-full blur-[45px] sm:blur-[100px]" />
         </div>
 
-        <div className="relative z-10 w-full max-w-4xl mx-auto">
-          <AnimatedSection delay={160}>
-            <p className="font-serif text-[0.88rem] sm:text-xl md:text-2xl text-purple-300/75 mb-2 italic tracking-[0.04em]">
+        <div className="relative z-10 w-full max-w-5xl mx-auto">
+          <AnimatedSection delay={180}>
+            <p className="font-serif text-[0.95rem] sm:text-xl md:text-2xl text-purple-300/75 mb-2.5 italic tracking-[0.05em]">
               {t.hero.greeting}
             </p>
           </AnimatedSection>
 
-          <AnimatedSection delay={280}>
-            <h1 className="font-display text-[2.05rem] leading-[0.94] sm:text-[4rem] md:text-[5.2rem] lg:text-[6rem] xl:text-[6.8rem] font-bold gradient-text tracking-tight mb-3 sm:mb-6">
+          <AnimatedSection delay={320}>
+            <h1 className="font-display text-[2.35rem] leading-[0.92] sm:text-[4rem] md:text-[5.2rem] lg:text-[6.2rem] xl:text-[7rem] font-bold gradient-text tracking-tight mb-4 sm:mb-6">
               {t.hero.title}
             </h1>
           </AnimatedSection>
 
-          <AnimatedSection delay={420}>
-            <p className="max-w-lg sm:max-w-2xl mx-auto font-serif text-[0.92rem] sm:text-lg md:text-xl text-gray-400 leading-6 sm:leading-8 mb-5 sm:mb-10">
+          <AnimatedSection delay={500}>
+            <p className="max-w-xl sm:max-w-2xl mx-auto font-serif text-[0.98rem] sm:text-lg md:text-xl text-gray-400 leading-7 sm:leading-8 mb-6 sm:mb-10">
               {t.hero.subtitle}
             </p>
           </AnimatedSection>
 
-          <AnimatedSection delay={560}>
+          <AnimatedSection delay={680}>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
               <Link
                 href="/poetry"
-                className="group relative inline-flex items-center justify-center min-w-[205px] sm:min-w-[240px] px-7 py-3 sm:px-10 sm:py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-fuchsia-500 text-white font-semibold text-[0.92rem] sm:text-lg overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_35px_rgba(168,85,247,0.28)] focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-black"
+                className="group relative inline-flex items-center justify-center min-w-[210px] sm:min-w-[240px] px-7 py-3 sm:px-10 sm:py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-fuchsia-500 text-white font-semibold text-[0.95rem] sm:text-lg overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_35px_rgba(168,85,247,0.28)] focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-black"
               >
                 <span className="relative z-10">{t.hero.cta}</span>
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-r from-purple-500 via-fuchsia-500 to-amber-400" />
@@ -111,19 +111,19 @@ export default function HomePage() {
 
               <Link
                 href="/prose"
-                className="inline-flex items-center justify-center min-w-[205px] sm:min-w-[240px] px-7 py-3 sm:px-10 sm:py-4 rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur text-gray-200 font-medium text-[0.92rem] sm:text-lg hover:bg-white/[0.06] hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-black"
+                className="inline-flex items-center justify-center min-w-[210px] sm:min-w-[240px] px-7 py-3 sm:px-10 sm:py-4 rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur text-gray-200 font-medium text-[0.95rem] sm:text-lg hover:bg-white/[0.06] hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-black"
               >
                 {t.hero.ctaSecondary}
               </Link>
             </div>
           </AnimatedSection>
 
-          <AnimatedSection delay={740}>
-            <div className="mt-6 sm:mt-14 flex justify-center">
+          <AnimatedSection delay={860}>
+            <div className="mt-8 sm:mt-16 flex justify-center">
               <div
                 role="presentation"
                 aria-hidden="true"
-                className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-white/10 bg-white/[0.02]"
+                className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-white/10 bg-white/[0.02]"
               >
                 <div className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
               </div>
@@ -132,22 +132,22 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="max-w-4xl mx-auto px-4 py-4 sm:py-16">
+      <section className="max-w-4xl mx-auto px-4 py-10 sm:py-20">
         <AnimatedSection>
-          <figure className="relative text-center py-3 sm:py-10">
+          <figure className="relative text-center py-6 sm:py-14">
             <div
               aria-hidden="true"
-              className="absolute -top-1 left-1/2 -translate-x-1/2 text-5xl sm:text-8xl text-purple-500/10 font-display select-none"
+              className="absolute -top-2 left-1/2 -translate-x-1/2 text-6xl sm:text-8xl text-purple-500/10 font-display select-none"
             >
               &ldquo;
             </div>
 
-            <blockquote className="font-serif text-[1.02rem] sm:text-3xl md:text-[2.2rem] font-light text-gray-300 italic leading-[1.6] sm:leading-[1.65] max-w-3xl mx-auto">
+            <blockquote className="font-serif text-[1.15rem] sm:text-3xl md:text-[2.35rem] font-light text-gray-300 italic leading-[1.65] sm:leading-[1.65]">
               Слово — это самый мощный инструмент, данный человеку.
               Оно способно исцелять, вдохновлять, пробуждать.
             </blockquote>
 
-            <figcaption className="mt-5 sm:mt-8 flex items-center justify-center gap-3 sm:gap-4">
+            <figcaption className="mt-6 sm:mt-8 flex items-center justify-center gap-3 sm:gap-4">
               <div className="h-px w-8 sm:w-16 bg-gradient-to-r from-transparent to-purple-500/50" />
               <cite className="text-sm sm:text-lg text-purple-300 italic font-serif not-italic">
                 Наталья Мельхер
@@ -160,17 +160,17 @@ export default function HomePage() {
 
       <section
         aria-labelledby="poetry-heading"
-        className="max-w-6xl mx-auto px-4 pt-4 pb-8 sm:pt-10 sm:pb-16"
+        className="max-w-6xl mx-auto px-4 py-8 sm:py-16"
       >
         <AnimatedSection>
-          <div className="flex items-end justify-between gap-4 mb-5 sm:mb-10">
+          <div className="flex items-end justify-between gap-4 mb-6 sm:mb-10">
             <div>
-              <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-purple-400/70 mb-2">
+              <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-purple-400/70 mb-2 sm:mb-3">
                 Latest
               </p>
               <h2
                 id="poetry-heading"
-                className="font-display text-[1.8rem] sm:text-4xl md:text-[2.8rem] font-bold text-gray-100"
+                className="font-display text-[2rem] sm:text-4xl md:text-[2.8rem] font-bold text-gray-100"
               >
                 {t.sections.poetry}
               </h2>
@@ -211,17 +211,17 @@ export default function HomePage() {
 
       <section
         aria-labelledby="prose-heading"
-        className="max-w-5xl mx-auto px-4 pt-2 pb-10 sm:pt-8 sm:pb-16"
+        className="max-w-5xl mx-auto px-4 pt-8 pb-12 sm:pt-16 sm:pb-16"
       >
         <AnimatedSection>
-          <div className="flex items-end justify-between gap-4 mb-5 sm:mb-8">
+          <div className="flex items-end justify-between gap-4 mb-6 sm:mb-10">
             <div>
-              <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-amber-400/70 mb-2">
+              <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-amber-400/70 mb-2 sm:mb-3">
                 Featured
               </p>
               <h2
                 id="prose-heading"
-                className="font-display text-[1.8rem] sm:text-4xl md:text-[2.8rem] font-bold text-gray-100"
+                className="font-display text-[2rem] sm:text-4xl md:text-[2.8rem] font-bold text-gray-100"
               >
                 {t.sections.prose}
               </h2>
@@ -246,7 +246,7 @@ export default function HomePage() {
             <p className="text-lg text-red-400">{error}</p>
           </div>
         ) : latestProse.length > 0 ? (
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 gap-5">
             {latestProse.map((item, i) => (
               <AnimatedSection key={item.id} delay={180}>
                 <ProseCard work={item} index={i} />
