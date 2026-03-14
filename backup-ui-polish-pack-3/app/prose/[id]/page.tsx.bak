@@ -79,7 +79,11 @@ export default function ProsePiecePage() {
   const related = useMemo(() => {
     if (!work) return [];
     return allProse
-      .filter((p) => p.id !== id && p.tags.some((tag) => work.tags.includes(tag)))
+      .filter(
+        (p) =>
+          p.id !== id &&
+          p.tags.some((tag) => work.tags.includes(tag))
+      )
       .slice(0, 2);
   }, [allProse, work, id]);
 
@@ -139,14 +143,14 @@ export default function ProsePiecePage() {
 
       <div
         aria-hidden="true"
-        className="fixed top-0 left-1/2 -translate-x-1/2 w-[320px] h-[320px] sm:w-[620px] sm:h-[460px] bg-amber-500/6 rounded-full blur-[90px] sm:blur-[140px] pointer-events-none"
+        className="fixed top-0 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-amber-500/5 rounded-full blur-[140px] pointer-events-none"
       />
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-12 sm:pt-16 pb-24 sm:pb-28 relative z-10">
+      <div className="max-w-2xl mx-auto px-4 pt-16 pb-28 relative z-10">
         <AnimatedSection delay={0}>
           <button
             onClick={() => router.back()}
-            className="inline-flex items-center gap-2 text-gray-600 hover:text-amber-400 transition-colors mb-10 sm:mb-14 group text-sm focus:outline-none focus:text-amber-400"
+            className="inline-flex items-center gap-2 text-gray-600 hover:text-amber-400 transition-colors mb-14 group text-sm focus:outline-none focus:text-amber-400"
           >
             <span
               className="group-hover:-translate-x-1 transition-transform inline-block"
@@ -159,12 +163,12 @@ export default function ProsePiecePage() {
         </AnimatedSection>
 
         <AnimatedSection delay={80}>
-          <header className="mb-12 sm:mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 mb-6 sm:mb-8">
+          <div className="mb-14">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 mb-8">
               <span className="text-amber-400 text-xs" aria-hidden="true">
                 ❧
               </span>
-              <span className="text-amber-400 text-xs font-semibold tracking-[0.22em] uppercase">
+              <span className="text-amber-400 text-xs font-semibold tracking-widest uppercase">
                 {t.sections.prose}
               </span>
               <span className="text-amber-400 text-xs" aria-hidden="true">
@@ -172,28 +176,24 @@ export default function ProsePiecePage() {
               </span>
             </div>
 
-            <h1 className="font-display text-3xl sm:text-5xl md:text-[3.9rem] font-bold text-white leading-[1.02] tracking-tight mb-6 sm:mb-8">
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight mb-8">
               {title}
             </h1>
 
-            <div className="max-w-xl">
-              <WorkStats work={work} />
-            </div>
-          </header>
+            <WorkStats work={work} />
+          </div>
         </AnimatedSection>
 
         <AnimatedSection delay={160}>
-          <article className="relative rounded-[32px] border border-white/[0.06] bg-white/[0.03] backdrop-blur overflow-hidden mb-10 sm:mb-12">
+          <article className="glass-gold rounded-3xl overflow-hidden mb-10">
             <div
               aria-hidden="true"
               className="h-[2px] bg-gradient-to-r from-transparent via-amber-400 to-transparent"
             />
-
-            <div className="px-6 py-8 sm:px-10 sm:py-12 md:px-14 md:py-16 work-content">
-              <div className="space-y-6 sm:space-y-7">
+            <div className="p-8 sm:p-12 md:p-16 work-content">
+              <div className="space-y-6">
                 {paragraphs.map((para, i) => {
                   const trimmed = para.trim();
-
                   const isQuote =
                     trimmed.startsWith("«") ||
                     trimmed.startsWith('"') ||
@@ -210,7 +210,7 @@ export default function ProsePiecePage() {
                   ].some((p) => trimmed.startsWith(p));
 
                   let paragraphClass =
-                    "prose-text text-[1rem] sm:text-[1.15rem] leading-[1.95] sm:leading-[2] ";
+                    "prose-text text-base sm:text-lg leading-[1.95] ";
 
                   if (i === 0 && !isQuote && !isLetter) {
                     paragraphClass += "drop-cap text-gray-100 ";
@@ -220,7 +220,7 @@ export default function ProsePiecePage() {
 
                   if (isQuote) {
                     paragraphClass +=
-                      "pl-5 sm:pl-6 border-l-2 border-amber-400/30 text-gray-400 italic ";
+                      "pl-6 border-l-2 border-amber-400/30 text-gray-400 italic ";
                   }
 
                   if (isLetter) {
@@ -239,21 +239,20 @@ export default function ProsePiecePage() {
                 })}
               </div>
             </div>
-
             <div
               aria-hidden="true"
-              className="h-[2px] bg-gradient-to-r from-transparent via-amber-400/30 to-transparent"
+              className="h-[2px] bg-gradient-to-r from-transparent via-purple-400/30 to-transparent"
             />
           </article>
         </AnimatedSection>
 
         <AnimatedSection delay={240}>
-          <nav aria-label="Теги произведения" className="flex flex-wrap gap-2.5 mb-12 sm:mb-14">
+          <nav aria-label="Теги произведения" className="flex flex-wrap gap-2 mb-14">
             {work.tags.map((tag) => (
               <Link
                 key={tag}
                 href={`/prose?tag=${encodeURIComponent(tag)}`}
-                className="px-4 py-2 rounded-full text-sm bg-white/[0.03] border border-white/[0.08] text-gray-400 hover:bg-amber-500/10 hover:border-amber-500/30 hover:text-amber-300 transition-all focus:outline-none focus:ring-2 focus:ring-amber-400"
+                className="px-4 py-1.5 rounded-full text-sm bg-white/5 border border-white/10 text-gray-400 hover:bg-amber-500/10 hover:border-amber-500/30 hover:text-amber-400 transition-all focus:outline-none focus:ring-2 focus:ring-amber-400"
               >
                 #{tag}
               </Link>
@@ -265,16 +264,16 @@ export default function ProsePiecePage() {
           <AnimatedSection delay={320}>
             <section
               aria-labelledby="related-heading"
-              className="border-t border-white/[0.05] pt-12 sm:pt-14 mb-12"
+              className="border-t border-white/[0.05] pt-14 mb-12"
             >
               <h2
                 id="related-heading"
-                className="font-display text-2xl sm:text-[2rem] font-bold text-gray-200 mb-6"
+                className="font-display text-2xl font-bold text-gray-300 mb-6"
               >
-                Похожие произведения
+                {t.sections.prose}
               </h2>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {related.map((piece) => {
                   const rTr =
                     language !== "ru" ? piece.translations[language] : undefined;
@@ -283,17 +282,21 @@ export default function ProsePiecePage() {
                     <Link
                       key={piece.id}
                       href={`/prose/${piece.id}`}
-                      className="group rounded-[24px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5 sm:p-6 hover:border-amber-400/25 hover:-translate-y-1 transition-all block focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-black"
+                      className="glass rounded-2xl p-6 hover:border-amber-500/30 hover:-translate-y-1 transition-all group block focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-black"
                     >
                       <div
                         aria-hidden="true"
-                        className="h-0.5 bg-gradient-to-r from-amber-500 to-purple-500 rounded-full mb-4 opacity-40 group-hover:opacity-90 transition-opacity"
+                        className="h-0.5 bg-gradient-to-r from-amber-500 to-purple-500 rounded-full mb-4 opacity-30 group-hover:opacity-80 transition-opacity"
                       />
-                      <h3 className="font-display text-lg font-bold text-gray-200 group-hover:text-amber-200 transition-colors">
+                      <h3 className="font-display text-lg font-bold text-gray-200 group-hover:text-amber-300 transition-colors">
                         {rTr?.title ?? piece.title}
                       </h3>
-                      <p className="text-sm text-gray-500 mt-2 line-clamp-3 font-serif leading-6">
+                      <p className="text-sm text-gray-600 mt-2 line-clamp-2 font-serif italic">
                         {rTr?.excerpt ?? piece.excerpt}
+                      </p>
+                      <p className="text-xs text-gray-700 mt-2">
+                        {piece.readingTime} {t.sections.minuteRead} &middot;{" "}
+                        {piece.views} {t.sections.views}
                       </p>
                     </Link>
                   );
@@ -307,7 +310,7 @@ export default function ProsePiecePage() {
           <div>
             <Link
               href="/prose"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl border border-white/[0.08] bg-white/[0.03] text-amber-300 hover:text-white hover:bg-amber-500/15 transition-all font-medium focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-black"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl glass text-amber-300 hover:text-white hover:bg-amber-500/20 transition-all font-medium focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-black"
             >
               <span aria-hidden="true">&larr;</span>
               {t.sections.allWorks}
