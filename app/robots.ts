@@ -1,4 +1,18 @@
 import type { MetadataRoute } from "next";
+
+const BASE =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://natalia-melkher.vercel.app";
+
 export default function robots(): MetadataRoute.Robots {
-  return { rules: { userAgent: "*", allow: "/", disallow: "/api/" }, sitemap: "https://natalia-melkher.vercel.app/sitemap.xml" };
+  return {
+    rules: [
+      {
+        userAgent: "*",
+        allow: "/",
+        disallow: ["/api/", "/admin/", "/admin/login"],
+      },
+    ],
+    sitemap: `${BASE}/sitemap.xml`,
+    host: BASE,
+  };
 }
