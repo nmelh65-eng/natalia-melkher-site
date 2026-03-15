@@ -76,6 +76,33 @@ export default function ProsePiecePage() {
     };
   }, [id]);
 
+  useEffect(() => {
+    if (!id) return;
+
+    const key = `viewed:${id}`;
+    if (typeof window !== "undefined" && sessionStorage.getItem(key)) {
+      return;
+    }
+
+    async function sendView() {
+      try {
+        await fetch("/api/works", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id, action: "view" }),
+        });
+
+        if (typeof window !== "undefined") {
+          sessionStorage.setItem(key, "1");
+        }
+      } catch (e) {
+        console.error("View increment error:", e);
+      }
+    }
+
+    sendView();
+  }, [id]);
+
   const related = useMemo(() => {
     if (!work) return [];
     return allProse
