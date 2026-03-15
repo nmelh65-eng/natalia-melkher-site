@@ -4,19 +4,16 @@ import React, { useState, useMemo, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLanguage } from "@/context/LanguageContext";
 import type { TranslatedWork } from "@/types";
-import ProseCard from "@/components/ProseCard";
+import PoemCard from "@/components/PoemCard";
 import AnimatedSection from "@/components/AnimatedSection";
 
-const BASE =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://natalia-melkher.vercel.app";
-
-function ProseContent() {
+function PoetryContent() {
   const { t } = useLanguage();
   const searchParams = useSearchParams();
 
   const [search, setSearch] = useState("");
   const [tag, setTag] = useState<string | null>(null);
-  const [allProse, setAllProse] = useState<TranslatedWork[]>([]);
+  const [allPoems, setAllPoems] = useState<TranslatedWork[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -28,28 +25,28 @@ function ProseContent() {
   useEffect(() => {
     let cancelled = false;
 
-    async function loadProse() {
+    async function loadPoetry() {
       try {
         setLoading(true);
         setError("");
 
-        const res = await fetch("/api/works?category=prose", {
+        const res = await fetch("/api/works?category=poetry", {
           cache: "no-store",
         });
 
         if (!res.ok) {
-          throw new Error("Не удалось загрузить прозу");
+          throw new Error("Не удалось загрузить поэзию");
         }
 
         const data = await res.json();
 
         if (!cancelled) {
-          setAllProse(Array.isArray(data) ? data : []);
+          setAllPoems(Array.isArray(data) ? data : []);
         }
       } catch (err) {
         if (!cancelled) {
           setError("Ошибка загрузки произведений");
-          setAllProse([]);
+          setAllPoems([]);
         }
       } finally {
         if (!cancelled) {
@@ -58,7 +55,7 @@ function ProseContent() {
       }
     }
 
-    loadProse();
+    loadPoetry();
 
     return () => {
       cancelled = true;
@@ -67,12 +64,12 @@ function ProseContent() {
 
   const allTags = useMemo(() => {
     const s = new Set<string>();
-    allProse.forEach((p) => p.tags.forEach((tg) => s.add(tg)));
+    allPoems.forEach((p) => p.tags.forEach((tg) => s.add(tg)));
     return Array.from(s);
-  }, [allProse]);
+  }, [allPoems]);
 
   const filtered = useMemo(() => {
-    return allProse.filter((p) => {
+    return allPoems.filter((p) => {
       const matchesSearch =
         !search ||
         p.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -80,40 +77,20 @@ function ProseContent() {
 
       return matchesSearch && (!tag || p.tags.includes(tag));
     });
-  }, [allProse, search, tag]);
-
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    name: "Проза Натальи Мельхер",
-    url: `${BASE}/prose`,
-    description:
-      "Раздел прозы Натальи Мельхер: авторские тексты, литературные миниатюры, короткая проза и вдохновляющие произведения.",
-    inLanguage: "ru",
-  };
+  }, [allPoems, search, tag]);
 
   return (
     <div className="min-h-screen">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-
-      <section className="relative pt-20 pb-10 sm:pb-12 px-4">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-amber-500/10 rounded-full blur-[100px] pointer-events-none" />
+      <section className="relative pt-20 pb-12 px-4">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none" />
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <AnimatedSection>
-            <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-amber-400/70 mb-3">
-              Prose Collection
-            </p>
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold gradient-text-gold mb-4">
-              {t.sections.prose}
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold gradient-text mb-4">
+              {t.sections.poetry}
             </h1>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">
-              Авторская проза Натальи Мельхер — литературные тексты,
-              короткая проза, внутренние размышления и истории, в которых
-              соединяются образность, глубина и настроение.
+            <p className="text-lg text-gray-400 max-w-xl mx-auto">
+              {t.hero.subtitle}
             </p>
           </AnimatedSection>
 
@@ -124,7 +101,7 @@ function ProseContent() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={t.sections.searchPlaceholder}
-                className="w-full px-6 py-3 rounded-2xl bg-white/5 backdrop-blur border border-white/10 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+                className="w-full px-6 py-3 rounded-2xl bg-white/5 backdrop-blur border border-white/10 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
               />
             </div>
           </AnimatedSection>
@@ -136,7 +113,7 @@ function ProseContent() {
                 className={
                   "px-4 py-1.5 text-xs rounded-full transition-all " +
                   (!tag
-                    ? "bg-amber-500/30 text-amber-300 border border-amber-500/50"
+                    ? "bg-purple-500/30 text-purple-300 border border-purple-500/50"
                     : "bg-white/5 text-gray-500 hover:text-gray-300")
                 }
               >
@@ -150,7 +127,7 @@ function ProseContent() {
                   className={
                     "px-4 py-1.5 text-xs rounded-full transition-all " +
                     (tag === tg
-                      ? "bg-amber-500/30 text-amber-300 border border-amber-500/50"
+                      ? "bg-purple-500/30 text-purple-300 border border-purple-500/50"
                       : "bg-white/5 text-gray-500 hover:text-gray-300")
                   }
                 >
@@ -162,26 +139,26 @@ function ProseContent() {
         </div>
       </section>
 
-      <section className="max-w-4xl mx-auto px-4 pb-20">
+      <section className="max-w-5xl mx-auto px-4 pb-20">
         {loading ? (
           <div className="flex justify-center py-20">
-            <div className="w-8 h-8 rounded-full border-2 border-amber-500 border-t-transparent animate-spin" />
+            <div className="w-8 h-8 rounded-full border-2 border-purple-500 border-t-transparent animate-spin" />
           </div>
         ) : error ? (
           <div className="text-center py-20">
             <p className="text-2xl text-red-400">{error}</p>
             <button
               onClick={() => window.location.reload()}
-              className="mt-4 text-amber-400 hover:text-amber-300 transition-colors"
+              className="mt-4 text-purple-400 hover:text-purple-300 transition-colors"
             >
               {t.common.retry}
             </button>
           </div>
         ) : filtered.length > 0 ? (
-          <div className="flex flex-col gap-8">
-            {filtered.map((item, i) => (
-              <AnimatedSection key={item.id} delay={i * 200}>
-                <ProseCard work={item} index={i} />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {filtered.map((poem, i) => (
+              <AnimatedSection key={poem.id} delay={i * 150}>
+                <PoemCard work={poem} index={i} />
               </AnimatedSection>
             ))}
           </div>
@@ -193,7 +170,7 @@ function ProseContent() {
                 setSearch("");
                 setTag(null);
               }}
-              className="mt-4 text-amber-400 hover:text-amber-300 transition-colors"
+              className="mt-4 text-purple-400 hover:text-purple-300 transition-colors"
             >
               {t.common.retry}
             </button>
@@ -204,16 +181,16 @@ function ProseContent() {
   );
 }
 
-export default function ProsePage() {
+export default function PoetryPage() {
   return (
     <Suspense
       fallback={
         <div className="min-h-screen flex items-center justify-center">
-          <div className="w-8 h-8 rounded-full border-2 border-amber-500 border-t-transparent animate-spin" />
+          <div className="w-8 h-8 rounded-full border-2 border-purple-500 border-t-transparent animate-spin" />
         </div>
       }
     >
-      <ProseContent />
+      <PoetryContent />
     </Suspense>
   );
 }

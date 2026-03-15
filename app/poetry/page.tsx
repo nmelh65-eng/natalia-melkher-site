@@ -7,6 +7,9 @@ import type { TranslatedWork } from "@/types";
 import PoemCard from "@/components/PoemCard";
 import AnimatedSection from "@/components/AnimatedSection";
 
+const BASE =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://natalia-melkher.vercel.app";
+
 function PoetryContent() {
   const { t } = useLanguage();
   const searchParams = useSearchParams();
@@ -79,18 +82,38 @@ function PoetryContent() {
     });
   }, [allPoems, search, tag]);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Поэзия Натальи Мельхер",
+    url: `${BASE}/poetry`,
+    description:
+      "Раздел поэзии Натальи Мельхер: современные стихи, лирические тексты и авторская поэзия.",
+    inLanguage: "ru",
+  };
+
   return (
     <div className="min-h-screen">
-      <section className="relative pt-20 pb-12 px-4">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
+      <section className="relative pt-20 pb-10 sm:pb-12 px-4">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none" />
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <AnimatedSection>
+            <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-purple-400/70 mb-3">
+              Poetry Collection
+            </p>
             <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold gradient-text mb-4">
               {t.sections.poetry}
             </h1>
-            <p className="text-lg text-gray-400 max-w-xl mx-auto">
-              {t.hero.subtitle}
+            <p className="text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">
+              Авторская поэзия Натальи Мельхер — современные стихи, лирика,
+              вдохновляющие тексты и поэтические произведения, объединённые
+              настроением, образами и внутренней глубиной.
             </p>
           </AnimatedSection>
 
