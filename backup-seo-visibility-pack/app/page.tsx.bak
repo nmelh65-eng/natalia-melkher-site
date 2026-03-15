@@ -8,9 +8,6 @@ import PoemCard from "@/components/PoemCard";
 import ProseCard from "@/components/ProseCard";
 import AnimatedSection from "@/components/AnimatedSection";
 
-const BASE =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://natalia-melkher.vercel.app";
-
 export default function HomePage() {
   const { t } = useLanguage();
 
@@ -68,39 +65,8 @@ export default function HomePage() {
     [allWorks]
   );
 
-  const websiteJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "Наталья Мельхер",
-    alternateName: "Natalia Melkher",
-    url: BASE,
-    description:
-      "Авторский литературный сайт Натальи Мельхер: поэзия, проза и вдохновляющие тексты.",
-    inLanguage: ["ru", "en", "de", "fr", "zh", "ko"],
-  };
-
-  const personJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    name: "Наталья Мельхер",
-    alternateName: "Natalia Melkher",
-    url: BASE,
-    jobTitle: "Поэтесса и автор",
-    description:
-      "Автор литературных произведений, поэзии и прозы.",
-  };
-
   return (
     <div className="relative min-h-screen">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
-      />
-
       <section
         aria-label="Hero"
         className="relative flex flex-col items-center justify-center min-h-[58vh] sm:min-h-[80vh] px-4 pt-4 sm:pt-16 text-center"
