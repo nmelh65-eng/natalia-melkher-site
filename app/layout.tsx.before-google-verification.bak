@@ -58,7 +58,6 @@ export const metadata: Metadata = {
   publisher: "Наталья Мельхер",
   category: "literature",
   verification: {
-    google: "6qKVMK1SjsABpVoavBGJ_RcQzGf-mV7kvqJjMyr1GQI",
     other: {
       "msvalidate.01": "B07870CD4153726BF86686326E48AF8C",
     },
