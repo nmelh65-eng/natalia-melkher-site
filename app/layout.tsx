@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Cormorant_Garamond, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import { LanguageProvider } from "@/context/LanguageContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -56,6 +57,11 @@ export const metadata: Metadata = {
   creator: "Наталья Мельхер",
   publisher: "Наталья Мельхер",
   category: "literature",
+  verification: {
+    other: {
+      "msvalidate.01": "B07870CD4153726BF86686326E48AF8C",
+    },
+  },
   robots: {
     index: true,
     follow: true,
@@ -127,6 +133,7 @@ export default function RootLayout({
           </main>
           <Footer />
           <GlobalAIButton />
+          <Analytics />
         </LanguageProvider>
       </body>
     </html>
