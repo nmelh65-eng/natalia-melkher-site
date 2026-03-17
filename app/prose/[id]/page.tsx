@@ -79,20 +79,36 @@ export default function ProsePiecePage() {
   useEffect(() => {
     if (!id) return;
 
+    let cancelled = false;
     const key = `viewed:${id}`;
+
     if (typeof window !== "undefined" && sessionStorage.getItem(key)) {
-      return;
+      return () => {
+        cancelled = true;
+      };
     }
 
     async function sendView() {
       try {
-        await fetch("/api/works", {
+        const res = await fetch("/api/works", {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ id, action: "view" }),
         });
 
-        if (typeof window !== "undefined") {
+        if (!res.ok) {
+          return;
+        }
+
+        const result = await res.json();
+
+        if (!cancelled && result?.ok && result?.data) {
+          setWork((prev) =>
+            prev && prev.id === id ? { ...prev, ...result.data } : prev
+          );
+        }
+
+        if (!cancelled && typeof window !== "undefined") {
           sessionStorage.setItem(key, "1");
         }
       } catch (e) {
@@ -101,6 +117,10 @@ export default function ProsePiecePage() {
     }
 
     sendView();
+
+    return () => {
+      cancelled = true;
+    };
   }, [id]);
 
   const related = useMemo(() => {
@@ -275,7 +295,10 @@ export default function ProsePiecePage() {
         </AnimatedSection>
 
         <AnimatedSection delay={240}>
-          <nav aria-label="Теги произведения" className="flex flex-wrap gap-2.5 mb-12 sm:mb-14">
+          <nav
+            aria-label="Теги произведения"
+            className="flex flex-wrap gap-2.5 mb-12 sm:mb-14"
+          >
             {work.tags.map((tag) => (
               <Link
                 key={tag}
