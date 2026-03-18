@@ -62,7 +62,7 @@ export default function ProseCard({
             </span>
           </div>
 
-          <div className="flex items-center gap-3 text-[11px] sm:text-xs text-gray-600">
+          <div className="flex items-center gap-3 text-[11px] sm:text-xs text-gray-500">
             <span>
               {work.readingTime} {t.sections.minuteRead}
             </span>
@@ -85,7 +85,7 @@ export default function ProseCard({
             {work.tags.slice(0, 4).map((tag) => (
               <span
                 key={tag}
-                className="rounded-full border border-white/[0.06] bg-white/[0.03] px-2.5 py-1 text-[11px] text-gray-500"
+                className="rounded-full border border-white/[0.07] bg-white/[0.04] px-2.5 py-1 text-[11px] text-gray-400"
               >
                 #{tag}
               </span>
@@ -94,7 +94,7 @@ export default function ProseCard({
         )}
 
         <div className="flex items-center justify-between gap-4 border-t border-white/[0.05] pt-4">
-          <div className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs text-gray-600">
+          <div className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs text-gray-500">
             <span aria-hidden="true">❤</span>
             <span>
               {work.likes} {t.sections.likes}

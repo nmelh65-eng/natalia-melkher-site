@@ -13,15 +13,15 @@ export default function AIFloatingButton({
     <button
       onClick={onClick}
       aria-label="Открыть AI-Музу"
-      className="group fixed bottom-4 sm:bottom-8 right-4 sm:right-6 z-[90] flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl sm:rounded-full border border-white/[0.08] bg-gradient-to-br from-purple-600 via-fuchsia-500 to-amber-400 text-white shadow-[0_12px_30px_rgba(124,58,237,0.28)] hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(124,58,237,0.34)] active:scale-95 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-purple-400/20"
+      className="group fixed bottom-5 sm:bottom-7 right-3.5 sm:right-6 z-[90] flex h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-[20px] sm:rounded-full border border-white/[0.09] bg-gradient-to-br from-purple-600 via-fuchsia-500 to-amber-400 text-white shadow-[0_10px_24px_rgba(124,58,237,0.24)] hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(124,58,237,0.30)] active:scale-95 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-purple-400/20"
     >
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-[1px] rounded-[15px] sm:rounded-full bg-[linear-gradient(180deg,rgba(255,255,255,0.16),rgba(255,255,255,0.04))] opacity-80"
+        className="pointer-events-none absolute inset-[1px] rounded-[19px] sm:rounded-full bg-[linear-gradient(180deg,rgba(255,255,255,0.16),rgba(255,255,255,0.04))] opacity-80"
       />
 
       <svg
-        className="relative z-10 w-5 h-5 sm:w-7 sm:h-7 group-hover:scale-105 transition-transform"
+        className="relative z-10 w-[18px] h-[18px] sm:w-7 sm:h-7 group-hover:scale-105 transition-transform"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
