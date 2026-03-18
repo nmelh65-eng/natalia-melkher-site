@@ -35,6 +35,7 @@ export default function Header() {
     if (typeof document === "undefined") return;
 
     const previousOverflow = document.body.style.overflow;
+
     if (mobileOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -51,8 +52,8 @@ export default function Header() {
       className={
         "fixed top-0 left-0 right-0 z-50 transition-all duration-500 " +
         (scrolled
-          ? "bg-[#07070d]/82 backdrop-blur-2xl border-b border-white/[0.06] shadow-[0_14px_40px_rgba(0,0,0,0.22)] py-3"
-          : "bg-transparent py-4 sm:py-5")
+          ? "bg-[#07070d]/82 backdrop-blur-2xl border-b border-white/[0.06] shadow-[0_14px_40px_rgba(0,0,0,0.22)] py-2.5 sm:py-3"
+          : "bg-transparent py-3.5 sm:py-5")
       }
     >
       <div
@@ -69,9 +70,9 @@ export default function Header() {
       />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-4">
-          <Link href="/" className="group flex items-center gap-3 min-w-0">
-            <div className="relative shrink-0 w-11 h-11 sm:w-12 sm:h-12">
+        <div className="flex items-center justify-between gap-3">
+          <Link href="/" className="group flex min-w-0 items-center gap-3">
+            <div className="relative shrink-0 w-10 h-10 sm:w-12 sm:h-12">
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500 via-fuchsia-500 to-amber-400 opacity-80 blur-[1px] group-hover:opacity-100 transition-all duration-300" />
               <div className="relative w-full h-full rounded-2xl bg-[#110b1c] border border-white/10 flex items-center justify-center shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
                 <span className="text-sm sm:text-base font-bold tracking-[0.08em] text-white">
@@ -81,10 +82,10 @@ export default function Header() {
             </div>
 
             <div className="min-w-0 flex flex-col">
-              <span className="font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-fuchsia-200 to-amber-300 text-[1rem] sm:text-[1.08rem] leading-tight tracking-tight truncate">
+              <span className="font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-fuchsia-200 to-amber-300 text-[0.98rem] sm:text-[1.08rem] leading-tight tracking-tight truncate">
                 Наталья Мельхер
               </span>
-              <span className="text-[10px] sm:text-[11px] text-gray-500 tracking-[0.24em] uppercase truncate">
+              <span className="hidden sm:block text-[10px] sm:text-[11px] text-gray-500 tracking-[0.24em] uppercase truncate">
                 Poetry • Prose • Inspiration
               </span>
             </div>
@@ -122,7 +123,7 @@ export default function Header() {
             })}
           </nav>
 
-          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <Link
               href="/contact"
               className="hidden lg:inline-flex items-center gap-2 rounded-2xl border border-white/[0.08] bg-white/[0.03] px-4 py-2.5 text-sm font-medium text-gray-200 hover:text-white hover:bg-white/[0.06] transition-all"
@@ -175,7 +176,7 @@ export default function Header() {
 
           <div
             id="mobile-menu"
-            className="relative ml-auto flex h-full w-full max-w-sm flex-col justify-between border-l border-white/[0.06] bg-[#090910]/96 px-6 pt-24 pb-10 shadow-[-20px_0_60px_rgba(0,0,0,0.35)]"
+            className="relative ml-auto flex h-full w-full max-w-[86vw] flex-col justify-between border-l border-white/[0.06] bg-[#090910]/96 px-6 pt-24 pb-10 shadow-[-20px_0_60px_rgba(0,0,0,0.35)]"
           >
             <div>
               <div className="mb-8">

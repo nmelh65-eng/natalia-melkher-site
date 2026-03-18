@@ -6,26 +6,22 @@ interface AIFloatingButtonProps {
   onClick: () => void;
 }
 
-export default function AIFloatingButton({ onClick }: AIFloatingButtonProps) {
+export default function AIFloatingButton({
+  onClick,
+}: AIFloatingButtonProps) {
   return (
     <button
       onClick={onClick}
       aria-label="Открыть AI-Музу"
-      className="fixed bottom-3 sm:bottom-8 right-3 sm:right-6 z-[90]
-      w-10 h-10 sm:w-14 sm:h-14
-      rounded-full
-      bg-gradient-to-br from-emerald-500 to-teal-600
-      text-white
-      shadow-[0_6px_14px_rgba(16,185,129,0.20)]
-      hover:scale-105 hover:shadow-[0_8px_24px_rgba(16,185,129,0.30)]
-      active:scale-95
-      transition-all duration-300
-      flex items-center justify-center
-      focus:outline-none focus:ring-4 focus:ring-emerald-400/20
-      group"
+      className="group fixed bottom-4 sm:bottom-8 right-4 sm:right-6 z-[90] flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl sm:rounded-full border border-white/[0.08] bg-gradient-to-br from-purple-600 via-fuchsia-500 to-amber-400 text-white shadow-[0_12px_30px_rgba(124,58,237,0.28)] hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(124,58,237,0.34)] active:scale-95 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-purple-400/20"
     >
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-[1px] rounded-[15px] sm:rounded-full bg-[linear-gradient(180deg,rgba(255,255,255,0.16),rgba(255,255,255,0.04))] opacity-80"
+      />
+
       <svg
-        className="w-5 h-5 sm:w-7 sm:h-7 group-hover:scale-105 transition-transform"
+        className="relative z-10 w-5 h-5 sm:w-7 sm:h-7 group-hover:scale-105 transition-transform"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -40,11 +36,11 @@ export default function AIFloatingButton({ onClick }: AIFloatingButtonProps) {
       </svg>
 
       <span className="absolute -top-0.5 -right-0.5 hidden lg:flex h-3 w-3">
-        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-35" />
-        <span className="relative inline-flex rounded-full h-3 w-3 bg-green-400 border-2 border-gray-950" />
+        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-300 opacity-35" />
+        <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-300 border-2 border-gray-950" />
       </span>
 
-      <span className="absolute right-full mr-3 px-3 py-1.5 rounded-xl bg-gray-900 text-white text-xs font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none hidden xl:block shadow-lg border border-white/10">
+      <span className="absolute right-[calc(100%+0.75rem)] hidden xl:inline-flex items-center rounded-xl border border-white/10 bg-[#101019]/95 px-3 py-1.5 text-xs font-medium whitespace-nowrap text-white shadow-lg">
         AI-Муза ✨
       </span>
     </button>
