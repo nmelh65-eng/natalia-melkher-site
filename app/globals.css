@@ -296,3 +296,419 @@ section h1 {
 .tag-pill {
   @apply px-4 py-1.5 rounded-full text-sm bg-white/5 border border-white/10 text-gray-400 transition-all;
 }
+
+/* === DESIGN PACK 1 START === */
+:root {
+  --site-bg: #06070b;
+  --site-surface: rgba(255, 255, 255, 0.04);
+  --site-surface-strong: rgba(255, 255, 255, 0.06);
+  --site-border: rgba(255, 255, 255, 0.09);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(circle at top center, rgba(168, 85, 247, 0.14), transparent 32%),
+    radial-gradient(circle at 18% 28%, rgba(245, 158, 11, 0.10), transparent 22%),
+    radial-gradient(circle at 82% 78%, rgba(217, 70, 239, 0.08), transparent 24%),
+    linear-gradient(180deg, #05060a 0%, #0a0d14 52%, #05060a 100%);
+}
+
+::selection {
+  background: rgba(168, 85, 247, 0.38);
+  color: #ffffff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    rgba(168, 85, 247, 0.65),
+    rgba(245, 158, 11, 0.45)
+  );
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+a,
+button,
+input,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.glass {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.055),
+    rgba(255, 255, 255, 0.028)
+  );
+  border: 1px solid var(--site-border);
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.gradient-text {
+  background-image: linear-gradient(
+    135deg,
+    #f5d0fe 0%,
+    #d8b4fe 22%,
+    #c084fc 46%,
+    #a855f7 70%,
+    #f59e0b 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradient-text-gold {
+  background-image: linear-gradient(
+    135deg,
+    #fde68a 0%,
+    #fbbf24 35%,
+    #f59e0b 62%,
+    #f97316 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+article {
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+}
+
+input,
+textarea {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.11) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+input:focus,
+textarea:focus {
+  border-color: rgba(168, 85, 247, 0.32) !important;
+  box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.08);
+}
+
+.work-content p,
+.font-serif {
+  text-wrap: pretty;
+}
+
+.drop-cap:first-letter {
+  float: left;
+  font-size: 3.35em;
+  line-height: 0.88;
+  padding-right: 0.12em;
+  padding-top: 0.07em;
+  color: #fbbf24;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .drop-cap:first-letter {
+    font-size: 2.7em;
+  }
+}
+/* === DESIGN PACK 1 END === */
+
+/* === DESIGN PACK 2 START === */
+header {
+  background: linear-gradient(
+    180deg,
+    rgba(10, 13, 20, 0.86),
+    rgba(10, 13, 20, 0.62)
+  );
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+}
+
+header::after {
+  content: "";
+  display: block;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(168, 85, 247, 0.34),
+    rgba(245, 158, 11, 0.24),
+    transparent
+  );
+}
+
+header nav a,
+header nav button {
+  position: relative;
+  transition:
+    color 0.24s ease,
+    transform 0.24s ease,
+    opacity 0.24s ease;
+}
+
+header nav a:hover,
+header nav button:hover {
+  transform: translateY(-1px);
+}
+
+header nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.42rem;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(168, 85, 247, 0.96),
+    rgba(245, 158, 11, 0.82)
+  );
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.24s ease;
+  opacity: 0.95;
+}
+
+header nav a:hover::after,
+header nav a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+main a.group,
+main .glass,
+main article {
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease,
+    border-color 0.28s ease,
+    background-color 0.28s ease;
+}
+
+main a.group:hover,
+main .glass:hover,
+main article:hover {
+  box-shadow: 0 20px 54px rgba(0, 0, 0, 0.22);
+}
+
+main a.group:hover {
+  transform: translateY(-2px);
+}
+
+main h1,
+main h2,
+main h3 {
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+main p {
+  text-wrap: pretty;
+}
+
+main a.group h3 {
+  transition: color 0.24s ease;
+}
+
+main a.group p {
+  transition: color 0.24s ease, opacity 0.24s ease;
+}
+
+@media (max-width: 640px) {
+  header {
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+  }
+
+  header nav a::after {
+    bottom: -0.28rem;
+  }
+}
+/* === DESIGN PACK 2 END === */
+
+/* === DESIGN PACK 3 START === */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 15% 50%, rgba(168, 85, 247, 0.10), transparent 28%),
+    radial-gradient(circle at 85% 50%, rgba(245, 158, 11, 0.08), transparent 24%);
+  opacity: 0.9;
+}
+
+header > * {
+  position: relative;
+  z-index: 1;
+}
+
+main a.group,
+.glass,
+article,
+nav a[href^="/poetry"],
+nav a[href^="/prose"] {
+  position: relative;
+  overflow: hidden;
+}
+
+main a.group::before,
+.glass::before,
+article::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.07),
+    transparent 28%,
+    transparent 72%,
+    rgba(255, 255, 255, 0.03)
+  );
+  opacity: 0.7;
+}
+
+main a.group::after,
+.glass::after,
+article::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(168, 85, 247, 0.26),
+    rgba(255, 255, 255, 0.05),
+    rgba(245, 158, 11, 0.18)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.68;
+}
+
+main a.group:hover,
+.glass:hover,
+article:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 22px 60px rgba(0, 0, 0, 0.24),
+    0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+button,
+a[class*="rounded-2xl"],
+a[class*="rounded-[24px]"] {
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    background-color 0.22s ease,
+    border-color 0.22s ease,
+    color 0.22s ease;
+}
+
+button:hover,
+a[class*="rounded-2xl"]:hover,
+a[class*="rounded-[24px]"]:hover {
+  transform: translateY(-1px);
+}
+
+button:active,
+a[class*="rounded-2xl"]:active,
+a[class*="rounded-[24px]"]:active {
+  transform: translateY(0);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.08),
+    0 0 0 5px rgba(168, 85, 247, 0.18);
+}
+
+main section h1,
+main section h2 {
+  text-shadow: 0 6px 30px rgba(168, 85, 247, 0.08);
+}
+
+main article {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.025)),
+    radial-gradient(circle at top right, rgba(168, 85, 247, 0.08), transparent 28%);
+}
+
+main article p,
+main article div[style*="white-space: pre-line"] {
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
+}
+
+main nav a[href*="?tag="] {
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+main nav a[href*="?tag="]:hover {
+  transform: translateY(-1px);
+}
+
+footer {
+  position: relative;
+}
+
+footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(168, 85, 247, 0.24),
+    rgba(245, 158, 11, 0.18),
+    transparent
+  );
+}
+
+@media (max-width: 640px) {
+  main a.group:hover,
+  .glass:hover,
+  article:hover {
+    transform: none;
+  }
+
+  header::before {
+    opacity: 0.65;
+  }
+}
+/* === DESIGN PACK 3 END === */

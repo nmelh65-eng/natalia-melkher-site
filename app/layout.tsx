@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Playfair_Display, Cormorant_Garamond, Inter } from "next/font/google";
+import type { CSSProperties, ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { LanguageProvider } from "@/context/LanguageContext";
 import Header from "@/components/Header";
@@ -10,27 +10,14 @@ import SkipToContent from "@/components/SkipToContent";
 import GlobalAIButton from "@/components/GlobalAIButton";
 import "./globals.css";
 
-const playfair = Playfair_Display({
-  subsets: ["latin", "cyrillic"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin", "cyrillic"],
-  variable: "--font-serif",
-  weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin", "cyrillic"],
-  variable: "--font-sans",
-  display: "swap",
-});
-
 const BASE =
   process.env.NEXT_PUBLIC_SITE_URL || "https://natalia-melkher.vercel.app";
+
+const fontVars = {
+  "--font-display": '"Georgia", "Times New Roman", serif',
+  "--font-serif": '"Georgia", "Times New Roman", serif',
+  "--font-sans": 'system-ui, -apple-system, "Segoe UI", Arial, sans-serif',
+} as CSSProperties;
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE),
@@ -85,7 +72,7 @@ export const metadata: Metadata = {
       "Авторский литературный сайт Натальи Мельхер: современные стихи, проза и вдохновляющие тексты.",
     images: [
       {
-        url: "/og-default.png",
+        url: "/opengraph-image",
         width: 1200,
         height: 630,
         alt: "Наталья Мельхер — Поэзия и проза",
@@ -97,7 +84,7 @@ export const metadata: Metadata = {
     title: "Наталья Мельхер — Поэзия, проза и пространство вдохновения",
     description:
       "Авторский литературный сайт Натальи Мельхер: стихи, проза и вдохновляющие тексты.",
-    images: ["/og-default.png"],
+    images: ["/opengraph-image"],
   },
   alternates: {
     canonical: BASE,
@@ -112,14 +99,10 @@ export const viewport: Viewport = {
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
-    <html
-      lang="ru"
-      suppressHydrationWarning
-      className={`${playfair.variable} ${cormorant.variable} ${inter.variable}`}
-    >
+    <html lang="ru" suppressHydrationWarning style={fontVars}>
       <body
         className="min-h-screen flex flex-col antialiased font-sans"
         suppressHydrationWarning
