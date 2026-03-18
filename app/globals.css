@@ -426,3 +426,117 @@ textarea:focus {
   }
 }
 /* === DESIGN PACK 1 END === */
+
+/* === DESIGN PACK 2 START === */
+header {
+  background: linear-gradient(
+    180deg,
+    rgba(10, 13, 20, 0.86),
+    rgba(10, 13, 20, 0.62)
+  );
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+}
+
+header::after {
+  content: "";
+  display: block;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(168, 85, 247, 0.34),
+    rgba(245, 158, 11, 0.24),
+    transparent
+  );
+}
+
+header nav a,
+header nav button {
+  position: relative;
+  transition:
+    color 0.24s ease,
+    transform 0.24s ease,
+    opacity 0.24s ease;
+}
+
+header nav a:hover,
+header nav button:hover {
+  transform: translateY(-1px);
+}
+
+header nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.42rem;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(168, 85, 247, 0.96),
+    rgba(245, 158, 11, 0.82)
+  );
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.24s ease;
+  opacity: 0.95;
+}
+
+header nav a:hover::after,
+header nav a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+main a.group,
+main .glass,
+main article {
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease,
+    border-color 0.28s ease,
+    background-color 0.28s ease;
+}
+
+main a.group:hover,
+main .glass:hover,
+main article:hover {
+  box-shadow: 0 20px 54px rgba(0, 0, 0, 0.22);
+}
+
+main a.group:hover {
+  transform: translateY(-2px);
+}
+
+main h1,
+main h2,
+main h3 {
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+main p {
+  text-wrap: pretty;
+}
+
+main a.group h3 {
+  transition: color 0.24s ease;
+}
+
+main a.group p {
+  transition: color 0.24s ease, opacity 0.24s ease;
+}
+
+@media (max-width: 640px) {
+  header {
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+  }
+
+  header nav a::after {
+    bottom: -0.28rem;
+  }
+}
+/* === DESIGN PACK 2 END === */
