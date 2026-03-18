@@ -30,3 +30,20 @@ backup-before-api-fix/
 backup-before-detail-api-fix/
 backup-before-home-api-fix/
 backup-before-seo-fix/
+
+# TERMUX TEMP FILES START
+ai-core-context.txt
+ai-parts/
+ai-parts-labeled/
+ai-parts-merged.txt
+build.log
+build-webpack.log
+package.json.bak
+app/layout.tsx.bak
+app/globals.css.design-pack-1.bak
+app/globals.css.design-pack-2.bak
+app/globals.css.design-pack-3.bak
+components/Header.tsx.design-pack-4.bak
+components/PoemCard.tsx.design-pack-4.bak
+components/ProseCard.tsx.design-pack-4.bak
+# TERMUX TEMP FILES END
