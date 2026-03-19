@@ -81,17 +81,17 @@ export default function Header() {
               </div>
             </div>
 
-            <div className="min-w-0 flex flex-col">
+            <div className="min-w-0 flex flex-col max-w-[190px] sm:max-w-none">
               <span className="font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-fuchsia-200 to-amber-300 text-[0.94rem] sm:text-[1.08rem] leading-tight tracking-tight truncate">
                 Наталья Мельхер
               </span>
-              <span className="hidden sm:block text-[10px] sm:text-[11px] text-gray-500 tracking-[0.24em] uppercase truncate">
+              <span className="hidden 2xl:block text-[10px] text-gray-500 tracking-[0.24em] uppercase truncate">
                 Poetry • Prose • Inspiration
               </span>
             </div>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-1.5 lg:gap-2">
+          <nav className="hidden 2xl:flex items-center gap-1.5 lg:gap-2">
             {navItems.map((item) => {
               const active =
                 item.href === "/"
@@ -126,7 +126,7 @@ export default function Header() {
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <Link
               href="/contact"
-              className="hidden lg:inline-flex items-center gap-2 rounded-2xl border border-white/[0.08] bg-white/[0.03] px-4 py-2.5 text-sm font-medium text-gray-200 hover:text-white hover:bg-white/[0.06] transition-all"
+              className="hidden 2xl:inline-flex items-center gap-2 rounded-2xl border border-white/[0.08] bg-white/[0.03] px-4 py-2.5 text-sm font-medium text-gray-200 hover:text-white hover:bg-white/[0.06] transition-all"
             >
               <span aria-hidden="true">✦</span>
               <span>{t.nav.contact}</span>
@@ -136,7 +136,7 @@ export default function Header() {
 
             <button
               type="button"
-              className="md:hidden p-2 rounded-2xl border border-white/[0.06] bg-white/[0.03] hover:bg-white/[0.06] transition-colors"
+              className="2xl:hidden p-2 rounded-2xl border border-white/[0.06] bg-white/[0.03] hover:bg-white/[0.06] transition-colors"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label={mobileOpen ? "Закрыть меню" : "Открыть меню"}
               aria-expanded={mobileOpen}
@@ -168,7 +168,7 @@ export default function Header() {
       </div>
 
       {mobileOpen && (
-        <div className="fixed inset-0 z-40 md:hidden">
+        <div className="fixed inset-0 z-40 2xl:hidden">
           <div
             className="absolute inset-0 bg-[#05050a]/94 backdrop-blur-2xl"
             onClick={() => setMobileOpen(false)}

@@ -15,10 +15,53 @@ const HERO_SUBTITLE: Record<Language, string> = {
   ko: "시인이자 산문 작가, 영감을 전하는 글의 저자",
 };
 
+const ABOUT_STATS: Record<
+  Language,
+  { poems: string; prose: string; languages: string; inspiration: string }
+> = {
+  ru: {
+    poems: "Стихи",
+    prose: "Проза",
+    languages: "Языки",
+    inspiration: "Вдохновение",
+  },
+  en: {
+    poems: "Poems",
+    prose: "Prose",
+    languages: "Languages",
+    inspiration: "Inspiration",
+  },
+  de: {
+    poems: "Gedichte",
+    prose: "Prosa",
+    languages: "Sprachen",
+    inspiration: "Inspiration",
+  },
+  fr: {
+    poems: "Poèmes",
+    prose: "Prose",
+    languages: "Langues",
+    inspiration: "Inspiration",
+  },
+  zh: {
+    poems: "诗作",
+    prose: "散文",
+    languages: "语言",
+    inspiration: "灵感",
+  },
+  ko: {
+    poems: "시",
+    prose: "산문",
+    languages: "언어",
+    inspiration: "영감",
+  },
+};
+
 export default function AboutPage() {
   const { t, language } = useLanguage();
 
   const heroSubtitle = HERO_SUBTITLE[language] ?? HERO_SUBTITLE.ru;
+  const statLabels = ABOUT_STATS[language] ?? ABOUT_STATS.ru;
 
   return (
     <div className="min-h-screen">
@@ -79,10 +122,10 @@ export default function AboutPage() {
 
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     {[
-                      { v: "50+", l: "Poems" },
-                      { v: "20+", l: "Stories" },
-                      { v: "6", l: "Languages" },
-                      { v: "∞", l: "Inspiration" },
+                      { v: "50+", l: statLabels.poems },
+                      { v: "20+", l: statLabels.prose },
+                      { v: "6", l: statLabels.languages },
+                      { v: "∞", l: statLabels.inspiration },
                     ].map((s, i) => (
                       <div
                         key={i}
