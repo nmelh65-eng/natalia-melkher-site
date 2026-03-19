@@ -147,7 +147,7 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
             <Link
               href="/poetry"
-              className="group relative inline-flex items-center justify-center min-w-[220px] sm:min-w-[240px] px-6 py-3.5 sm:px-10 sm:py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-fuchsia-500 text-white font-semibold text-[0.95rem] sm:text-lg overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_35px_rgba(168,85,247,0.28)] focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-black"
+              className="group relative inline-flex items-center justify-center min-w-[198px] sm:min-w-[232px] px-5 py-3 sm:px-9 sm:py-3.5 rounded-2xl bg-gradient-to-r from-purple-600 to-fuchsia-500 text-white font-semibold text-[0.92rem] sm:text-lg overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_35px_rgba(168,85,247,0.28)] focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-black"
             >
               <span className="relative z-10">{t.hero.cta}</span>
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-r from-purple-500 via-fuchsia-500 to-amber-400" />
@@ -155,16 +155,16 @@ export default function HomePage() {
 
             <Link
               href="/prose"
-              className="inline-flex items-center justify-center min-w-[220px] sm:min-w-[240px] px-6 py-3.5 sm:px-10 sm:py-4 rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur text-gray-200 font-medium text-[0.95rem] sm:text-lg hover:bg-white/[0.06] hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-black"
+              className="inline-flex items-center justify-center min-w-[198px] sm:min-w-[232px] px-5 py-3 sm:px-9 sm:py-3.5 rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur text-gray-200 font-medium text-[0.92rem] sm:text-lg hover:bg-white/[0.06] hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-black"
             >
               {t.hero.ctaSecondary}
             </Link>
           </div>
 
-          <div className="mt-5 sm:mt-7 flex flex-wrap justify-center gap-2.5">
+          <div className="mt-5 sm:mt-7 flex flex-wrap justify-center gap-2">
             <Link
               href="/poetry"
-              className="inline-flex items-center gap-2 rounded-full border border-purple-400/20 bg-purple-500/10 px-3 py-1.5 text-[11px] uppercase tracking-[0.18em] text-purple-200 hover:bg-purple-500/15 transition-colors"
+              className="inline-flex items-center gap-1.5 rounded-full border border-purple-400/20 bg-purple-500/10 px-2.5 py-1.5 text-[10px] uppercase tracking-[0.14em] text-purple-200 hover:bg-purple-500/15 transition-colors"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
               {t.sections.poetry}
@@ -172,7 +172,7 @@ export default function HomePage() {
 
             <Link
               href="/prose"
-              className="inline-flex items-center gap-2 rounded-full border border-amber-400/20 bg-amber-500/10 px-3 py-1.5 text-[11px] uppercase tracking-[0.18em] text-amber-200 hover:bg-amber-500/15 transition-colors"
+              className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/20 bg-amber-500/10 px-2.5 py-1.5 text-[10px] uppercase tracking-[0.14em] text-amber-200 hover:bg-amber-500/15 transition-colors"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
               {t.sections.prose}
@@ -180,7 +180,7 @@ export default function HomePage() {
 
             <Link
               href="/about"
-              className="inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1.5 text-[11px] uppercase tracking-[0.18em] text-gray-300 hover:bg-white/[0.05] transition-colors"
+              className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] px-2.5 py-1.5 text-[10px] uppercase tracking-[0.14em] text-gray-300 hover:bg-white/[0.05] transition-colors"
             >
               <span aria-hidden="true">✦</span>
               {t.nav.about}
