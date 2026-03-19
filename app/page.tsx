@@ -114,7 +114,7 @@ export default function HomePage() {
 
       <section
         aria-label="Hero"
-        className="relative flex flex-col items-center justify-start min-h-[46vh] sm:min-h-[76vh] px-4 pt-4 sm:pt-16 text-center"
+        className="relative flex flex-col items-center justify-start min-h-[40vh] sm:min-h-[72vh] px-4 pt-2 sm:pt-14 text-center"
       >
         <div
           aria-hidden="true"
@@ -125,12 +125,12 @@ export default function HomePage() {
           <div className="absolute bottom-[10%] right-[8%] w-[70px] h-[70px] sm:w-[240px] sm:h-[240px] bg-fuchsia-500/7 rounded-full blur-[32px] sm:blur-[100px]" />
         </div>
 
-        <div className="relative z-10 w-full max-w-4xl mx-auto">
-          <p className="font-serif text-[0.98rem] sm:text-xl md:text-2xl text-purple-200/85 mb-3 italic tracking-[0.03em]">
+        <div className="relative z-10 w-full max-w-4xl mx-auto -mt-6 sm:mt-0">
+          <p className="font-serif text-[1rem] sm:text-xl md:text-2xl text-purple-200/90 mb-2 italic tracking-[0.03em]">
             {t.hero.greeting}
           </p>
 
-          <h1 className="font-display text-[2.15rem] leading-[1.02] sm:leading-[0.95] sm:text-[4rem] md:text-[5.2rem] lg:text-[6rem] xl:text-[6.6rem] font-bold gradient-text tracking-tight mb-3 sm:mb-6 pb-1">
+          <h1 className="font-display text-[2.15rem] leading-[1.02] sm:leading-[0.95] sm:text-[4rem] md:text-[5.2rem] lg:text-[6rem] xl:text-[6.6rem] font-bold gradient-text tracking-tight mb-2 sm:mb-5 pb-2">
             <span className="block sm:inline">{heroTitleParts.first}</span>
             {heroTitleParts.last ? (
               <>
@@ -140,7 +140,7 @@ export default function HomePage() {
             ) : null}
           </h1>
 
-          <p className="max-w-md sm:max-w-2xl mx-auto font-serif text-[0.95rem] sm:text-lg md:text-xl text-gray-400 leading-6 sm:leading-8 mb-5 sm:mb-8">
+          <p className="max-w-md sm:max-w-2xl mx-auto font-serif text-[0.95rem] sm:text-lg md:text-xl text-gray-300/95 leading-6 sm:leading-8 mb-4 sm:mb-7">
             {t.hero.subtitle}
           </p>
 
