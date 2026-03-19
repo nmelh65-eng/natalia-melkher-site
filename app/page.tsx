@@ -114,7 +114,7 @@ export default function HomePage() {
 
       <section
         aria-label="Hero"
-        className="relative flex flex-col items-center justify-center min-h-[54vh] sm:min-h-[76vh] px-4 pt-6 sm:pt-16 text-center"
+        className="relative flex flex-col items-center justify-start min-h-[46vh] sm:min-h-[76vh] px-4 pt-4 sm:pt-16 text-center"
       >
         <div
           aria-hidden="true"
@@ -126,11 +126,11 @@ export default function HomePage() {
         </div>
 
         <div className="relative z-10 w-full max-w-4xl mx-auto">
-          <p className="font-serif text-[0.82rem] sm:text-xl md:text-2xl text-purple-300/75 mb-2 italic tracking-[0.04em]">
+          <p className="font-serif text-[0.98rem] sm:text-xl md:text-2xl text-purple-200/85 mb-3 italic tracking-[0.03em]">
             {t.hero.greeting}
           </p>
 
-          <h1 className="font-display text-[2.15rem] leading-[0.92] sm:text-[4rem] md:text-[5.2rem] lg:text-[6rem] xl:text-[6.6rem] font-bold gradient-text tracking-tight mb-3 sm:mb-6">
+          <h1 className="font-display text-[2.15rem] leading-[1.02] sm:leading-[0.95] sm:text-[4rem] md:text-[5.2rem] lg:text-[6rem] xl:text-[6.6rem] font-bold gradient-text tracking-tight mb-3 sm:mb-6 pb-1">
             <span className="block sm:inline">{heroTitleParts.first}</span>
             {heroTitleParts.last ? (
               <>
