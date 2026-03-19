@@ -57,12 +57,12 @@ export default function PoemCard({
               {t.sections.poetry}
             </span>
 
-            <span className="rounded-full border border-white/[0.06] bg-white/[0.03] px-3 py-1.5 text-[11px] uppercase tracking-[0.16em] text-gray-500">
+            <span className="rounded-full border border-white/[0.06] bg-white/[0.03] px-3 py-1.5 text-[11px] uppercase tracking-[0.16em] text-gray-400">
               {formattedDate}
             </span>
           </div>
 
-          <span className="shrink-0 text-xs text-gray-500">
+          <span className="shrink-0 text-xs text-gray-400">
             {work.readingTime} {t.sections.minuteRead}
           </span>
         </div>
@@ -80,7 +80,7 @@ export default function PoemCard({
             {work.tags.slice(0, 3).map((tag) => (
               <span
                 key={tag}
-                className="rounded-full border border-white/[0.07] bg-white/[0.04] px-2.5 py-1 text-[11px] text-gray-400"
+                className="rounded-full border border-white/[0.07] bg-white/[0.04] px-2.5 py-1 text-[11px] text-gray-300/85"
               >
                 #{tag}
               </span>
@@ -89,7 +89,7 @@ export default function PoemCard({
         )}
 
         <div className="mt-auto flex items-center justify-between gap-4 border-t border-white/[0.05] pt-5">
-          <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
+          <div className="flex flex-wrap items-center gap-3 text-xs text-gray-400">
             <span className="inline-flex items-center gap-1.5">
               <span aria-hidden="true">👁</span>
               <span>

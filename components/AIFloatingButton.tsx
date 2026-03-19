@@ -13,7 +13,7 @@ export default function AIFloatingButton({
     <button
       onClick={onClick}
       aria-label="Открыть AI-Музу"
-      className="group fixed bottom-5 sm:bottom-7 right-3.5 sm:right-6 z-[90] flex h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-[20px] sm:rounded-full border border-white/[0.09] bg-gradient-to-br from-purple-600 via-fuchsia-500 to-amber-400 text-white shadow-[0_10px_24px_rgba(124,58,237,0.24)] hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(124,58,237,0.30)] active:scale-95 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-purple-400/20"
+      className="group fixed bottom-3 sm:bottom-6 right-3 sm:right-6 z-[90] flex h-10 w-10 sm:h-14 sm:w-14 items-center justify-center rounded-[18px] sm:rounded-full border border-white/[0.09] bg-gradient-to-br from-purple-600 via-fuchsia-500 to-amber-400 text-white shadow-[0_8px_18px_rgba(124,58,237,0.22)] hover:-translate-y-0.5 hover:shadow-[0_12px_24px_rgba(124,58,237,0.28)] active:scale-95 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-purple-400/18"
     >
       <span
         aria-hidden="true"
@@ -21,7 +21,7 @@ export default function AIFloatingButton({
       />
 
       <svg
-        className="relative z-10 w-[18px] h-[18px] sm:w-7 sm:h-7 group-hover:scale-105 transition-transform"
+        className="relative z-10 w-[17px] h-[17px] sm:w-7 sm:h-7 group-hover:scale-105 transition-transform"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"

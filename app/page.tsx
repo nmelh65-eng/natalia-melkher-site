@@ -181,16 +181,16 @@ export default function HomePage() {
       </section>
 
       <section className="max-w-4xl mx-auto px-4 pt-1 pb-5 sm:pt-4 sm:pb-10">
-        <div className="glass rounded-[28px] sm:rounded-[32px] p-6 sm:p-8 border border-white/[0.06] text-center">
+        <div className="glass rounded-[28px] sm:rounded-[32px] p-6 sm:p-8 border border-white/[0.06] text-center shadow-[0_14px_40px_rgba(0,0,0,0.18)]">
           <div
             aria-hidden="true"
             className="mx-auto mb-4 h-0.5 w-20 rounded-full bg-gradient-to-r from-transparent via-purple-400 to-transparent opacity-80"
           />
-          <blockquote className="font-serif text-[1rem] sm:text-2xl md:text-[2rem] font-light text-gray-300 italic leading-[1.6] max-w-3xl mx-auto">
+          <blockquote className="font-serif text-[1.04rem] sm:text-2xl md:text-[2rem] text-gray-200 italic leading-[1.72] max-w-3xl mx-auto">
             Слово — это самый мощный инструмент, данный человеку. Оно способно
             исцелять, вдохновлять, пробуждать.
           </blockquote>
-          <div className="mt-5 text-sm sm:text-base text-purple-300 italic">
+          <div className="mt-5 text-sm sm:text-base text-purple-200 italic">
             — Наталья Мельхер
           </div>
         </div>

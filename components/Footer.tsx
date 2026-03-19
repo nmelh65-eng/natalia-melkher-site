@@ -134,15 +134,15 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 sm:mt-10 pt-5 border-t border-white/[0.05] flex flex-col md:flex-row items-start md:items-center justify-between gap-2.5">
-          <p className="text-xs text-gray-500" suppressHydrationWarning>
+          <p className="text-xs text-gray-400/85" suppressHydrationWarning>
             {year
               ? `© ${year} Наталья Мельхер. ${t.footer.rights}.`
               : `© Наталья Мельхер. ${t.footer.rights}.`}
           </p>
 
-          <div className="flex items-center gap-1 text-xs text-gray-500">
+          <div className="flex items-center gap-1 text-xs text-gray-400/85">
             <span>{t.footer.madeWith}</span>
-            <span className="text-purple-300 mx-1">💜</span>
+            <span className="text-purple-300/90 mx-1">💜</span>
             <span>{t.footer.inspiration}</span>
           </div>
         </div>

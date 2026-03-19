@@ -57,12 +57,12 @@ export default function ProseCard({
               {t.sections.prose}
             </span>
 
-            <span className="rounded-full border border-white/[0.06] bg-white/[0.03] px-3 py-1.5 text-[11px] uppercase tracking-[0.16em] text-gray-500">
+            <span className="rounded-full border border-white/[0.06] bg-white/[0.03] px-3 py-1.5 text-[11px] uppercase tracking-[0.16em] text-gray-400">
               {formattedDate}
             </span>
           </div>
 
-          <div className="flex items-center gap-3 text-[11px] sm:text-xs text-gray-500">
+          <div className="flex items-center gap-3 text-[11px] sm:text-xs text-gray-400">
             <span>
               {work.readingTime} {t.sections.minuteRead}
             </span>
@@ -85,7 +85,7 @@ export default function ProseCard({
             {work.tags.slice(0, 4).map((tag) => (
               <span
                 key={tag}
-                className="rounded-full border border-white/[0.07] bg-white/[0.04] px-2.5 py-1 text-[11px] text-gray-400"
+                className="rounded-full border border-white/[0.07] bg-white/[0.04] px-2.5 py-1 text-[11px] text-gray-300/85"
               >
                 #{tag}
               </span>
@@ -94,7 +94,7 @@ export default function ProseCard({
         )}
 
         <div className="flex items-center justify-between gap-4 border-t border-white/[0.05] pt-4">
-          <div className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs text-gray-500">
+          <div className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs text-gray-400">
             <span aria-hidden="true">❤</span>
             <span>
               {work.likes} {t.sections.likes}
