@@ -87,6 +87,19 @@ export default function HomePage() {
     jobTitle: "Поэтесса и автор",
     description: "Автор литературных произведений, поэзии и прозы.",
   };
+  const heroTitleParts = useMemo(() => {
+    const value = (t.hero.title || "").trim();
+    const match = value.match(/^(.*)\s+([^\s]+)$/);
+
+    if (!match) {
+      return { first: value, last: "" };
+    }
+
+    return {
+      first: match[1],
+      last: match[2],
+    };
+  }, [t.hero.title]);
 
   return (
     <div className="relative min-h-screen">
@@ -117,8 +130,14 @@ export default function HomePage() {
             {t.hero.greeting}
           </p>
 
-          <h1 className="font-display text-[2.15rem] leading-[0.95] sm:text-[4rem] md:text-[5.2rem] lg:text-[6rem] xl:text-[6.6rem] font-bold gradient-text tracking-tight mb-3 sm:mb-6">
-            {t.hero.title}
+          <h1 className="font-display text-[2.15rem] leading-[0.92] sm:text-[4rem] md:text-[5.2rem] lg:text-[6rem] xl:text-[6.6rem] font-bold gradient-text tracking-tight mb-3 sm:mb-6">
+            <span className="block sm:inline">{heroTitleParts.first}</span>
+            {heroTitleParts.last ? (
+              <>
+                <span className="hidden sm:inline">&nbsp;</span>
+                <span className="block sm:inline">{heroTitleParts.last}</span>
+              </>
+            ) : null}
           </h1>
 
           <p className="max-w-md sm:max-w-2xl mx-auto font-serif text-[0.95rem] sm:text-lg md:text-xl text-gray-400 leading-6 sm:leading-8 mb-5 sm:mb-8">
