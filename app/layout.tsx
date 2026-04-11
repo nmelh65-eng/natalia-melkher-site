@@ -8,6 +8,7 @@ import ParticleBackground from "@/components/ParticleBackground";
 import HtmlLangSetter from "@/components/HtmlLangSetter";
 import SkipToContent from "@/components/SkipToContent";
 import GlobalAIButton from "@/components/GlobalAIButton";
+import { AnalyticsPageViews, AnalyticsScripts } from "@/components/WebAnalytics";
 import "./globals.css";
 
 const BASE =
@@ -117,6 +118,8 @@ export default function RootLayout({
           </main>
           <Footer />
           <GlobalAIButton />
+          <AnalyticsScripts />
+          <AnalyticsPageViews />
           <Analytics />
         </LanguageProvider>
       </body>
