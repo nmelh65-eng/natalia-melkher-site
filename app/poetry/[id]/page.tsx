@@ -54,7 +54,7 @@ export default function PoemPage() {
           setWork(workData ?? null);
           setAllPoetry(Array.isArray(poetryData) ? poetryData : []);
         }
-      } catch (err) {
+      } catch {
         if (!cancelled) {
           setError("Ошибка загрузки произведения");
           setWork(null);

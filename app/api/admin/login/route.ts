@@ -74,7 +74,16 @@ export async function POST(req: NextRequest) {
 
     clearAttempts(ip);
 
-    const token = await createToken();
+    let token: string;
+    try {
+      token = await createToken();
+    } catch {
+      return NextResponse.json(
+        { error: "Сервер не настроен для входа (ADMIN_SECRET)." },
+        { status: 503 }
+      );
+    }
+
     const res = NextResponse.json({ ok: true });
 
     res.cookies.set("admin-token", token, {

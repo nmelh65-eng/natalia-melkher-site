@@ -35,9 +35,10 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({ ok: true, data: work });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { error: "Ошибка: " + error.message },
+      { error: "Ошибка: " + message },
       { status: 500 }
     );
   }

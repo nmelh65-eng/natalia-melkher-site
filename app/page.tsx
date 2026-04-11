@@ -76,6 +76,11 @@ export default function HomePage() {
     description:
       "Авторский литературный сайт Натальи Мельхер: поэзия, проза и вдохновляющие тексты.",
     inLanguage: ["ru", "en", "de", "fr", "zh", "ko"],
+    publisher: {
+      "@type": "Organization",
+      name: "Наталья Мельхер",
+      url: BASE,
+    },
   };
 
   const personJsonLd = {
@@ -86,6 +91,7 @@ export default function HomePage() {
     url: BASE,
     jobTitle: "Поэтесса и автор",
     description: "Автор литературных произведений, поэзии и прозы.",
+    sameAs: [BASE],
   };
   const heroTitleParts = useMemo(() => {
     const value = (t.hero.title || "").trim();

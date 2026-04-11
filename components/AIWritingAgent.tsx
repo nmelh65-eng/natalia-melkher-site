@@ -169,15 +169,12 @@ export default function AIWritingAgent({ onClose }: AIWritingAgentProps) {
     return () => { document.body.style.overflow = ""; };
   }, []);
 
-  // Проверка API
+  // Проверка API (только факт настройки ключа; без внешних запросов)
   useEffect(() => {
     fetch("/api/ai")
-      .then(r => r.json())
-      .then(data => {
-        setApiStatus(data.available ? "online" : "offline");
-        if (data.defaultModel) {
-          setSelectedModel(data.defaultModel);
-        }
+      .then((r) => r.json())
+      .then((data) => {
+        setApiStatus(data.ok ? "online" : "offline");
       })
       .catch(() => setApiStatus("offline"));
   }, []);
@@ -230,7 +227,7 @@ export default function AIWritingAgent({ onClose }: AIWritingAgentProps) {
       if (data.fallback) {
         setApiStatus("online"); // всё ещё онлайн, просто сменили модель
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.warn("API error:", error);
 
       // Fallback на офлайн

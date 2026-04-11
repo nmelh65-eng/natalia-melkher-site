@@ -159,6 +159,7 @@ export default function ParticleBackground() {
       document.removeEventListener("visibilitychange", handleVisibility);
       motionQuery.removeEventListener("change", handleMotionChange);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- FRAME_INTERVAL stable inside animate()
   }, [getParticleCount, createParticle]);
 
   if (!isVisible) return null;

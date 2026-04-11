@@ -46,7 +46,7 @@ function PoetryContent() {
         if (!cancelled) {
           setAllPoems(Array.isArray(data) ? data : []);
         }
-      } catch (err) {
+      } catch {
         if (!cancelled) {
           setError("Ошибка загрузки произведений");
           setAllPoems([]);

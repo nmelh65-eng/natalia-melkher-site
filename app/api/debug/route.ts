@@ -3,6 +3,13 @@ import Redis from "ioredis";
 import { getAdminSession } from "@/lib/admin-auth";
 
 export async function GET() {
+  if (
+    process.env.NODE_ENV === "production" &&
+    process.env.ENABLE_ADMIN_DEBUG !== "true"
+  ) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
   const isAdmin = await getAdminSession();
 
   if (!isAdmin) {
@@ -34,7 +41,7 @@ export async function GET() {
 
       await redis.quit();
       redisStatus = "connected";
-    } catch (e: any) {
+    } catch {
       redisStatus = "error";
     }
   }

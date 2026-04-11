@@ -46,7 +46,7 @@ function ProseContent() {
         if (!cancelled) {
           setAllProse(Array.isArray(data) ? data : []);
         }
-      } catch (err) {
+      } catch {
         if (!cancelled) {
           setError("Ошибка загрузки произведений");
           setAllProse([]);

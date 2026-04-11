@@ -1,0 +1,15 @@
+---
+description: Контекст проекта natalia-melkher-site — стек, деплой, безопасность
+alwaysApply: true
+---
+
+# Natalia Melkher — авторский сайт
+
+- **Стек:** Next.js App Router, React 19, Tailwind v4, Framer Motion, Vercel Analytics.
+- **Данные:** произведения из `data/works.ts` + опционально Redis (`REDIS_URL` / `STORAGE_URL` / `KV_URL`) для кастомных записей и админки.
+- **Админ:** cookie `admin-token` (HMAC). В **production** обязательны `ADMIN_SECRET` и `ADMIN_PASSWORD` (в репозитории не хранить).
+- **AI:** `POST /api/ai` проксирует OpenRouter; ключ `OPENROUTER_API_KEY`. Лимиты в памяти на инстансе — на Vercel не глобальны; при росте нагрузки имеет смысл Upstash Ratelimit.
+- **Деплой:** GitHub → Vercel; переменные окружения задать в панели Vercel.
+- **MCP в Cursor:** серверы MCP настраиваются в Cursor (глобально или для проекта), а не в рантайме сайта. Для работы с API/репозиторием используйте env и документацию OpenRouter/Vercel.
+
+При изменениях API проверяйте клиенты (`components/AIWritingAgent.tsx` и др.) на совместимость формата ответа.

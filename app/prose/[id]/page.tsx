@@ -54,7 +54,7 @@ export default function ProsePiecePage() {
           setWork(workData ?? null);
           setAllProse(Array.isArray(proseData) ? proseData : []);
         }
-      } catch (err) {
+      } catch {
         if (!cancelled) {
           setError("Ошибка загрузки произведения");
           setWork(null);

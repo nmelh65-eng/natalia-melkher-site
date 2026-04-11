@@ -209,7 +209,7 @@ export async function POST(req: NextRequest) {
       usage: data.usage,
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("AI Route Error:", error);
     return NextResponse.json(
       { error: "Ошибка сервера. Попробуйте ещё раз.", offline: true },
@@ -222,26 +222,6 @@ export async function POST(req: NextRequest) {
    GET — проверка статуса API
    ═══════════════════════════════════════ */
 export async function GET() {
-  const hasKey = !!process.env.OPENROUTER_API_KEY;
-
-  if (!hasKey) {
-    return NextResponse.json({ status: "no_key", available: false });
-  }
-
-  try {
-    // Проверяем доступность OpenRouter
-    const res = await fetch("https://openrouter.ai/api/v1/models", {
-      headers: {
-        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
-      },
-    });
-
-    return NextResponse.json({
-      status: res.ok ? "ok" : "error",
-      available: res.ok,
-      defaultModel: DEFAULT_MODEL,
-    });
-  } catch {
-    return NextResponse.json({ status: "error", available: false });
-  }
+  const hasKey = !!process.env.OPENROUTER_API_KEY?.trim();
+  return NextResponse.json({ ok: hasKey });
 }
