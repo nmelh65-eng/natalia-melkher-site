@@ -6,7 +6,7 @@ alwaysApply: true
 # Natalia Melkher — авторский сайт
 
 - **Стек:** Next.js App Router, React 19, Tailwind v4, Framer Motion, Vercel Analytics.
-- **Данные:** произведения из `data/works.ts` + опционально Redis (`REDIS_URL` / `STORAGE_URL` / `KV_URL`) для кастомных записей и админки.
+- **Данные:** произведения из `data/works.ts` + опционально Redis для кастомных записей и админки. Публичные URL: `/poetry/{slug}`, `/prose/{slug}` (поле `slug`); старые ссылки `/poetry/poem-001` редиректятся 308 через `middleware.ts`.
 - **Админ:** cookie `admin-token` (HMAC). В **production** обязательны `ADMIN_SECRET` и `ADMIN_PASSWORD` (в репозитории не хранить).
 - **AI:** `POST /api/ai` проксирует OpenRouter; ключ `OPENROUTER_API_KEY`. Лимиты в памяти на инстансе — на Vercel не глобальны; при росте нагрузки имеет смысл Upstash Ratelimit.
 - **Деплой:** GitHub → Vercel; переменные окружения задать в панели Vercel.

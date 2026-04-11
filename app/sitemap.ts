@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getPublishedWorks } from "@/lib/works-store";
+import { getWorkSlug } from "@/lib/slug";
 
 const BASE =
   process.env.NEXT_PUBLIC_SITE_URL || "https://natalia-melkher.vercel.app";
@@ -41,7 +42,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   const workPages: MetadataRoute.Sitemap = works.map((work) => ({
-    url: `${BASE}/${work.category}/${work.id}`,
+    url: `${BASE}/${work.category}/${getWorkSlug(work)}`,
     lastModified: new Date(work.updatedAt || work.createdAt),
     changeFrequency: "monthly",
     priority: 0.8,

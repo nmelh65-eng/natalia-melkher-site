@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { getWorkById } from "@/lib/works-store";
+import { getWorkByPublicSegment } from "@/lib/works-store";
 
 export const size = {
   width: 1200,
@@ -11,10 +11,10 @@ export const contentType = "image/png";
 export default async function Image({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }) {
-  const { id } = await params;
-  const work = await getWorkById(id);
+  const { slug } = await params;
+  const work = await getWorkByPublicSegment(slug);
 
   const title =
     work && work.category === "poetry" && work.isPublished

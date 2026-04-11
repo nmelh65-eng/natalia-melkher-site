@@ -11,6 +11,8 @@ export type WorkCategory = "poetry" | "prose";
 
 export interface Work {
   id: string;
+  /** Сегмент URL: /poetry/moy-stih, /prose/moy-rasskaz */
+  slug?: string;
   title: string;
   content: string;
   excerpt: string;

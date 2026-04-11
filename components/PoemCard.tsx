@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import type { Language, TranslatedWork } from "@/types";
+import { workPublicPath } from "@/lib/slug";
 
 const localeMap: Record<Language, string> = {
   ru: "ru-RU",
@@ -105,7 +106,7 @@ export default function PoemCard({
           </div>
 
           <Link
-            href={`/poetry/${work.id}`}
+            href={workPublicPath(work)}
             className="inline-flex items-center gap-2 rounded-2xl border border-purple-400/20 bg-purple-500/10 px-4 py-2.5 text-sm font-medium text-purple-200 hover:bg-purple-500/15 hover:text-white transition-all focus:outline-none focus:ring-2 focus:ring-purple-400"
           >
             {t.sections.readMore}

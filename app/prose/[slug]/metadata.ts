@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { getWorkById } from "@/lib/works-store";
+import { getWorkByPublicSegment } from "@/lib/works-store";
+import { getWorkSlug } from "@/lib/slug";
 
 const BASE =
   process.env.NEXT_PUBLIC_SITE_URL || "https://natalia-melkher.vercel.app";
@@ -7,15 +8,15 @@ const BASE =
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { id } = await params;
-  const work = await getWorkById(id);
+  const { slug } = await params;
+  const work = await getWorkByPublicSegment(slug);
 
-  if (!work || work.category !== "poetry" || !work.isPublished) {
+  if (!work || work.category !== "prose" || !work.isPublished) {
     return {
-      title: "Стихотворение не найдено | Наталья Мельхер",
-      description: "Запрашиваемое стихотворение не найдено.",
+      title: "Произведение не найдено | Наталья Мельхер",
+      description: "Запрашиваемое произведение не найдено.",
       robots: {
         index: false,
         follow: false,
@@ -23,16 +24,19 @@ export async function generateMetadata({
     };
   }
 
+  const pathSlug = getWorkSlug(work);
+  const url = `${BASE}/prose/${pathSlug}`;
+
   return {
-    title: `${work.title} | Поэзия | Наталья Мельхер`,
+    title: `${work.title} | Проза | Наталья Мельхер`,
     description: work.excerpt || work.content.slice(0, 160),
     alternates: {
-      canonical: `${BASE}/poetry/${work.id}`,
+      canonical: url,
     },
     openGraph: {
       title: work.title,
       description: work.excerpt || work.content.slice(0, 160),
-      url: `${BASE}/poetry/${work.id}`,
+      url,
       type: "article",
       siteName: "Наталья Мельхер",
     },

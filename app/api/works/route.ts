@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
   getAllWorks,
-  getWorkById,
+  getWorkByPublicSegment,
   incrementViews,
   incrementLikes,
 } from "@/lib/works-store";
@@ -9,10 +9,10 @@ import {
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const category = searchParams.get("category");
-  const id = searchParams.get("id");
+  const id = searchParams.get("id") ?? searchParams.get("slug");
 
   if (id) {
-    const work = await getWorkById(id);
+    const work = await getWorkByPublicSegment(id);
 
     if (!work) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });

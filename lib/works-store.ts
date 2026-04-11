@@ -1,6 +1,7 @@
 import Redis from "ioredis";
 import type { TranslatedWork } from "@/types";
 import { works as initialWorks } from "@/data/works";
+import { getWorkSlug, slugifyTitle } from "@/lib/slug";
 
 const WORKS_KEY = "natalia:works:v3";
 
@@ -80,10 +81,21 @@ export async function getPublishedWorks(): Promise<TranslatedWork[]> {
   return (await getAllWorks()).filter((w) => w.isPublished);
 }
 
+/** Точное совпадение по внутреннему id (просмотры, лайки, админка). */
 export async function getWorkById(
   id: string
 ): Promise<TranslatedWork | undefined> {
   return (await getAllWorks()).find((w) => w.id === id);
+}
+
+/** Публичный URL: slug или устаревший id (poem-001). */
+export async function getWorkByPublicSegment(
+  segment: string
+): Promise<TranslatedWork | undefined> {
+  const all = await getAllWorks();
+  const byId = all.find((w) => w.id === segment);
+  if (byId) return byId;
+  return all.find((w) => getWorkSlug(w) === segment);
 }
 
 export async function upsertWork(work: TranslatedWork): Promise<boolean> {
@@ -113,6 +125,22 @@ export async function upsertWork(work: TranslatedWork): Promise<boolean> {
   if (typeof work.likes !== "number") work.likes = 0;
   if (!work.translations) work.translations = {};
   if (!work.language) work.language = "ru";
+
+  const allForSlug = [...custom, ...initialWorks.filter((w) => !custom.some((c) => c.id === w.id))];
+  if (!work.slug?.trim()) {
+    const base = slugifyTitle(work.title);
+    let candidate = base;
+    let n = 0;
+    while (
+      allForSlug.some(
+        (w) => w.id !== work.id && getWorkSlug(w) === candidate
+      )
+    ) {
+      n += 1;
+      candidate = `${base}-${n}`;
+    }
+    work.slug = candidate;
+  }
 
   const idx = custom.findIndex((w) => w.id === work.id);
 

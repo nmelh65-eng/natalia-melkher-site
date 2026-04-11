@@ -4,6 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import type { TranslatedWork, WorkCategory, Language } from "@/types";
 import { estimateReadingTime, generateId, truncate } from "@/lib/utils";
+import { workPublicPath } from "@/lib/slug";
 
 const LANGS: Language[] = ["ru","en","de","fr","zh","ko"];
 const LANG_NAMES: Record<Language,string> = { ru:"Русский",en:"English",de:"Deutsch",fr:"Français",zh:"中文",ko:"한국어" };
@@ -211,7 +212,7 @@ export default function WorkEditorPage() {
               {!isNew && (
                 <div style={{ marginTop:16, paddingTop:16, borderTop:"1px solid rgba(255,255,255,0.06)" }}>
                   <div style={{ fontSize:12, color:"#4b5563", marginBottom:8 }}>Предпросмотр</div>
-                  <a href={`/${work.category}/${work.id}`} target="_blank" rel="noreferrer"
+                  <a href={workPublicPath(work)} target="_blank" rel="noreferrer"
                     style={{ display:"block", padding:"8px 14px", borderRadius:10, background:"rgba(168,85,247,0.1)", color:"#a78bfa", textDecoration:"none", fontSize:13, textAlign:"center" as const }}>
                     Открыть на сайте ↗
                   </a>
