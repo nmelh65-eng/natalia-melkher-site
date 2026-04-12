@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
+import { Cormorant_Garamond, Inter, Playfair_Display } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { LanguageProvider } from "@/context/LanguageContext";
 import Header from "@/components/Header";
@@ -14,11 +15,25 @@ import "./globals.css";
 const BASE =
   process.env.NEXT_PUBLIC_SITE_URL || "https://natalia-melkher.vercel.app";
 
-const fontVars = {
-  "--font-display": '"Georgia", "Times New Roman", serif',
-  "--font-serif": '"Georgia", "Times New Roman", serif',
-  "--font-sans": 'system-ui, -apple-system, "Segoe UI", Arial, sans-serif',
-} as CSSProperties;
+const fontHeadline = Playfair_Display({
+  subsets: ["latin", "latin-ext", "cyrillic"],
+  weight: ["600", "700", "800"],
+  variable: "--font-headline",
+  display: "swap",
+});
+
+const fontLiterary = Cormorant_Garamond({
+  subsets: ["latin", "latin-ext", "cyrillic", "cyrillic-ext"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-literary",
+  display: "swap",
+});
+
+const fontUi = Inter({
+  subsets: ["latin", "latin-ext", "cyrillic", "cyrillic-ext"],
+  variable: "--font-ui",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE),
@@ -106,7 +121,11 @@ export default function RootLayout({
   children: ReactNode;
 }) {
   return (
-    <html lang="ru" suppressHydrationWarning style={fontVars}>
+    <html
+      lang="ru"
+      suppressHydrationWarning
+      className={`${fontHeadline.variable} ${fontLiterary.variable} ${fontUi.variable}`}
+    >
       <body
         className="min-h-screen flex flex-col antialiased font-sans"
         suppressHydrationWarning

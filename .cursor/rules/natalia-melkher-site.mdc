@@ -6,6 +6,8 @@ alwaysApply: true
 # Natalia Melkher — авторский сайт
 
 - **Стек:** Next.js App Router, React 19, Tailwind v4, Framer Motion, Vercel Analytics.
+- **Шрифты (next/font):** `Playfair_Display` → `--font-headline` / `font-display`; `Cormorant_Garamond` → `--font-literary` / `font-serif`; `Inter` → `--font-ui` / `font-sans` (`app/layout.tsx` + `@theme` в `globals.css`).
+- **Design tokens (`:root` в `globals.css`):** `--bg-base`, `--bg-elevated`, `--text-primary|secondary|tertiary`, `--gradient-cta`, `--gradient-decor`, `--r-sm|md|lg`, `--shadow-card|hover`, `--space-*`. Утилиты Tailwind: `text-ds-fg`, `bg-ds-bg`, `rounded-ds-lg`, `shadow-ds-card`, `p-ds-8` и т.д. Классы `.btn-gradient-cta`, `.decor-gradient-line`; `.glass` использует `--r-lg` и тени токенов.
 - **Данные:** произведения из `data/works.ts` + опционально Redis для кастомных записей и админки. Публичные URL: `/poetry/{slug}`, `/prose/{slug}` (поле `slug`); старые ссылки `/poetry/poem-001` редиректятся 308 через `middleware.ts`.
 - **Админ:** cookie `admin-token` (HMAC). В **production** обязательны `ADMIN_SECRET` и `ADMIN_PASSWORD` (в репозитории не хранить).
 - **AI:** `POST /api/ai` проксирует OpenRouter; ключ `OPENROUTER_API_KEY`. Лимиты в памяти на инстансе — на Vercel не глобальны; при росте нагрузки имеет смысл Upstash Ratelimit. Тела запросов: только `role` ∈ user|assistant|system, длина `model` ограничена.

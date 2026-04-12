@@ -1,12 +1,39 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: var(--font-display), "Playfair Display", Georgia, serif;
-  --font-serif: var(--font-serif), "Cormorant Garamond", Georgia, serif;
-  --font-sans: var(--font-sans), "Inter", system-ui, sans-serif;
+  /* next/font: --font-headline, --font-literary, --font-ui на <html> (app/layout.tsx) */
+  --font-display: var(--font-headline), ui-serif, Georgia, "Times New Roman", serif;
+  --font-serif: var(--font-literary), ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+
   --color-midnight: #080818;
   --color-velvet: #150826;
   --color-ink: #0d1b2a;
+
+  /* Мини design system → утилиты: text-ds-fg, bg-ds-bg, rounded-ds-lg, shadow-ds-card, p-ds-8 … */
+  --color-ds-fg: var(--text-primary);
+  --color-ds-muted: var(--text-secondary);
+  --color-ds-subtle: var(--text-tertiary);
+  --color-ds-bg: var(--bg-base);
+  --color-ds-surface: var(--bg-elevated);
+
+  --radius-ds-sm: var(--r-sm);
+  --radius-ds-md: var(--r-md);
+  --radius-ds-lg: var(--r-lg);
+
+  --shadow-ds-card: var(--shadow-card);
+  --shadow-ds-hover: var(--shadow-hover);
+
+  --spacing-ds-1: var(--space-1);
+  --spacing-ds-2: var(--space-2);
+  --spacing-ds-3: var(--space-3);
+  --spacing-ds-4: var(--space-4);
+  --spacing-ds-6: var(--space-6);
+  --spacing-ds-8: var(--space-8);
+  --spacing-ds-12: var(--space-12);
+  --spacing-ds-16: var(--space-16);
+  --spacing-ds-24: var(--space-24);
+  --spacing-ds-32: var(--space-32);
 }
 
 /* ── Reset & Base ───────────────────────────────────── */
@@ -310,6 +337,49 @@ section h1 {
   --brand-purple-soft: rgba(167, 139, 250, 0.14);
   --brand-amber: #fbbf24;
   --brand-amber-soft: rgba(251, 191, 36, 0.1);
+
+  /* ── Мини design system (семантика) ── */
+  --bg-base: var(--site-bg);
+  --bg-elevated: var(--site-surface);
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #64748b;
+
+  /* Один градиент для CTA, один для декоративных линий */
+  --gradient-cta: linear-gradient(
+    90deg,
+    var(--brand-purple-deep) 0%,
+    var(--brand-purple-mid) 42%,
+    #c026d3 72%,
+    var(--brand-amber) 100%
+  );
+  --gradient-decor: linear-gradient(
+    90deg,
+    rgba(167, 139, 250, 0.55) 0%,
+    rgba(139, 92, 246, 0.35) 50%,
+    rgba(245, 158, 11, 0.45) 100%
+  );
+
+  --r-sm: 12px;
+  --r-md: 20px;
+  --r-lg: 28px;
+
+  --shadow-card: 0 14px 40px rgba(0, 0, 0, 0.18);
+  --shadow-hover: 0 22px 56px rgba(0, 0, 0, 0.28);
+
+  /* Шаг 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64; секции — кратно 24–32 */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+  --space-48: 12rem;
+  --space-64: 16rem;
 }
 
 html {
@@ -375,9 +445,24 @@ textarea {
     rgba(255, 255, 255, 0.028)
   );
   border: 1px solid var(--site-border);
-  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.22);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.glass:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+/* CTA и декоративные полосы — единая логика градиентов */
+.btn-gradient-cta {
+  background-image: var(--gradient-cta);
+}
+
+.decor-gradient-line {
+  background-image: var(--gradient-decor);
 }
 
 .gradient-text {
