@@ -118,16 +118,17 @@ export function HomePageClient({ siteUrl }: { siteUrl: string }) {
 
       <section
         aria-label="Hero"
-        className="relative flex flex-col items-center justify-start min-h-[40vh] sm:min-h-[72vh] px-4 pt-2 sm:pt-14 text-center"
+        className="relative flex flex-col items-center justify-start min-h-[40vh] sm:min-h-[72vh] px-4 pt-2 sm:pt-14 text-center overflow-hidden"
       >
         <div
           aria-hidden="true"
-          className="absolute inset-0 pointer-events-none overflow-hidden"
+          className="absolute inset-0 z-0 pointer-events-none overflow-hidden"
         >
-          <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[220px] h-[220px] sm:w-[620px] sm:h-[620px] bg-purple-500/12 rounded-full blur-[70px] sm:blur-[150px]" />
-          <div className="absolute top-[24%] left-[10%] w-[90px] h-[90px] sm:w-[320px] sm:h-[320px] bg-amber-500/8 rounded-full blur-[42px] sm:blur-[110px]" />
-          <div className="absolute bottom-[10%] right-[8%] w-[70px] h-[70px] sm:w-[240px] sm:h-[240px] bg-fuchsia-500/7 rounded-full blur-[32px] sm:blur-[100px]" />
+          <div className="hero-orb-a absolute top-[10%] left-1/2 -translate-x-1/2 w-[220px] h-[220px] sm:w-[620px] sm:h-[620px] bg-purple-500/12 rounded-full blur-[70px] sm:blur-[150px] will-change-transform" />
+          <div className="hero-orb-b absolute top-[24%] left-[10%] w-[90px] h-[90px] sm:w-[320px] sm:h-[320px] bg-amber-500/8 rounded-full blur-[42px] sm:blur-[110px] will-change-transform" />
+          <div className="hero-orb-c absolute bottom-[10%] right-[8%] w-[70px] h-[70px] sm:w-[240px] sm:h-[240px] bg-fuchsia-500/7 rounded-full blur-[32px] sm:blur-[100px] will-change-transform" />
         </div>
+        <div className="hero-cinematic-vignette" aria-hidden="true" />
 
         <div className="relative z-10 w-full max-w-[min(100%,58rem)] mx-auto self-stretch -mt-4 sm:mt-0 px-2 flex flex-col">
           <div className="w-full flex flex-col items-center space-y-3 sm:space-y-4 md:space-y-5 mb-8 sm:mb-10 md:mb-12">
@@ -155,7 +156,8 @@ export function HomePageClient({ siteUrl }: { siteUrl: string }) {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3">
             <Link
               href="/poetry"
-              className="group relative inline-flex items-center justify-center min-w-[158px] sm:min-w-[168px] px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-500 text-white font-medium text-sm sm:text-[0.95rem] tracking-wide overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_28px_rgba(168,85,247,0.22)] focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#05060a]"
+              prefetch
+              className="group relative inline-flex items-center justify-center min-w-[168px] sm:min-w-[180px] px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-500 text-white font-semibold text-sm sm:text-[0.98rem] tracking-wide overflow-hidden shadow-[0_4px_24px_rgba(168,85,247,0.35),inset_0_1px_0_rgba(255,255,255,0.12)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_36px_rgba(168,85,247,0.45),inset_0_1px_0_rgba(255,255,255,0.15)] hover:scale-[1.02] active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#05060a]"
             >
               <span className="relative z-10">{t.hero.cta}</span>
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-r from-purple-500 via-fuchsia-500 to-amber-400" />
@@ -163,7 +165,8 @@ export function HomePageClient({ siteUrl }: { siteUrl: string }) {
 
             <Link
               href="/prose"
-              className="inline-flex items-center justify-center min-w-[158px] sm:min-w-[168px] px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl border border-white/[0.1] bg-white/[0.03] backdrop-blur text-gray-200 font-medium text-sm sm:text-[0.95rem] tracking-wide hover:bg-white/[0.06] hover:text-white transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#05060a]"
+              prefetch
+              className="inline-flex items-center justify-center min-w-[168px] sm:min-w-[180px] px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl border border-white/20 bg-white/[0.07] backdrop-blur-md text-gray-100 font-semibold text-sm sm:text-[0.98rem] tracking-wide shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-all duration-300 hover:bg-white/[0.11] hover:border-white/28 hover:text-white hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#05060a]"
             >
               {t.hero.ctaSecondary}
             </Link>
@@ -172,6 +175,7 @@ export function HomePageClient({ siteUrl }: { siteUrl: string }) {
           <div className="mt-5 sm:mt-7 flex flex-wrap justify-center gap-2">
             <Link
               href="/poetry"
+              prefetch
               className="inline-flex items-center gap-1.5 rounded-full border border-purple-400/20 bg-purple-500/10 px-2.5 py-1.5 text-[10px] uppercase tracking-[0.14em] text-purple-200 hover:bg-purple-500/15 transition-colors"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
@@ -180,6 +184,7 @@ export function HomePageClient({ siteUrl }: { siteUrl: string }) {
 
             <Link
               href="/prose"
+              prefetch
               className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/20 bg-amber-500/10 px-2.5 py-1.5 text-[10px] uppercase tracking-[0.14em] text-amber-200 hover:bg-amber-500/15 transition-colors"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
@@ -230,7 +235,7 @@ export function HomePageClient({ siteUrl }: { siteUrl: string }) {
         <div className="flex items-end justify-between gap-4 mb-4 sm:mb-8">
           <div>
             <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-purple-400/70 mb-2">
-              Latest
+              {t.sections.latestWorks}
             </p>
             <h2
               id="poetry-heading"
@@ -242,6 +247,7 @@ export function HomePageClient({ siteUrl }: { siteUrl: string }) {
 
           <Link
             href="/poetry"
+            prefetch
             className="text-sm sm:text-base text-purple-300 hover:text-purple-200 transition-colors font-medium inline-flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-purple-400 rounded-lg px-2 py-1"
           >
             {t.sections.allWorks}
@@ -301,7 +307,7 @@ export function HomePageClient({ siteUrl }: { siteUrl: string }) {
         <div className="flex items-end justify-between gap-4 mb-4 sm:mb-7">
           <div>
             <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-amber-400/70 mb-2">
-              Featured
+              {t.sections.featured}
             </p>
             <h2
               id="prose-heading"
@@ -313,6 +319,7 @@ export function HomePageClient({ siteUrl }: { siteUrl: string }) {
 
           <Link
             href="/prose"
+            prefetch
             className="text-sm sm:text-base text-amber-300 hover:text-amber-200 transition-colors font-medium inline-flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-amber-400 rounded-lg px-2 py-1"
           >
             {t.sections.allWorks}

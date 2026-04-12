@@ -39,6 +39,10 @@ export interface TranslationStrings {
     allWorks: string; readMore: string; backToHome: string; minuteRead: string;
     views: string; likes: string; publishedOn: string; tags: string;
     noWorksFound: string; searchPlaceholder: string;
+    /** Подсказка вместо «0 просмотров» — конверсия в чтение */
+    inviteFirstRead: string;
+    /** Подсказка вместо «0 лайков» на карточке прозы */
+    inviteFirstHeart: string;
   };
   about: { title: string; subtitle: string; bio: string; philosophy: string; philosophyText: string };
   footer: { copyright: string; madeWith: string; inspiration: string; rights: string };

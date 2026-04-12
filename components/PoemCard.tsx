@@ -94,9 +94,15 @@ export default function PoemCard({
           <div className="flex flex-wrap items-center gap-3 text-xs text-gray-400">
             <span className="inline-flex items-center gap-1.5">
               <Eye className="w-3.5 h-3.5 text-gray-500" strokeWidth={1.75} aria-hidden />
-              <span>
-                {work.views} {t.sections.views}
-              </span>
+              {(work.views ?? 0) > 0 ? (
+                <span>
+                  {work.views} {t.sections.views}
+                </span>
+              ) : (
+                <span className="text-purple-300/85 max-w-[10rem] sm:max-w-none leading-snug">
+                  {t.sections.inviteFirstRead}
+                </span>
+              )}
             </span>
             <span className="inline-flex items-center gap-1.5">
               <Heart className="w-3.5 h-3.5 text-gray-500" strokeWidth={1.75} aria-hidden />
@@ -108,7 +114,8 @@ export default function PoemCard({
 
           <Link
             href={workPublicPath(work)}
-            className="inline-flex items-center gap-2 rounded-2xl border border-purple-400/20 bg-purple-500/10 px-4 py-2.5 text-sm font-medium text-purple-200 hover:bg-purple-500/15 hover:text-white transition-all focus:outline-none focus:ring-2 focus:ring-purple-400"
+            prefetch
+            className="inline-flex items-center gap-2 rounded-2xl border border-purple-400/30 bg-purple-500/15 px-5 py-2.5 text-sm font-semibold text-purple-100 hover:bg-purple-500/25 hover:text-white hover:border-purple-400/45 shadow-[0_4px_20px_rgba(168,85,247,0.15)] transition-all focus:outline-none focus:ring-2 focus:ring-purple-400"
           >
             {t.sections.readMore}
             <span

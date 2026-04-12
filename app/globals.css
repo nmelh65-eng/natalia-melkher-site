@@ -237,6 +237,49 @@ body {
   box-shadow: 0 0 8px rgba(168,85,247,0.6);
 }
 
+/* Hero: лёгкий «киношный» дрейф света + нижняя виньетка */
+@keyframes hero-orb-drift-a {
+  0%, 100% { transform: translate(-50%, 0) scale(1); }
+  50% { transform: translate(-50%, -2%) scale(1.04); }
+}
+@keyframes hero-orb-drift-b {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(3%, 2%) scale(1.06); }
+}
+@keyframes hero-orb-drift-c {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-2%, 3%) scale(1.05); }
+}
+section[aria-label="Hero"] .hero-orb-a {
+  animation: hero-orb-drift-a 24s ease-in-out infinite;
+}
+section[aria-label="Hero"] .hero-orb-b {
+  animation: hero-orb-drift-b 32s ease-in-out infinite;
+}
+section[aria-label="Hero"] .hero-orb-c {
+  animation: hero-orb-drift-c 20s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  section[aria-label="Hero"] .hero-orb-a,
+  section[aria-label="Hero"] .hero-orb-b,
+  section[aria-label="Hero"] .hero-orb-c {
+    animation: none;
+  }
+}
+section[aria-label="Hero"] .hero-cinematic-vignette {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(5, 6, 12, 0.15) 0%,
+    transparent 42%,
+    transparent 58%,
+    rgba(5, 6, 12, 0.55) 100%
+  );
+}
+
 /* ── Skeleton loader ────────────────────────────────── */
 .skeleton {
   background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);

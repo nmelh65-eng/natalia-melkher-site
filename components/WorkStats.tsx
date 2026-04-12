@@ -72,9 +72,13 @@ export default function WorkStats({ work }: WorkStatsProps) {
 
       <span className="inline-flex items-center gap-1.5">
         <Eye className="w-3.5 h-3.5 text-gray-500 shrink-0" strokeWidth={1.75} aria-hidden />
-        <span>
-          {work.views} {t.sections.views}
-        </span>
+        {(work.views ?? 0) > 0 ? (
+          <span>
+            {work.views} {t.sections.views}
+          </span>
+        ) : (
+          <span className="text-purple-300/90">{t.sections.inviteFirstRead}</span>
+        )}
       </span>
 
       <button

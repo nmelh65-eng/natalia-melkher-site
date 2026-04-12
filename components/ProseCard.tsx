@@ -98,14 +98,21 @@ export default function ProseCard({
         <div className="flex items-center justify-between gap-4 border-t border-white/[0.05] pt-4">
           <div className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs text-gray-400">
             <Heart className="w-3.5 h-3.5 text-gray-500" strokeWidth={1.75} aria-hidden />
-            <span>
-              {work.likes} {t.sections.likes}
-            </span>
+            {(work.likes ?? 0) > 0 ? (
+              <span>
+                {work.likes} {t.sections.likes}
+              </span>
+            ) : (
+              <span className="text-amber-200/80 max-w-[11rem] sm:max-w-none leading-snug">
+                {t.sections.inviteFirstHeart}
+              </span>
+            )}
           </div>
 
           <Link
             href={workPublicPath(work)}
-            className="inline-flex items-center gap-2 rounded-2xl border border-amber-400/20 bg-amber-500/10 px-4 py-2.5 text-sm font-medium text-amber-200 hover:bg-amber-500/15 hover:text-white transition-all focus:outline-none focus:ring-2 focus:ring-amber-400"
+            prefetch
+            className="inline-flex items-center gap-2 rounded-2xl border border-amber-400/35 bg-amber-500/15 px-5 py-2.5 text-sm font-semibold text-amber-100 hover:bg-amber-500/25 hover:text-white hover:border-amber-400/50 shadow-[0_4px_20px_rgba(245,158,11,0.12)] transition-all focus:outline-none focus:ring-2 focus:ring-amber-400"
           >
             {t.sections.readMore}
             <span
