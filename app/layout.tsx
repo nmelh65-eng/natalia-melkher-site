@@ -89,6 +89,9 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: BASE,
+    types: {
+      "application/rss+xml": `${BASE}/feed.xml`,
+    },
   },
 };
 

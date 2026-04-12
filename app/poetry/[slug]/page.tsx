@@ -192,7 +192,6 @@ export default function PoemPage() {
   const title = tr?.title ?? work.title;
   const content = tr?.content ?? work.content;
   const stanzas = content.split(/\n\n+/).filter(Boolean);
-
   return (
     <div className="min-h-screen">
       <ReadingProgress />

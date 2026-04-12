@@ -192,7 +192,6 @@ export default function ProsePiecePage() {
   const title = tr?.title ?? work.title;
   const content = tr?.content ?? work.content;
   const paragraphs = content.split(/\n\n+/).filter(Boolean);
-
   return (
     <div className="min-h-screen">
       <ReadingProgress />
