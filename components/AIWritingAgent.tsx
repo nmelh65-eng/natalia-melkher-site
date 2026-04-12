@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Brain, Send, X } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import { AI_MODEL_OPTIONS, DEFAULT_AI_MODEL } from "@/lib/ai-models";
 
 interface AIWritingAgentProps {
   onClose: () => void;
@@ -15,25 +16,16 @@ interface Message {
 }
 
 /* ═══════════════════════════════════════
-   Доступные модели для выбора
-   ═══════════════════════════════════════ */
-const AI_MODELS = [
-  { id: "google/gemini-2.0-flash-exp:free", name: "Gemini Flash", badge: "Free", desc: "Бесплатная" },
-  { id: "meta-llama/llama-3.1-8b-instruct:free", name: "Llama 3.1", badge: "Free", desc: "Бесплатная" },
-  { id: "mistralai/mistral-7b-instruct:free", name: "Mistral 7B", badge: "Free", desc: "Бесплатная" },
-  { id: "openai/gpt-4o-mini", name: "GPT-4o Mini", badge: "Fast", desc: "Быстрая" },
-  { id: "openai/gpt-4o", name: "GPT-4o", badge: "Pro", desc: "Лучшая" },
-  { id: "anthropic/claude-3.5-sonnet", name: "Claude 3.5", badge: "Pro", desc: "Премиум" },
-];
-
-/* ═══════════════════════════════════════
    UI-тексты
    ═══════════════════════════════════════ */
 const UI: Record<string, {
   title: string; subtitle: string; placeholder: string;
   send: string; thinking: string; suggestions: string;
   clear: string; copy: string; copied: string;
-  greeting: string; disclaimer: string;
+  greeting: string;
+  disclaimerGateway: string;
+  disclaimerOpenRouter: string;
+  disclaimerOffline: string;
   errorMsg: string; modelLabel: string;
   prompts: string[];
 }> = {
@@ -47,7 +39,9 @@ const UI: Record<string, {
     modelLabel: "Модель:",
     greeting:
       "Здравствуйте! Я **AI-Муза** — ваш литературный помощник на базе нейросетей.\n\nЯ умею:\n\n**Писать стихи** — сонеты, хайку, оды, элегии\n**Сочинять прозу** — рассказы, эссе, сказки\n**Писать песни** — на мотив классиков и оригинальные\n**Подбирать рифмы** — с примерами\n**Редактировать** — анализ и улучшение текстов\n**Шесть языков** — русский, English, Deutsch, Français, 中文, 한국어\n**Идеи** — темы и образы\n\nВыберите модель в заголовке чата.\n\nОпишите, что хотите создать.",
-    disclaimer: "AI-Муза • Powered by OpenRouter",
+    disclaimerGateway: "AI-Муза • Vercel AI Gateway",
+    disclaimerOpenRouter: "AI-Муза • OpenRouter",
+    disclaimerOffline: "AI-Муза • офлайн",
     errorMsg: "Ошибка. Переключаюсь в офлайн-режим...",
     prompts: [
       "Напиши стихотворение о весне",
@@ -68,7 +62,9 @@ const UI: Record<string, {
     modelLabel: "Model:",
     greeting:
       "Hello! I'm **AI Muse** — your literary assistant.\n\nI can:\n\n**Write poetry** — sonnets, haiku, odes\n**Compose prose** — stories, essays\n**Write songs**\n**Find rhymes**\n**Edit** texts\n**Six languages**\n\nSelect a model in the header.\n\nDescribe what you would like to create.",
-    disclaimer: "AI Muse • Powered by OpenRouter",
+    disclaimerGateway: "AI Muse • Vercel AI Gateway",
+    disclaimerOpenRouter: "AI Muse • OpenRouter",
+    disclaimerOffline: "AI Muse • offline",
     errorMsg: "Error. Switching to offline mode...",
     prompts: [
       "Write a poem about spring",
@@ -85,7 +81,10 @@ const UI: Record<string, {
     suggestions: "Ideen:", clear: "Leeren", copy: "Kopieren", copied: "Kopiert",
     modelLabel: "Modell:",
     greeting: "Hallo! Ich bin **KI-Muse**.\n\nBeschreiben Sie, was Sie schreiben möchten.",
-    disclaimer: "KI-Muse • OpenRouter", errorMsg: "Fehler...",
+    disclaimerGateway: "KI-Muse • Vercel AI Gateway",
+    disclaimerOpenRouter: "KI-Muse • OpenRouter",
+    disclaimerOffline: "KI-Muse • offline",
+    errorMsg: "Fehler...",
     prompts: ["Gedicht über Frühling", "Ein Lied schreiben", "Reime finden"],
   },
   fr: {
@@ -94,7 +93,10 @@ const UI: Record<string, {
     suggestions: "Idées :", clear: "Effacer", copy: "Copier", copied: "Copié",
     modelLabel: "Modèle :",
     greeting: "Bonjour ! Je suis **IA Muse**.\n\nDécrivez ce que vous souhaitez écrire.",
-    disclaimer: "IA Muse • OpenRouter", errorMsg: "Erreur...",
+    disclaimerGateway: "IA Muse • Vercel AI Gateway",
+    disclaimerOpenRouter: "IA Muse • OpenRouter",
+    disclaimerOffline: "IA Muse • hors ligne",
+    errorMsg: "Erreur...",
     prompts: ["Poème sur le printemps", "Écrire une chanson", "Trouver des rimes"],
   },
   zh: {
@@ -103,7 +105,10 @@ const UI: Record<string, {
     suggestions: "灵感：", clear: "清空", copy: "复制", copied: "已复制",
     modelLabel: "模型：",
     greeting: "你好！我是 **AI缪斯**。\n\n描述您想创作什么。",
-    disclaimer: "AI缪斯 • OpenRouter", errorMsg: "错误...",
+    disclaimerGateway: "AI缪斯 • Vercel AI Gateway",
+    disclaimerOpenRouter: "AI缪斯 • OpenRouter",
+    disclaimerOffline: "AI缪斯 • 离线",
+    errorMsg: "错误...",
     prompts: ["春天的诗", "写一首歌", "押韵"],
   },
   ko: {
@@ -112,7 +117,10 @@ const UI: Record<string, {
     suggestions: "아이디어:", clear: "비우기", copy: "복사", copied: "복사됨",
     modelLabel: "모델:",
     greeting: "안녕하세요! **AI 뮤즈**입니다.\n\n무엇을 만들고 싶은지 설명해주세요.",
-    disclaimer: "AI 뮤즈 • OpenRouter", errorMsg: "오류...",
+    disclaimerGateway: "AI 뮤즈 • Vercel AI Gateway",
+    disclaimerOpenRouter: "AI 뮤즈 • OpenRouter",
+    disclaimerOffline: "AI 뮤즈 • 오프라인",
+    errorMsg: "오류...",
     prompts: ["봄에 대한 시", "노래 쓰기", "운율 찾기"],
   },
 };
@@ -148,7 +156,8 @@ export default function AIWritingAgent({ onClose }: AIWritingAgentProps) {
   const [isThinking, setIsThinking] = useState(false);
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
   const [apiStatus, setApiStatus] = useState<"checking" | "online" | "offline">("checking");
-  const [selectedModel, setSelectedModel] = useState(AI_MODELS[0].id);
+  const [aiProvider, setAiProvider] = useState<"gateway" | "openrouter" | null>(null);
+  const [selectedModel, setSelectedModel] = useState(DEFAULT_AI_MODEL);
   const [showModelPicker, setShowModelPicker] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -179,10 +188,18 @@ export default function AIWritingAgent({ onClose }: AIWritingAgentProps) {
   useEffect(() => {
     fetch("/api/ai")
       .then((r) => r.json())
-      .then((data) => {
+      .then((data: { ok?: boolean; provider?: "gateway" | "openrouter" }) => {
         setApiStatus(data.ok ? "online" : "offline");
+        setAiProvider(
+          data.provider === "gateway" || data.provider === "openrouter"
+            ? data.provider
+            : null
+        );
       })
-      .catch(() => setApiStatus("offline"));
+      .catch(() => {
+        setApiStatus("offline");
+        setAiProvider(null);
+      });
   }, []);
 
   // Отправка сообщения
@@ -222,7 +239,8 @@ export default function AIWritingAgent({ onClose }: AIWritingAgentProps) {
         throw new Error(data.error || "API error");
       }
 
-      const modelName = AI_MODELS.find(m => m.id === (data.model || selectedModel))?.name || "";
+      const modelName =
+        AI_MODEL_OPTIONS.find((m) => m.id === (data.model || selectedModel))?.name || "";
 
       setMessages(prev => [...prev, {
         role: "assistant",
@@ -281,7 +299,17 @@ export default function AIWritingAgent({ onClose }: AIWritingAgentProps) {
     });
   };
 
-  const currentModel = AI_MODELS.find(m => m.id === selectedModel) || AI_MODELS[0];
+  const currentModel =
+    AI_MODEL_OPTIONS.find((m) => m.id === selectedModel) || AI_MODEL_OPTIONS[0];
+
+  const footerDisclaimer =
+    apiStatus === "online"
+      ? aiProvider === "gateway"
+        ? ui.disclaimerGateway
+        : ui.disclaimerOpenRouter
+      : apiStatus === "checking"
+        ? ui.disclaimerOpenRouter
+        : ui.disclaimerOffline;
 
   return (
     <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center"
@@ -352,7 +380,7 @@ export default function AIWritingAgent({ onClose }: AIWritingAgentProps) {
             <div className="px-4 pb-3 border-t border-white/5">
               <p className="text-[10px] text-gray-500 mb-2 mt-2">{ui.modelLabel}</p>
               <div className="grid grid-cols-2 gap-1.5">
-                {AI_MODELS.map(m => (
+                {AI_MODEL_OPTIONS.map((m) => (
                   <button key={m.id}
                     onClick={() => { setSelectedModel(m.id); setShowModelPicker(false); }}
                     className={`px-2.5 py-2 rounded-xl text-left text-[11px] transition-all
@@ -468,7 +496,7 @@ export default function AIWritingAgent({ onClose }: AIWritingAgentProps) {
               <Send className="w-4 h-4" aria-hidden />
             </button>
           </div>
-          <p className="text-[9px] text-gray-700 text-center mt-1.5">{ui.disclaimer}</p>
+          <p className="text-[9px] text-gray-700 text-center mt-1.5">{footerDisclaimer}</p>
         </form>
       </div>
     </div>

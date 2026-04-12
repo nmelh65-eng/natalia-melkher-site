@@ -47,6 +47,7 @@ export interface TranslationStrings {
     quotes: string;
     inspiration: string;
     more: string;
+    textsHub: string;
     about: string;
     contact: string;
   };
@@ -70,6 +71,10 @@ export interface TranslationStrings {
     inviteFirstRead: string;
     /** Подсказка вместо «0 лайков» на карточке прозы */
     inviteFirstHeart: string;
+    /** Страница /texts — краткое описание хаба разделов */
+    textsHubIntro: string;
+    /** Короткая подпись над заголовком на /texts */
+    textsHubEyebrow: string;
   };
   about: { title: string; subtitle: string; bio: string; philosophy: string; philosophyText: string };
   footer: { copyright: string; madeWith: string; inspiration: string; rights: string };

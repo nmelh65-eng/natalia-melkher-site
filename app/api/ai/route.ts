@@ -1,25 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
+import { generateText, type CoreMessage } from "ai";
+import { createGateway, gateway as defaultGateway } from "@ai-sdk/gateway";
 import { getClientIp } from "@/lib/client-ip";
 import { getPublicSiteUrl } from "@/lib/site-url";
+import {
+  AI_MODEL_OPTIONS,
+  DEFAULT_AI_MODEL,
+  OPENROUTER_DEFAULT_MODEL,
+  OPENROUTER_FALLBACK_MODEL,
+} from "@/lib/ai-models";
 
-/* ═══════════════════════════════════════
-   Конфигурация моделей
-   Приоритет: от лучшей к бесплатной
-   ═══════════════════════════════════════ */
-const MODELS = {
-  // Лучшее качество (платные)
-  premium: "openai/gpt-4o",
-  // Хорошее качество, дёшево
-  standard: "openai/gpt-4o-mini",
-  // Бесплатные
-  free: "google/gemini-2.0-flash-exp:free",
-  freeFallback: "meta-llama/llama-3.1-8b-instruct:free",
-};
-
-// Выберите модель по умолчанию:
-const DEFAULT_MODEL = MODELS.free; // бесплатная
-// const DEFAULT_MODEL = MODELS.standard;
-// const DEFAULT_MODEL = MODELS.premium;
+const ALLOWED_MODELS = new Set(AI_MODEL_OPTIONS.map((m) => m.id));
 
 const SITE_NAME = "Наталья Мельхер — AI-Муза";
 
@@ -55,14 +46,22 @@ const SYSTEM_PROMPT = `Ты — AI-Муза, литературный помощ
 - Разделяй секции через ---
 - Добавляй рекомендации в конце (без эмодзи)`;
 
-/* ═══════════════════════════════════════
-   Rate Limiter
-   ═══════════════════════════════════════ */
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
-const RATE_LIMIT = 30; // запросов в час
+const RATE_LIMIT = 30;
 const RATE_WINDOW = 60 * 60 * 1000;
 
-const ALLOWED_ROLES = new Set(["user", "assistant", "system"]);
+const ALLOWED_ROLES = new Set(["user", "assistant"]);
+
+function useAiGateway(): boolean {
+  const onVercel = process.env.VERCEL === "1";
+  const hasGatewayKey = !!process.env.AI_GATEWAY_API_KEY?.trim();
+  return onVercel || hasGatewayKey;
+}
+
+function getGateway() {
+  const key = process.env.AI_GATEWAY_API_KEY?.trim();
+  return key ? createGateway({ apiKey: key }) : defaultGateway;
+}
 
 function normalizeMessages(
   messages: unknown
@@ -97,23 +96,29 @@ function checkRateLimit(ip: string): boolean {
   return true;
 }
 
-/* ═══════════════════════════════════════
-   API Handler
-   ═══════════════════════════════════════ */
+function resolveModel(requested: unknown, gatewayMode: boolean): string {
+  if (
+    typeof requested === "string" &&
+    requested.length > 0 &&
+    requested.length < 120 &&
+    ALLOWED_MODELS.has(requested)
+  ) {
+    return requested;
+  }
+  return gatewayMode ? DEFAULT_AI_MODEL : OPENROUTER_DEFAULT_MODEL;
+}
+
+function buildSystemPrompt(language: unknown): string {
+  const lang =
+    typeof language === "string" && language.length < 24 ? language : "ru";
+  return `${SYSTEM_PROMPT}\n\nТекущий язык интерфейса: ${lang}`;
+}
+
 export async function POST(req: NextRequest) {
   try {
     const siteUrl = getPublicSiteUrl();
-
-    const apiKey = process.env.OPENROUTER_API_KEY;
-
-    if (!apiKey) {
-      return NextResponse.json(
-        { error: "API key not configured", offline: true },
-        { status: 500 }
-      );
-    }
-
     const ip = getClientIp(req);
+
     if (!checkRateLimit(ip)) {
       return NextResponse.json(
         { error: "Слишком много запросов. Подождите немного и попробуйте снова." },
@@ -132,22 +137,69 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const trimmedMessages = normalized.slice(-12).map((msg) => ({
+    const trimmed = normalized.slice(-12).map((msg) => ({
       role: msg.role,
       content: msg.content.slice(0, 3000),
     }));
 
-    // Выбор модели
-    const selectedModel =
-      typeof model === "string" && model.length > 0 && model.length < 120
-        ? model
-        : DEFAULT_MODEL;
+    const gatewayMode = useAiGateway();
+    const openRouterKey = process.env.OPENROUTER_API_KEY?.trim();
 
-    // Запрос к OpenRouter
+    if (gatewayMode) {
+      const selectedModel = resolveModel(model, true);
+      const system = buildSystemPrompt(language);
+      const coreMessages: CoreMessage[] = trimmed.map((m) => ({
+        role: m.role as "user" | "assistant",
+        content: m.content,
+      }));
+
+      try {
+        const gw = getGateway();
+        const { text, usage } = await generateText({
+          model: gw(selectedModel),
+          system,
+          messages: coreMessages,
+          maxOutputTokens: 2500,
+          temperature: 0.85,
+          topP: 0.9,
+          presencePenalty: 0.3,
+          frequencyPenalty: 0.3,
+        });
+
+        return NextResponse.json({
+          content: text || "Простите, не удалось сгенерировать ответ.",
+          model: selectedModel,
+          usage,
+          provider: "gateway",
+        });
+      } catch (e) {
+        console.error("AI Gateway Error:", e);
+        if (!openRouterKey) {
+          return NextResponse.json(
+            {
+              error: "Ошибка AI Gateway. Попробуйте ещё раз.",
+              offline: true,
+            },
+            { status: 502 }
+          );
+        }
+        /* fall through to OpenRouter below */
+      }
+    }
+
+    if (!openRouterKey) {
+      return NextResponse.json(
+        { error: "API key not configured", offline: true },
+        { status: 500 }
+      );
+    }
+
+    const selectedModel = resolveModel(model, false);
+
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${apiKey}`,
+        Authorization: `Bearer ${openRouterKey}`,
         "Content-Type": "application/json",
         "HTTP-Referer": siteUrl,
         "X-Title": SITE_NAME,
@@ -155,24 +207,14 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({
         model: selectedModel,
         messages: [
-          {
-            role: "system",
-            content:
-              SYSTEM_PROMPT +
-              `\n\nТекущий язык интерфейса: ${
-                typeof language === "string" && language.length < 24
-                  ? language
-                  : "ru"
-              }`,
-          },
-          ...trimmedMessages,
+          { role: "system", content: buildSystemPrompt(language) },
+          ...trimmed,
         ],
         max_tokens: 2500,
         temperature: 0.85,
         top_p: 0.9,
         presence_penalty: 0.3,
         frequency_penalty: 0.3,
-        // Fallback на другую модель если основная недоступна
         route: "fallback",
       }),
     });
@@ -181,38 +223,40 @@ export async function POST(req: NextRequest) {
       const errorData = await response.json().catch(() => ({}));
       console.error("OpenRouter Error:", response.status, errorData);
 
-      // Если модель недоступна — пробуем бесплатную
       if (response.status === 402 || response.status === 429) {
-        console.log("Trying free fallback model...");
-
-        const fallbackResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${apiKey}`,
-            "Content-Type": "application/json",
-            "HTTP-Referer": siteUrl,
-            "X-Title": SITE_NAME,
-          },
-          body: JSON.stringify({
-            model: MODELS.freeFallback,
-            messages: [
-              { role: "system", content: SYSTEM_PROMPT },
-              ...trimmedMessages,
-            ],
-            max_tokens: 1500,
-            temperature: 0.85,
-          }),
-        });
+        const fallbackResponse = await fetch(
+          "https://openrouter.ai/api/v1/chat/completions",
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${openRouterKey}`,
+              "Content-Type": "application/json",
+              "HTTP-Referer": siteUrl,
+              "X-Title": SITE_NAME,
+            },
+            body: JSON.stringify({
+              model: OPENROUTER_FALLBACK_MODEL,
+              messages: [
+                { role: "system", content: SYSTEM_PROMPT },
+                ...trimmed,
+              ],
+              max_tokens: 1500,
+              temperature: 0.85,
+            }),
+          }
+        );
 
         if (fallbackResponse.ok) {
           const fallbackData = await fallbackResponse.json();
-          const reply = fallbackData.choices?.[0]?.message?.content
-                     || "Не удалось сгенерировать ответ.";
+          const reply =
+            fallbackData.choices?.[0]?.message?.content ||
+            "Не удалось сгенерировать ответ.";
           return NextResponse.json({
             content: reply,
-            model: MODELS.freeFallback,
+            model: OPENROUTER_FALLBACK_MODEL,
             usage: fallbackData.usage,
             fallback: true,
+            provider: "openrouter",
           });
         }
       }
@@ -227,15 +271,16 @@ export async function POST(req: NextRequest) {
     }
 
     const data = await response.json();
-    const reply = data.choices?.[0]?.message?.content
-               || "Простите, не удалось сгенерировать ответ.";
+    const reply =
+      data.choices?.[0]?.message?.content ||
+      "Простите, не удалось сгенерировать ответ.";
 
     return NextResponse.json({
       content: reply,
       model: data.model || selectedModel,
       usage: data.usage,
+      provider: "openrouter",
     });
-
   } catch (error: unknown) {
     console.error("AI Route Error:", error);
     return NextResponse.json(
@@ -245,10 +290,12 @@ export async function POST(req: NextRequest) {
   }
 }
 
-/* ═══════════════════════════════════════
-   GET — проверка статуса API
-   ═══════════════════════════════════════ */
 export async function GET() {
-  const hasKey = !!process.env.OPENROUTER_API_KEY?.trim();
-  return NextResponse.json({ ok: hasKey });
+  const gateway = useAiGateway();
+  const openRouter = !!process.env.OPENROUTER_API_KEY?.trim();
+
+  const ok = gateway || openRouter;
+  const provider = gateway ? "gateway" : openRouter ? "openrouter" : null;
+
+  return NextResponse.json({ ok, provider });
 }

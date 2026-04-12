@@ -21,6 +21,7 @@ export default function Header() {
   ];
 
   const moreLinks = [
+    { href: "/texts", label: t.nav.textsHub },
     { href: "/essay", label: t.nav.essay },
     { href: "/notes", label: t.nav.notes },
     { href: "/quotes", label: t.nav.quotes },
@@ -31,7 +32,11 @@ export default function Header() {
 
   const mobileNavLinks = [...primaryLinks, ...moreLinks, aboutLink];
 
-  const moreActive = moreLinks.some((l) => pathname.startsWith(l.href));
+  const moreActive = moreLinks.some((l) =>
+    l.href === "/"
+      ? pathname === "/"
+      : pathname === l.href || pathname.startsWith(`${l.href}/`)
+  );
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
