@@ -3,9 +3,15 @@ import { getAdminSession } from "@/lib/admin-auth";
 import { getAllWorks, upsertWork, deleteWork, togglePublish } from "@/lib/works-store";
 import type { TranslatedWork } from "@/types";
 
+const noStore = { "Cache-Control": "private, no-store, max-age=0" } as const;
+
+function adminJson(data: unknown, status = 200) {
+  return NextResponse.json(data, { status, headers: noStore });
+}
+
 async function guard() {
   const ok = await getAdminSession();
-  if (!ok) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!ok) return adminJson({ error: "Unauthorized" }, 401);
   return null;
 }
 
@@ -13,7 +19,7 @@ export async function GET() {
   const err = await guard();
   if (err) return err;
   const works = await getAllWorks();
-  return NextResponse.json({ data: works });
+  return adminJson({ data: works });
 }
 
 export async function POST(req: NextRequest) {
@@ -28,17 +34,24 @@ export async function POST(req: NextRequest) {
 
     const saved = await upsertWork(work);
     if (!saved) {
-      return NextResponse.json(
+      return adminJson(
         { error: "Redis недоступен. Проверьте подключение." },
-        { status: 500 }
+        500
       );
     }
 
-    return NextResponse.json({ ok: true, data: work });
-  } catch {
-    return NextResponse.json(
-      { error: "Внутренняя ошибка сервера" },
-      { status: 500 }
+    return adminJson({ ok: true, data: work });
+  } catch (error: unknown) {
+    const detail =
+      process.env.NODE_ENV === "development" && error instanceof Error
+        ? error.message
+        : null;
+    return adminJson(
+      {
+        error: "Внутренняя ошибка сервера",
+        ...(detail ? { detail } : {}),
+      },
+      500
     );
   }
 }
@@ -48,7 +61,7 @@ export async function DELETE(req: NextRequest) {
   if (err) return err;
   const { id } = await req.json();
   await deleteWork(id);
-  return NextResponse.json({ ok: true });
+  return adminJson({ ok: true });
 }
 
 export async function PATCH(req: NextRequest) {
@@ -56,6 +69,6 @@ export async function PATCH(req: NextRequest) {
   if (err) return err;
   const { id } = await req.json();
   const work = await togglePublish(id);
-  if (!work) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  return NextResponse.json({ ok: true, data: work });
+  if (!work) return adminJson({ error: "Not found" }, 404);
+  return adminJson({ ok: true, data: work });
 }

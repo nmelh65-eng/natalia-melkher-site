@@ -92,7 +92,7 @@ export default function AboutPage() {
                       {t.nav.about}
                     </div>
 
-                    <h1 className="font-display text-4xl sm:text-6xl md:text-7xl font-bold gradient-text mb-4 leading-[0.98]">
+                    <h1 className="font-display text-4xl sm:text-6xl md:text-7xl font-bold gradient-text mb-4 leading-[1.06] pb-[0.08em]">
                       Наталья Мельхер
                     </h1>
 

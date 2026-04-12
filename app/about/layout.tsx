@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { withEnDeHints } from "@/lib/metadata-locale-hints";
 
 const BASE =
   process.env.NEXT_PUBLIC_SITE_URL || "https://natalia-melkher.vercel.app";
 
-export const metadata: Metadata = {
+const core: Metadata = {
   title: "Об авторе",
   description:
     "Наталья Мельхер — поэтесса и автор прозы: биография, творческий путь, философия текстов и многоязычные публикации.",
@@ -26,6 +27,15 @@ export const metadata: Metadata = {
       "Поэтесса и автор прозы: биография, творчество и вдохновляющие публикации.",
   },
 };
+
+export const metadata = withEnDeHints(core, {
+  titleEn: "About Natalia Melkher",
+  titleDe: "Über Natalia Melkher",
+  descriptionEn:
+    "Natalia Melkher — poet and prose author: biography, creative path, and multilingual work.",
+  descriptionDe:
+    "Natalia Melkher — Dichterin und Prosaautorin: Biografie, kreativer Weg und mehrsprachige Texte.",
+});
 
 export default function AboutLayout({ children }: { children: ReactNode }) {
   return children;

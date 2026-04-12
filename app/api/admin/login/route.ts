@@ -59,7 +59,10 @@ export async function POST(req: NextRequest) {
 
     if (!checkPassword(password)) {
       registerFailedAttempt(ip);
-      return NextResponse.json({ error: "Wrong password" }, { status: 401 });
+      return NextResponse.json(
+        { error: "Неверные учётные данные." },
+        { status: 401 }
+      );
     }
 
     clearAttempts(ip);
@@ -78,7 +81,7 @@ export async function POST(req: NextRequest) {
 
     res.cookies.set("admin-token", token, {
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: "strict",
       maxAge: 86400,
       secure: process.env.NODE_ENV === "production",
       path: "/",

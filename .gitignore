@@ -26,6 +26,13 @@ output.txt
 .env.local
 .env
 .env*.local
+
+# TypeScript
+*.tsbuildinfo
+
+# Локальные снапшоты / бэкапы (не в репозитории)
+backup-analytics-pack/
+backup-category-seo-pack/
 backup-before-api-fix/
 backup-before-detail-api-fix/
 backup-before-home-api-fix/

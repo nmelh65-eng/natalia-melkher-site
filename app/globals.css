@@ -257,10 +257,20 @@ body {
   .prose-text { font-size: 15px; line-height: 1.8; }
 }
 
-/* Fix Firefox h1 in section warning */
-section h1 {
-  font-size: revert;
-  margin: revert;
+/* Firefox: нормализация h1 внутри section.
+ * ВАЖНО: правило должно жить в @layer base — иначе (вне слоя) оно перебивает
+ * Tailwind-утилиты font-size и герой «Натальи Мельхер» остаётся крошечным. */
+@layer base {
+  section h1 {
+    font-size: revert;
+    margin: revert;
+  }
+
+  /* Градиент + background-clip: text на плотном leading — нижние выносные (р, у, descenders) иногда срезаются в WebKit */
+  section[aria-label="Hero"] h1.gradient-text {
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
 }
 
 /* -- Hero Name Enhancement ---------------------------------- */

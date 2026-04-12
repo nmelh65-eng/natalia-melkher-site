@@ -139,7 +139,7 @@ export default function HomePage() {
             </p>
 
             <div className="flex w-full justify-center">
-              <h1 className="font-display font-bold gradient-text text-[clamp(3.85rem,9.2vw+1.45rem,11.25rem)] leading-[0.9] sm:leading-[0.86] tracking-[0.06em] sm:tracking-[0.1em] md:tracking-[0.13em] max-w-[min(100%,100vw-1.25rem)] text-center whitespace-normal md:whitespace-nowrap drop-shadow-[0_6px_48px_rgba(0,0,0,0.5)] [text-shadow:0_0_52px_rgba(168,85,247,0.28)]">
+              <h1 className="font-display font-bold gradient-text text-[clamp(3.85rem,9.2vw+1.45rem,11.25rem)] leading-[0.94] sm:leading-[0.9] tracking-[0.06em] sm:tracking-[0.1em] md:tracking-[0.13em] max-w-[min(100%,100vw-1.25rem)] text-center whitespace-normal md:whitespace-nowrap drop-shadow-[0_6px_48px_rgba(0,0,0,0.5)] [text-shadow:0_0_52px_rgba(168,85,247,0.28)] pb-[0.12em] overflow-visible">
                 <span className="inline-block">{heroTitleParts.first}</span>
                 {heroTitleParts.last ? (
                   <>

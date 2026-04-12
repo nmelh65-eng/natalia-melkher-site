@@ -27,7 +27,7 @@ export default function ContactPage() {
       <section className="relative pt-20 pb-16 px-4">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-purple-500/8 rounded-full blur-[120px] pointer-events-none" />
         <div className="max-w-4xl mx-auto relative z-10">
-          <AnimatedSection><h1 className="text-center font-display text-5xl sm:text-6xl md:text-7xl font-bold gradient-text mb-4">{c.title}</h1><p className="text-center text-lg text-gray-400 mb-16">{c.subtitle}</p></AnimatedSection>
+          <AnimatedSection><h1 className="text-center font-display text-5xl sm:text-6xl md:text-7xl font-bold gradient-text mb-4 leading-[1.06] pb-[0.06em]">{c.title}</h1><p className="text-center text-lg text-gray-400 mb-16 leading-relaxed max-w-xl mx-auto">{c.subtitle}</p></AnimatedSection>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <AnimatedSection delay={200}>
               <form onSubmit={handleSubmit} className="glass rounded-3xl p-8 space-y-6">

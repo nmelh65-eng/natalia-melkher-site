@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { withEnDeHints } from "@/lib/metadata-locale-hints";
 
 const BASE =
   process.env.NEXT_PUBLIC_SITE_URL || "https://natalia-melkher.vercel.app";
 
-export const metadata: Metadata = {
+const core: Metadata = {
   title: "Поэзия Натальи Мельхер",
   description:
     "Раздел поэзии Натальи Мельхер: современные стихи, лирические тексты, авторская поэзия и вдохновляющие произведения.",
@@ -25,3 +26,12 @@ export const metadata: Metadata = {
       "Современная авторская поэзия Натальи Мельхер: стихи, лирика и вдохновение.",
   },
 };
+
+export const metadata = withEnDeHints(core, {
+  titleEn: "Poetry by Natalia Melkher",
+  titleDe: "Poesie von Natalia Melkher",
+  descriptionEn:
+    "Poetry by Natalia Melkher: contemporary verse, lyric texts, and inspiring work.",
+  descriptionDe:
+    "Poesie von Natalia Melkher: zeitgenössische Verse, Lyrik und inspirierende Texte.",
+});

@@ -227,7 +227,7 @@ export default function PoemPage() {
               <Quote className="h-3.5 w-3.5 scale-x-[-1] text-purple-400/80" strokeWidth={2} aria-hidden />
             </div>
 
-            <h1 className="font-display text-3xl sm:text-5xl md:text-[3.9rem] font-bold text-white leading-[1.02] tracking-tight mb-6 sm:mb-8">
+            <h1 className="font-display text-3xl sm:text-5xl md:text-[3.9rem] font-bold text-white leading-[1.08] tracking-tight mb-6 sm:mb-8 pb-[0.04em]">
               {title}
             </h1>
 

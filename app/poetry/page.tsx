@@ -107,7 +107,7 @@ function PoetryContent() {
             <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-purple-400/70 mb-3">
               Poetry Collection
             </p>
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold gradient-text mb-4">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold gradient-text mb-4 leading-[1.06] pb-[0.06em]">
               {t.sections.poetry}
             </h1>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">
