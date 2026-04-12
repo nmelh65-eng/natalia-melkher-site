@@ -8,6 +8,7 @@ import type { TranslatedWork } from "@/types";
 import AnimatedSection from "@/components/AnimatedSection";
 import ReadingProgress from "@/components/ReadingProgress";
 import WorkStats from "@/components/WorkStats";
+import { BookOpen, Quote } from "lucide-react";
 import { workPublicPath } from "@/lib/slug";
 
 export default function ProsePiecePage() {
@@ -165,8 +166,11 @@ export default function ProsePiecePage() {
   if (!work || work.category !== "prose") {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-6 px-4 text-center">
-        <div className="text-8xl select-none" aria-hidden="true">
-          📖
+        <div
+          className="mb-2 flex h-16 w-16 items-center justify-center rounded-2xl border border-amber-500/20 bg-amber-500/10 text-amber-300/90"
+          aria-hidden
+        >
+          <BookOpen className="h-8 w-8" strokeWidth={1.5} />
         </div>
         <h1 className="text-3xl font-bold text-gray-300">
           Произведение не найдено
@@ -217,15 +221,11 @@ export default function ProsePiecePage() {
         <AnimatedSection delay={80}>
           <header className="mb-12 sm:mb-16">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 mb-6 sm:mb-8">
-              <span className="text-amber-400 text-xs" aria-hidden="true">
-                ❧
-              </span>
+              <Quote className="h-3.5 w-3.5 text-amber-400/80" strokeWidth={2} aria-hidden />
               <span className="text-amber-400 text-xs font-semibold tracking-[0.22em] uppercase">
                 {t.sections.prose}
               </span>
-              <span className="text-amber-400 text-xs" aria-hidden="true">
-                ❧
-              </span>
+              <Quote className="h-3.5 w-3.5 scale-x-[-1] text-amber-400/80" strokeWidth={2} aria-hidden />
             </div>
 
             <h1 className="font-display text-3xl sm:text-5xl md:text-[3.9rem] font-bold text-white leading-[1.02] tracking-tight mb-6 sm:mb-8">

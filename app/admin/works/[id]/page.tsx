@@ -94,7 +94,7 @@ export default function WorkEditorPage() {
           <span style={{ fontWeight:600, fontSize:16 }}>{isNew ? "Новое произведение" : work.title || "Редактирование"}</span>
         </div>
         <div style={{ display:"flex", gap:10, alignItems:"center" }}>
-          {saved && <span style={{ color:"#34d399", fontSize:13 }}>✓ Сохранено</span>}
+          {saved && <span style={{ color:"#34d399", fontSize:13 }}>Сохранено</span>}
           {error && <span style={{ color:"#f87171", fontSize:13 }}>{error}</span>}
           <button onClick={() => setField("isPublished", !work.isPublished)}
             style={btn(work.isPublished ? "rgba(107,114,128,0.3)" : "rgba(16,185,129,0.3)", work.isPublished ? "#9ca3af" : "#34d399")}>
@@ -102,7 +102,7 @@ export default function WorkEditorPage() {
           </button>
           <button onClick={handleSave} disabled={saving}
             style={{ ...btn("linear-gradient(135deg,#7c3aed,#a855f7)"), opacity: saving ? 0.7 : 1 }}>
-            {saving ? "Сохранение..." : "💾 Сохранить"}
+            {saving ? "Сохранение..." : "Сохранить"}
           </button>
         </div>
       </div>
@@ -202,7 +202,7 @@ export default function WorkEditorPage() {
 
               <div style={{ padding:"12px 16px", borderRadius:14, background: work.isPublished ? "rgba(16,185,129,0.08)" : "rgba(107,114,128,0.1)", border:"1px solid", borderColor: work.isPublished ? "rgba(16,185,129,0.2)" : "rgba(107,114,128,0.15)" }}>
                 <div style={{ fontSize:13, fontWeight:600, color: work.isPublished ? "#34d399" : "#9ca3af" }}>
-                  {work.isPublished ? "✓ Опубликовано" : "○ Черновик"}
+                  {work.isPublished ? "Опубликовано" : "Черновик"}
                 </div>
                 <div style={{ fontSize:11, color:"#4b5563", marginTop:4 }}>
                   {work.isPublished ? "Видно всем посетителям" : "Не отображается на сайте"}

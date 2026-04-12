@@ -1,9 +1,15 @@
 import Link from "next/link";
+import { Sparkles } from "lucide-react";
 
 export default function NotFound() {
   return (
     <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-4">
-      <div className="text-8xl mb-6 select-none" aria-hidden="true">✨</div>
+      <div
+        className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border border-purple-500/25 bg-purple-500/10 text-purple-300/90"
+        aria-hidden
+      >
+        <Sparkles className="h-7 w-7" strokeWidth={1.5} />
+      </div>
       <h1 className="font-display text-6xl sm:text-8xl font-bold gradient-text mb-4">404</h1>
       <p className="font-serif text-xl text-gray-400 italic mb-2">Страница не найдена...</p>
       <p className="text-gray-600 mb-8 max-w-md">Но поэзия — всюду.</p>

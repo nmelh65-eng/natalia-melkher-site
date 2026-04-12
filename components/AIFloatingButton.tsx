@@ -55,7 +55,7 @@ export default function AIFloatingButton({
           </span>
 
           <span className="absolute right-[calc(100%+0.75rem)] hidden xl:inline-flex items-center rounded-xl border border-white/10 bg-[#101019]/95 px-3 py-1.5 text-xs font-medium whitespace-nowrap text-white shadow-lg">
-            AI-Муза ✨
+            AI-Муза
           </span>
         </>
       )}

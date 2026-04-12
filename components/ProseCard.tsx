@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import type { Language, TranslatedWork } from "@/types";
+import { Heart } from "lucide-react";
 import { workPublicPath } from "@/lib/slug";
 
 const localeMap: Record<Language, string> = {
@@ -96,7 +97,7 @@ export default function ProseCard({
 
         <div className="flex items-center justify-between gap-4 border-t border-white/[0.05] pt-4">
           <div className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs text-gray-400">
-            <span aria-hidden="true">❤</span>
+            <Heart className="w-3.5 h-3.5 text-gray-500" strokeWidth={1.75} aria-hidden />
             <span>
               {work.likes} {t.sections.likes}
             </span>

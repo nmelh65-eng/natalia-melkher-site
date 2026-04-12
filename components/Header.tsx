@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLanguage } from "@/context/LanguageContext";
+import { Sparkles } from "lucide-react";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function Header() {
@@ -128,7 +129,7 @@ export default function Header() {
               href="/contact"
               className="hidden 2xl:inline-flex items-center gap-2 rounded-2xl border border-white/[0.08] bg-white/[0.03] px-4 py-2.5 text-sm font-medium text-gray-200 hover:text-white hover:bg-white/[0.06] transition-all"
             >
-              <span aria-hidden="true">✦</span>
+              <Sparkles className="w-3.5 h-3.5 text-purple-300/80" strokeWidth={1.75} aria-hidden />
               <span>{t.nav.contact}</span>
             </Link>
 

@@ -176,7 +176,7 @@ export default function AdminDashboard() {
                       <div style={{ display:"flex", gap:6 }}>
                         <Link href={`/admin/works/${work.id}`}
                           style={{ ...S.btn("rgba(168,85,247,0.3)"), color:"#c084fc", textDecoration:"none", display:"inline-block", fontSize:12 }}>
-                          ✏️ Ред.
+                          Ред.
                         </Link>
                         <button onClick={() => handleToggle(work.id)}
                           style={S.btn(work.isPublished ? "rgba(107,114,128,0.3)" : "rgba(16,185,129,0.3)")}>
@@ -185,7 +185,7 @@ export default function AdminDashboard() {
                         <button onClick={() => handleDelete(work.id)}
                           disabled={deleting === work.id}
                           style={{ ...S.btn("rgba(239,68,68,0.25)"), color:"#f87171", opacity: deleting===work.id ? 0.5 : 1 }}>
-                          🗑
+                          Удалить
                         </button>
                       </div>
                     </td>

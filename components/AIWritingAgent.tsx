@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
+import { Brain, Send, X } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
 interface AIWritingAgentProps {
@@ -17,12 +18,12 @@ interface Message {
    Доступные модели для выбора
    ═══════════════════════════════════════ */
 const AI_MODELS = [
-  { id: "google/gemini-2.0-flash-exp:free", name: "Gemini Flash", badge: "🆓", desc: "Бесплатная" },
-  { id: "meta-llama/llama-3.1-8b-instruct:free", name: "Llama 3.1", badge: "🆓", desc: "Бесплатная" },
-  { id: "mistralai/mistral-7b-instruct:free", name: "Mistral 7B", badge: "🆓", desc: "Бесплатная" },
-  { id: "openai/gpt-4o-mini", name: "GPT-4o Mini", badge: "⚡", desc: "Быстрая" },
-  { id: "openai/gpt-4o", name: "GPT-4o", badge: "💎", desc: "Лучшая" },
-  { id: "anthropic/claude-3.5-sonnet", name: "Claude 3.5", badge: "💎", desc: "Премиум" },
+  { id: "google/gemini-2.0-flash-exp:free", name: "Gemini Flash", badge: "Free", desc: "Бесплатная" },
+  { id: "meta-llama/llama-3.1-8b-instruct:free", name: "Llama 3.1", badge: "Free", desc: "Бесплатная" },
+  { id: "mistralai/mistral-7b-instruct:free", name: "Mistral 7B", badge: "Free", desc: "Бесплатная" },
+  { id: "openai/gpt-4o-mini", name: "GPT-4o Mini", badge: "Fast", desc: "Быстрая" },
+  { id: "openai/gpt-4o", name: "GPT-4o", badge: "Pro", desc: "Лучшая" },
+  { id: "anthropic/claude-3.5-sonnet", name: "Claude 3.5", badge: "Pro", desc: "Премиум" },
 ];
 
 /* ═══════════════════════════════════════
@@ -41,19 +42,20 @@ const UI: Record<string, {
     subtitle: "Литературный помощник",
     placeholder: "Напишите запрос... (Shift+Enter — новая строка)",
     send: "→", thinking: "Сочиняю...",
-    suggestions: "💡 Идеи для вдохновения:",
-    clear: "🗑", copy: "📋", copied: "✅",
+    suggestions: "Идеи для вдохновения:",
+    clear: "Очистить", copy: "Копировать", copied: "Скопировано",
     modelLabel: "Модель:",
-    greeting: "Здравствуйте! ✨ Я **AI-Муза** — ваш литературный помощник, работающий на передовых нейросетях.\n\nЯ умею:\n\n🖋 **Писать стихи** — любой формы: сонеты, хайку, оды, элегии\n📖 **Сочинять прозу** — рассказы, эссе, сказки, миниатюры\n🎵 **Писать песни** — на стихи классиков и оригинальные\n🔤 **Подбирать рифмы** — с примерами использования\n✏️ **Редактировать** — анализ и улучшение ваших текстов\n🌍 **6 языков** — русский, English, Deutsch, Français, 中文, 한국어\n💡 **Идеи** — генерация тем и образов\n\n🤖 Вы можете выбрать AI-модель в заголовке чата!\n\nПросто опишите, что хотите создать!",
+    greeting:
+      "Здравствуйте! Я **AI-Муза** — ваш литературный помощник на базе нейросетей.\n\nЯ умею:\n\n**Писать стихи** — сонеты, хайку, оды, элегии\n**Сочинять прозу** — рассказы, эссе, сказки\n**Писать песни** — на мотив классиков и оригинальные\n**Подбирать рифмы** — с примерами\n**Редактировать** — анализ и улучшение текстов\n**Шесть языков** — русский, English, Deutsch, Français, 中文, 한국어\n**Идеи** — темы и образы\n\nВыберите модель в заголовке чата.\n\nОпишите, что хотите создать.",
     disclaimer: "AI-Муза • Powered by OpenRouter",
     errorMsg: "Ошибка. Переключаюсь в офлайн-режим...",
     prompts: [
-      "Напиши стихотворение о весне 🌸",
-      "Песня на стихи Есенина 🎵",
-      "Рассказ о любви ❤️",
-      "Хайку о море 🌊",
-      "Рифмы к слову «мечта» 🔤",
-      "Сонет о звёздах ⭐",
+      "Напиши стихотворение о весне",
+      "Песня на стихи Есенина",
+      "Рассказ о любви",
+      "Хайку о море",
+      "Рифмы к слову «мечта»",
+      "Сонет о звёздах",
     ],
   },
   en: {
@@ -61,56 +63,57 @@ const UI: Record<string, {
     subtitle: "Literary Assistant",
     placeholder: "Type your request... (Shift+Enter — new line)",
     send: "→", thinking: "Composing...",
-    suggestions: "💡 Ideas:",
-    clear: "🗑", copy: "📋", copied: "✅",
+    suggestions: "Ideas:",
+    clear: "Clear", copy: "Copy", copied: "Copied",
     modelLabel: "Model:",
-    greeting: "Hello! ✨ I'm **AI Muse** — your literary assistant powered by cutting-edge AI.\n\nI can:\n\n🖋 **Write poetry** — sonnets, haiku, odes, free verse\n📖 **Compose prose** — stories, essays, fairy tales\n🎵 **Write songs** — based on classic poets or original\n🔤 **Find rhymes** — with usage examples\n✏️ **Edit** — analyze and improve your texts\n🌍 **6 languages**\n\n🤖 You can select the AI model in the chat header!\n\nJust describe what you'd like to create!",
+    greeting:
+      "Hello! I'm **AI Muse** — your literary assistant.\n\nI can:\n\n**Write poetry** — sonnets, haiku, odes\n**Compose prose** — stories, essays\n**Write songs**\n**Find rhymes**\n**Edit** texts\n**Six languages**\n\nSelect a model in the header.\n\nDescribe what you would like to create.",
     disclaimer: "AI Muse • Powered by OpenRouter",
     errorMsg: "Error. Switching to offline mode...",
     prompts: [
-      "Write a poem about spring 🌸",
-      "Song based on Yesenin 🎵",
-      "A love story ❤️",
-      "Haiku about the sea 🌊",
-      "Rhymes for 'dream' 🔤",
-      "Sonnet about stars ⭐",
+      "Write a poem about spring",
+      "Song based on Yesenin",
+      "A love story",
+      "Haiku about the sea",
+      "Rhymes for 'dream'",
+      "Sonnet about stars",
     ],
   },
   de: {
     title: "KI-Muse", subtitle: "Literarischer Assistent",
     placeholder: "Anfrage eingeben...", send: "→", thinking: "Komponiere...",
-    suggestions: "💡 Ideen:", clear: "🗑", copy: "📋", copied: "✅",
+    suggestions: "Ideen:", clear: "Leeren", copy: "Kopieren", copied: "Kopiert",
     modelLabel: "Modell:",
-    greeting: "Hallo! ✨ Ich bin **KI-Muse**.\n\nBeschreiben Sie, was Sie schreiben möchten!",
+    greeting: "Hallo! Ich bin **KI-Muse**.\n\nBeschreiben Sie, was Sie schreiben möchten.",
     disclaimer: "KI-Muse • OpenRouter", errorMsg: "Fehler...",
-    prompts: ["Gedicht über Frühling 🌸", "Ein Lied schreiben 🎵", "Reime finden 🔤"],
+    prompts: ["Gedicht über Frühling", "Ein Lied schreiben", "Reime finden"],
   },
   fr: {
     title: "IA Muse", subtitle: "Assistant littéraire",
     placeholder: "Votre demande...", send: "→", thinking: "Je compose...",
-    suggestions: "💡 Idées :", clear: "🗑", copy: "📋", copied: "✅",
+    suggestions: "Idées :", clear: "Effacer", copy: "Copier", copied: "Copié",
     modelLabel: "Modèle :",
-    greeting: "Bonjour ! ✨ Je suis **IA Muse**.\n\nDécrivez ce que vous souhaitez écrire !",
+    greeting: "Bonjour ! Je suis **IA Muse**.\n\nDécrivez ce que vous souhaitez écrire.",
     disclaimer: "IA Muse • OpenRouter", errorMsg: "Erreur...",
-    prompts: ["Poème sur le printemps 🌸", "Écrire une chanson 🎵", "Trouver des rimes 🔤"],
+    prompts: ["Poème sur le printemps", "Écrire une chanson", "Trouver des rimes"],
   },
   zh: {
     title: "AI缪斯", subtitle: "文学助手",
     placeholder: "输入请求...", send: "→", thinking: "创作中...",
-    suggestions: "💡：", clear: "🗑", copy: "📋", copied: "✅",
+    suggestions: "灵感：", clear: "清空", copy: "复制", copied: "已复制",
     modelLabel: "模型：",
-    greeting: "你好！✨ 我是 **AI缪斯**。\n\n描述您想创作什么！",
+    greeting: "你好！我是 **AI缪斯**。\n\n描述您想创作什么。",
     disclaimer: "AI缪斯 • OpenRouter", errorMsg: "错误...",
-    prompts: ["春天的诗 🌸", "写一首歌 🎵", "押韵 🔤"],
+    prompts: ["春天的诗", "写一首歌", "押韵"],
   },
   ko: {
     title: "AI 뮤즈", subtitle: "문학 도우미",
     placeholder: "요청 입력...", send: "→", thinking: "작곡 중...",
-    suggestions: "💡:", clear: "🗑", copy: "📋", copied: "✅",
+    suggestions: "아이디어:", clear: "비우기", copy: "복사", copied: "복사됨",
     modelLabel: "모델:",
-    greeting: "안녕하세요! ✨ **AI 뮤즈**입니다.\n\n무엇을 만들고 싶은지 설명해주세요!",
+    greeting: "안녕하세요! **AI 뮤즈**입니다.\n\n무엇을 만들고 싶은지 설명해주세요.",
     disclaimer: "AI 뮤즈 • OpenRouter", errorMsg: "오류...",
-    prompts: ["봄에 대한 시 🌸", "노래 쓰기 🎵", "운율 찾기 🔤"],
+    prompts: ["봄에 대한 시", "노래 쓰기", "운율 찾기"],
   },
 };
 
@@ -121,10 +124,13 @@ function matchAny(t: string, k: string[]): boolean { return k.some(x => t.includ
 
 function offlineResponse(input: string): string {
   const q = input.toLowerCase();
-  if (matchAny(q, ["весн", "spring"])) return "🌸 **Весна**\n\n*Апрель раскрыл ладони —*\n*И солнце потекло рекой,*\n*И в каждом тихом стоне*\n*Ветвей звучит: «Живой!»*\n\n---\n📴 Офлайн-режим";
-  if (matchAny(q, ["любов", "love"])) return "❤️ **О любви**\n\n*Между нами — не расстоянье,*\n*А созвездие тихих слов.*\n\n---\n📴 Офлайн-режим";
-  if (matchAny(q, ["есенин", "yesenin"])) return "🎵 **В стиле Есенина**\n\n*Отговорила роща золотая*\n*Берёзовым, весёлым языком...*\n\n---\n📴 Офлайн-режим";
-  return "✨ Интересная тема!\n\n*Тишина обнимает слова,*\n*Что рождаются тихо внутри...*\n\n---\n📴 Офлайн-режим. Подключите API для полных ответов.";
+  if (matchAny(q, ["весн", "spring"]))
+    return "**Весна**\n\n*Апрель раскрыл ладони —*\n*И солнце потекло рекой,*\n*И в каждом тихом стоне*\n*Ветвей звучит: «Живой!»*\n\n---\n*Офлайн-режим*";
+  if (matchAny(q, ["любов", "love"]))
+    return "**О любви**\n\n*Между нами — не расстоянье,*\n*А созвездие тихих слов.*\n\n---\n*Офлайн-режим*";
+  if (matchAny(q, ["есенин", "yesenin"]))
+    return "**В стиле Есенина**\n\n*Отговорила роща золотая*\n*Берёзовым, весёлым языком...*\n\n---\n*Офлайн-режим*";
+  return "**Интересная тема**\n\n*Тишина обнимает слова,*\n*Что рождаются тихо внутри...*\n\n---\n*Офлайн-режим. Подключите API для полных ответов.*";
 }
 
 /* ═══════════════════════════════════════
@@ -234,7 +240,7 @@ export default function AIWritingAgent({ onClose }: AIWritingAgentProps) {
       const reply = offlineResponse(text);
       setMessages(prev => [...prev, {
         role: "assistant",
-        content: `⚠️ ${ui.errorMsg}\n\n${reply}`,
+        content: `**${ui.errorMsg}**\n\n${reply}`,
       }]);
       setApiStatus("offline");
     }
@@ -268,7 +274,7 @@ export default function AIWritingAgent({ onClose }: AIWritingAgentProps) {
     const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g);
     return parts.map((part, i) => {
       if (part.startsWith("**") && part.endsWith("**"))
-        return <strong key={i} className="text-emerald-300 font-semibold">{part.slice(2, -2)}</strong>;
+        return <strong key={i} className="text-violet-300 font-semibold">{part.slice(2, -2)}</strong>;
       if (part.startsWith("*") && part.endsWith("*"))
         return <em key={i} className="text-gray-400">{part.slice(1, -1)}</em>;
       return <span key={i}>{part}</span>;
@@ -286,7 +292,7 @@ export default function AIWritingAgent({ onClose }: AIWritingAgentProps) {
                       h-[94vh] sm:h-[82vh] sm:max-h-[780px]
                       bg-gray-950/98 backdrop-blur-xl border border-white/10
                       rounded-t-3xl sm:rounded-3xl flex flex-col overflow-hidden
-                      shadow-2xl shadow-emerald-500/10 animate-slide-up">
+                      shadow-2xl shadow-violet-500/10 animate-slide-up">
 
         {/* ═══════ Header ═══════ */}
         <div className="shrink-0 border-b border-white/10 bg-gray-950/50">
@@ -294,8 +300,8 @@ export default function AIWritingAgent({ onClose }: AIWritingAgentProps) {
             <div className="flex items-center gap-3">
               {/* Иконка */}
               <div className="relative w-10 h-10 rounded-2xl
-                              bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500
-                              flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                              bg-gradient-to-br from-violet-500 via-purple-600 to-fuchsia-600
+                              flex items-center justify-center shadow-lg shadow-violet-500/25">
                 <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none"
                      stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 2a4 4 0 0 1 4 4v1h1a3 3 0 0 1 3 3v1a3 3 0 0 1-3 3h-1v4a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-4H7a3 3 0 0 1-3-3v-1a3 3 0 0 1 3-3h1V6a4 4 0 0 1 4-4z"/>
@@ -310,29 +316,33 @@ export default function AIWritingAgent({ onClose }: AIWritingAgentProps) {
                 <h2 className="font-display font-bold text-white text-sm sm:text-base leading-tight">
                   {ui.title}
                 </h2>
-                <p className="text-[10px] text-emerald-400/60">
-                  {apiStatus === "online" ? `⚡ ${currentModel.name}` : apiStatus === "offline" ? "📴 offline" : "..."}
+                <p className="text-[10px] text-violet-400/70">
+                  {apiStatus === "online"
+                    ? currentModel.name
+                    : apiStatus === "offline"
+                      ? "Offline"
+                      : "…"}
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-1">
               {/* Выбор модели */}
-              <button onClick={() => setShowModelPicker(!showModelPicker)}
-                className="px-2 py-1.5 rounded-xl text-[10px] text-gray-500
-                           hover:text-gray-300 hover:bg-white/5 transition-all"
-                title={ui.modelLabel}>
-                🧠
+              <button type="button" onClick={() => setShowModelPicker(!showModelPicker)}
+                className="p-2 rounded-xl text-gray-500
+                           hover:text-violet-300 hover:bg-white/5 transition-all"
+                title={ui.modelLabel} aria-label={ui.modelLabel}>
+                <Brain className="w-4 h-4" aria-hidden />
               </button>
-              <button onClick={clearChat}
+              <button type="button" onClick={clearChat}
                 className="px-2 py-1.5 rounded-xl text-[10px] text-gray-500
                            hover:text-gray-300 hover:bg-white/5 transition-all">
                 {ui.clear}
               </button>
-              <button onClick={onClose} aria-label="Закрыть"
+              <button type="button" onClick={onClose} aria-label="Закрыть"
                 className="w-8 h-8 rounded-xl flex items-center justify-center text-gray-500
                            hover:text-white hover:bg-white/10 transition-all
-                           focus:outline-none focus:ring-2 focus:ring-emerald-400">
-                ✕
+                           focus:outline-none focus:ring-2 focus:ring-violet-400">
+                <X className="w-4 h-4" aria-hidden />
               </button>
             </div>
           </div>
@@ -347,7 +357,7 @@ export default function AIWritingAgent({ onClose }: AIWritingAgentProps) {
                     onClick={() => { setSelectedModel(m.id); setShowModelPicker(false); }}
                     className={`px-2.5 py-2 rounded-xl text-left text-[11px] transition-all
                       ${selectedModel === m.id
-                        ? "bg-emerald-500/20 border border-emerald-500/40 text-emerald-300"
+                        ? "bg-violet-500/20 border border-violet-500/40 text-violet-200"
                         : "bg-white/[0.02] border border-white/5 text-gray-400 hover:bg-white/5"}`}>
                     <div className="flex items-center justify-between">
                       <span className="font-medium">{m.badge} {m.name}</span>
@@ -380,7 +390,7 @@ export default function AIWritingAgent({ onClose }: AIWritingAgentProps) {
                                   opacity-0 group-hover:opacity-100 sm:opacity-60
                                   sm:hover:opacity-100 transition-opacity">
                     {msg.model && (
-                      <span className="text-[9px] text-gray-700">🤖 {msg.model}</span>
+                      <span className="text-[9px] text-gray-600">{ui.modelLabel} {msg.model}</span>
                     )}
                     <button onClick={() => copyMessage(msg.content, i)}
                       className="text-[10px] text-gray-600 hover:text-gray-400 transition-colors">
@@ -397,9 +407,9 @@ export default function AIWritingAgent({ onClose }: AIWritingAgentProps) {
               <div className="bg-white/[0.03] border border-white/5 rounded-2xl rounded-bl-md px-4 py-3">
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: "0ms" }} />
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: "150ms" }} />
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: "300ms" }} />
+                    <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-bounce" style={{ animationDelay: "0ms" }} />
+                    <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-bounce" style={{ animationDelay: "150ms" }} />
+                    <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-bounce" style={{ animationDelay: "300ms" }} />
                   </div>
                   <span className="text-[11px] text-gray-500">{ui.thinking}</span>
                 </div>
@@ -415,10 +425,10 @@ export default function AIWritingAgent({ onClose }: AIWritingAgentProps) {
             <p className="text-[10px] text-gray-600 mb-1.5">{ui.suggestions}</p>
             <div className="flex flex-wrap gap-1.5">
               {ui.prompts.map((p, i) => (
-                <button key={i} onClick={() => sendMessage(p.replace(/\s[^\s]*$/, ""))}
+                <button type="button" key={i} onClick={() => sendMessage(p)}
                   className="px-2.5 py-1 rounded-xl text-[10px]
-                             bg-emerald-500/10 border border-emerald-500/20
-                             text-emerald-400 hover:bg-emerald-500/20
+                             bg-violet-500/10 border border-violet-500/25
+                             text-violet-300 hover:bg-violet-500/20
                              active:scale-95 transition-all">
                   {p}
                 </button>
@@ -438,7 +448,7 @@ export default function AIWritingAgent({ onClose }: AIWritingAgentProps) {
               className="flex-1 resize-none px-3 sm:px-4 py-2.5
                          rounded-2xl bg-white/5 border border-white/10
                          text-gray-200 placeholder-gray-600
-                         focus:outline-none focus:ring-2 focus:ring-emerald-500/50
+                         focus:outline-none focus:ring-2 focus:ring-violet-500/50
                          text-[13px] sm:text-sm max-h-28"
               style={{ height: "auto", minHeight: "42px" }}
               onInput={e => {
@@ -448,13 +458,14 @@ export default function AIWritingAgent({ onClose }: AIWritingAgentProps) {
               }}
             />
             <button type="submit" disabled={!input.trim() || isThinking}
+              aria-label={ui.send}
               className="w-10 h-10 rounded-2xl shrink-0
-                         bg-gradient-to-r from-emerald-500 to-teal-600
-                         text-white text-lg flex items-center justify-center
+                         bg-gradient-to-r from-violet-600 to-purple-700
+                         text-white flex items-center justify-center
                          hover:scale-105 active:scale-95
                          disabled:opacity-30 transition-all
-                         focus:outline-none focus:ring-2 focus:ring-emerald-400">
-              ➤
+                         focus:outline-none focus:ring-2 focus:ring-violet-400">
+              <Send className="w-4 h-4" aria-hidden />
             </button>
           </div>
           <p className="text-[9px] text-gray-700 text-center mt-1.5">{ui.disclaimer}</p>

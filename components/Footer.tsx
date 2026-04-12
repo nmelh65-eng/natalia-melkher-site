@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { Mail, Send, Instagram } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function Footer() {
@@ -34,28 +35,28 @@ export default function Footer() {
             <div className="mt-5 flex items-center gap-3">
               <a
                 href="mailto:natalia@melkher.com"
-                className="w-10 h-10 rounded-2xl border border-white/[0.08] bg-white/[0.03] flex items-center justify-center text-sm hover:border-purple-400/25 hover:bg-white/[0.06] transition-colors"
+                className="w-10 h-10 rounded-2xl border border-white/[0.08] bg-white/[0.03] flex items-center justify-center text-purple-300/90 hover:border-purple-400/25 hover:bg-white/[0.06] transition-colors"
                 aria-label="Email"
               >
-                📧
+                <Mail className="w-4 h-4" strokeWidth={1.75} />
               </a>
 
               <a
                 href="https://t.me/nataliamelkher"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-2xl border border-white/[0.08] bg-white/[0.03] flex items-center justify-center text-sm hover:border-amber-400/25 hover:bg-white/[0.06] transition-colors"
+                className="w-10 h-10 rounded-2xl border border-white/[0.08] bg-white/[0.03] flex items-center justify-center text-amber-300/90 hover:border-amber-400/25 hover:bg-white/[0.06] transition-colors"
                 aria-label="Telegram"
               >
-                ✈️
+                <Send className="w-4 h-4" strokeWidth={1.75} />
               </a>
 
               <a
                 href="#"
-                className="w-10 h-10 rounded-2xl border border-white/[0.08] bg-white/[0.03] flex items-center justify-center text-sm hover:border-pink-400/25 hover:bg-white/[0.06] transition-colors"
+                className="w-10 h-10 rounded-2xl border border-white/[0.08] bg-white/[0.03] flex items-center justify-center text-pink-300/90 hover:border-pink-400/25 hover:bg-white/[0.06] transition-colors"
                 aria-label="Instagram"
               >
-                📸
+                <Instagram className="w-4 h-4" strokeWidth={1.75} />
               </a>
             </div>
           </div>
@@ -110,8 +111,8 @@ export default function Footer() {
                 href="mailto:natalia@melkher.com"
                 className="flex items-start gap-3 text-gray-400 hover:text-purple-300 transition-colors text-sm group"
               >
-                <span className="mt-0.5 w-9 h-9 rounded-2xl bg-purple-500/10 border border-purple-500/15 flex items-center justify-center text-xs group-hover:bg-purple-500/20 transition-colors shrink-0">
-                  📧
+                <span className="mt-0.5 w-9 h-9 rounded-2xl bg-purple-500/10 border border-purple-500/15 flex items-center justify-center text-purple-300/90 group-hover:bg-purple-500/20 transition-colors shrink-0">
+                  <Mail className="w-4 h-4" strokeWidth={1.75} />
                 </span>
                 <span className="leading-relaxed break-all">
                   natalia@melkher.com
@@ -124,8 +125,8 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="flex items-start gap-3 text-gray-400 hover:text-amber-300 transition-colors text-sm group"
               >
-                <span className="mt-0.5 w-9 h-9 rounded-2xl bg-amber-500/10 border border-amber-500/15 flex items-center justify-center text-xs group-hover:bg-amber-500/20 transition-colors shrink-0">
-                  ✈️
+                <span className="mt-0.5 w-9 h-9 rounded-2xl bg-amber-500/10 border border-amber-500/15 flex items-center justify-center text-amber-300/90 group-hover:bg-amber-500/20 transition-colors shrink-0">
+                  <Send className="w-4 h-4" strokeWidth={1.75} />
                 </span>
                 <span className="leading-relaxed">@nataliamelkher</span>
               </a>
@@ -140,9 +141,12 @@ export default function Footer() {
               : `© Наталья Мельхер. ${t.footer.rights}.`}
           </p>
 
-          <div className="flex items-center gap-1 text-xs text-gray-400/85">
+          <div className="flex items-center gap-1.5 text-xs text-gray-400/85">
             <span>{t.footer.madeWith}</span>
-            <span className="text-purple-300/90 mx-1">💜</span>
+            <span
+              className="mx-0.5 inline-block h-1.5 w-1.5 rounded-full bg-gradient-to-br from-purple-400 to-amber-400 opacity-90"
+              aria-hidden
+            />
             <span>{t.footer.inspiration}</span>
           </div>
         </div>

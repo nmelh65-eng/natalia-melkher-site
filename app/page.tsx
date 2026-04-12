@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { Sparkles } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import type { TranslatedWork } from "@/types";
 import PoemCard from "@/components/PoemCard";
@@ -188,7 +189,7 @@ export default function HomePage() {
               href="/about"
               className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] px-2.5 py-1.5 text-[10px] uppercase tracking-[0.14em] text-gray-300 hover:bg-white/[0.05] transition-colors"
             >
-              <span aria-hidden="true">✦</span>
+              <Sparkles className="w-3 h-3 text-purple-300/70 shrink-0" strokeWidth={1.75} aria-hidden />
               {t.nav.about}
             </Link>
           </div>

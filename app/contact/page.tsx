@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { Facebook, Instagram, Mail, Music2, Send, Youtube } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import AnimatedSection from "@/components/AnimatedSection";
 const CT: Record<string,{title:string;subtitle:string;name:string;email:string;subject:string;message:string;send:string;success:string;social:string;emailLabel:string;telegram:string}> = {
@@ -25,7 +26,7 @@ export default function ContactPage() {
             <AnimatedSection delay={200}>
               <form onSubmit={handleSubmit} className="glass rounded-3xl p-8 space-y-6">
                 <div className="h-1 bg-gradient-to-r from-purple-500 via-amber-500 to-purple-500 rounded-full -mt-8 -mx-8 mb-8 rounded-b-none" />
-                {sent && <div className="p-4 rounded-2xl bg-green-500/10 border border-green-500/30 text-green-400 text-center">✨ {c.success}</div>}
+                {sent && <div className="p-4 rounded-2xl bg-green-500/10 border border-green-500/30 text-green-400 text-center">{c.success}</div>}
                 {(["name","email","subject"] as const).map((field) => (
                   <div key={field}><label className="block text-sm text-gray-400 mb-2">{c[field]}</label>
                   <input type={field==="email"?"email":"text"} required={field!=="subject"} value={form[field]} onChange={(e) => setForm({...form,[field]:e.target.value})}
@@ -39,9 +40,9 @@ export default function ContactPage() {
             </AnimatedSection>
             <AnimatedSection delay={400}>
               <div className="space-y-6">
-                <div className="glass rounded-3xl p-8 hover:border-purple-500/30 transition-colors"><div className="flex items-center gap-4"><div className="w-12 h-12 rounded-2xl bg-purple-500/20 flex items-center justify-center text-2xl">📧</div><div><h3 className="font-display text-lg font-bold text-gray-100">{c.emailLabel}</h3><a href="mailto:natalia@melkher.com" className="text-purple-400 hover:text-purple-300 transition-colors">natalia@melkher.com</a></div></div></div>
-                <div className="glass rounded-3xl p-8 hover:border-amber-500/30 transition-colors"><div className="flex items-center gap-4"><div className="w-12 h-12 rounded-2xl bg-amber-500/20 flex items-center justify-center text-2xl">✈️</div><div><h3 className="font-display text-lg font-bold text-gray-100">{c.telegram}</h3><a href="https://t.me/nataliamelkher" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:text-amber-300 transition-colors">@nataliamelkher</a></div></div></div>
-                <div className="glass rounded-3xl p-8"><h3 className="font-display text-lg font-bold text-gray-100 mb-6">{c.social}</h3><div className="grid grid-cols-2 gap-3">{[{name:"Instagram",icon:"📸"},{name:"Facebook",icon:"📘"},{name:"YouTube",icon:"🎬"},{name:"TikTok",icon:"🎵"}].map((s) => (<a key={s.name} href="#" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/20 transition-all group"><span className="text-xl">{s.icon}</span><span className="text-sm text-gray-400 group-hover:text-gray-200 transition-colors">{s.name}</span></a>))}</div></div>
+                <div className="glass rounded-3xl p-8 hover:border-purple-500/30 transition-colors"><div className="flex items-center gap-4"><div className="w-12 h-12 rounded-2xl bg-purple-500/20 flex items-center justify-center text-purple-300/90"><Mail className="w-6 h-6" strokeWidth={1.75} /></div><div><h3 className="font-display text-lg font-bold text-gray-100">{c.emailLabel}</h3><a href="mailto:natalia@melkher.com" className="text-purple-400 hover:text-purple-300 transition-colors">natalia@melkher.com</a></div></div></div>
+                <div className="glass rounded-3xl p-8 hover:border-amber-500/30 transition-colors"><div className="flex items-center gap-4"><div className="w-12 h-12 rounded-2xl bg-amber-500/20 flex items-center justify-center text-amber-300/90"><Send className="w-6 h-6" strokeWidth={1.75} /></div><div><h3 className="font-display text-lg font-bold text-gray-100">{c.telegram}</h3><a href="https://t.me/nataliamelkher" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:text-amber-300 transition-colors">@nataliamelkher</a></div></div></div>
+                <div className="glass rounded-3xl p-8"><h3 className="font-display text-lg font-bold text-gray-100 mb-6">{c.social}</h3><div className="grid grid-cols-2 gap-3">{[{name:"Instagram",Icon:Instagram},{name:"Facebook",Icon:Facebook},{name:"YouTube",Icon:Youtube},{name:"TikTok",Icon:Music2}].map((s) => (<a key={s.name} href="#" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/20 transition-all group"><s.Icon className="w-5 h-5 text-gray-400 group-hover:text-gray-200 shrink-0" strokeWidth={1.75} /><span className="text-sm text-gray-400 group-hover:text-gray-200 transition-colors">{s.name}</span></a>))}</div></div>
                 <div className="glass rounded-3xl p-8 text-center"><p className="font-serif text-gray-400 italic text-lg leading-relaxed">&ldquo;Каждое письмо — это мост между двумя сердцами&rdquo;</p><p className="text-purple-400/60 text-sm mt-3">— Н.М.</p></div>
               </div>
             </AnimatedSection>

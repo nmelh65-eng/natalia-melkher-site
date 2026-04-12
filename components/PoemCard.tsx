@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import type { Language, TranslatedWork } from "@/types";
+import { Eye, Heart } from "lucide-react";
 import { workPublicPath } from "@/lib/slug";
 
 const localeMap: Record<Language, string> = {
@@ -92,13 +93,13 @@ export default function PoemCard({
         <div className="mt-auto flex items-center justify-between gap-4 border-t border-white/[0.05] pt-5">
           <div className="flex flex-wrap items-center gap-3 text-xs text-gray-400">
             <span className="inline-flex items-center gap-1.5">
-              <span aria-hidden="true">👁</span>
+              <Eye className="w-3.5 h-3.5 text-gray-500" strokeWidth={1.75} aria-hidden />
               <span>
                 {work.views} {t.sections.views}
               </span>
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <span aria-hidden="true">❤</span>
+              <Heart className="w-3.5 h-3.5 text-gray-500" strokeWidth={1.75} aria-hidden />
               <span>
                 {work.likes} {t.sections.likes}
               </span>
