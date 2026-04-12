@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getClientIp } from "@/lib/client-ip";
+import { allowWorksPatch } from "@/lib/patch-rate-limit";
 import {
   getAllWorks,
   getWorkByPublicSegment,
@@ -33,10 +35,23 @@ export async function GET(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
   try {
+    const ip = getClientIp(req);
+    if (!allowWorksPatch(ip)) {
+      return NextResponse.json(
+        { error: "Слишком много запросов. Попробуйте позже." },
+        { status: 429 }
+      );
+    }
+
     const body = await req.json();
     const { id, action } = body;
 
-    if (!id || !action) {
+    if (
+      typeof id !== "string" ||
+      id.length === 0 ||
+      id.length > 120 ||
+      typeof action !== "string"
+    ) {
       return NextResponse.json(
         { error: "Missing id or action" },
         { status: 400 }
@@ -60,10 +75,9 @@ export async function PATCH(req: NextRequest) {
     }
 
     return NextResponse.json({ error: "Invalid action" }, { status: 400 });
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : String(error);
+  } catch {
     return NextResponse.json(
-      { error: "Server error: " + message },
+      { error: "Внутренняя ошибка сервера" },
       { status: 500 }
     );
   }

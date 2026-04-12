@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { checkPassword, createToken } from "@/lib/admin-auth";
+import { getClientIp } from "@/lib/client-ip";
 
 type LoginAttemptRecord = {
   count: number;
@@ -9,17 +10,6 @@ type LoginAttemptRecord = {
 const loginAttempts = new Map<string, LoginAttemptRecord>();
 const MAX_ATTEMPTS = 8;
 const WINDOW_MS = 15 * 60 * 1000; // 15 минут
-
-function getClientIp(req: NextRequest) {
-  const forwarded = req.headers.get("x-forwarded-for");
-  const realIp = req.headers.get("x-real-ip");
-
-  if (forwarded) {
-    return forwarded.split(",")[0]?.trim() || "unknown";
-  }
-
-  return realIp || "unknown";
-}
 
 function isBlocked(ip: string) {
   const now = Date.now();

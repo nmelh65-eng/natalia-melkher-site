@@ -8,8 +8,12 @@ alwaysApply: true
 - **Стек:** Next.js App Router, React 19, Tailwind v4, Framer Motion, Vercel Analytics.
 - **Данные:** произведения из `data/works.ts` + опционально Redis для кастомных записей и админки. Публичные URL: `/poetry/{slug}`, `/prose/{slug}` (поле `slug`); старые ссылки `/poetry/poem-001` редиректятся 308 через `middleware.ts`.
 - **Админ:** cookie `admin-token` (HMAC). В **production** обязательны `ADMIN_SECRET` и `ADMIN_PASSWORD` (в репозитории не хранить).
-- **AI:** `POST /api/ai` проксирует OpenRouter; ключ `OPENROUTER_API_KEY`. Лимиты в памяти на инстансе — на Vercel не глобальны; при росте нагрузки имеет смысл Upstash Ratelimit.
-- **Деплой:** GitHub → Vercel; переменные окружения задать в панели Vercel.
-- **MCP в Cursor:** серверы MCP настраиваются в Cursor (глобально или для проекта), а не в рантайме сайта. Для работы с API/репозиторием используйте env и документацию OpenRouter/Vercel.
+- **AI:** `POST /api/ai` проксирует OpenRouter; ключ `OPENROUTER_API_KEY`. Лимиты в памяти на инстансе — на Vercel не глобальны; при росте нагрузки имеет смысл Upstash Ratelimit. Тела запросов: только `role` ∈ user|assistant|system, длина `model` ограничена.
+- **Публичный API:** `PATCH /api/works` — лимит с IP/час (`lib/patch-rate-limit.ts`), без деталей стека в ответах 500. Админ `POST` ошибки — общее сообщение.
+- **IP клиента:** единая функция `getClientIp` в `lib/client-ip.ts` (X-Forwarded-For / X-Real-IP).
+- **Соцсети:** URL из `lib/social.ts`; переопределение через `NEXT_PUBLIC_INSTAGRAM_URL`, `NEXT_PUBLIC_FACEBOOK_URL`, `NEXT_PUBLIC_YOUTUBE_URL`, `NEXT_PUBLIC_TIKTOK_URL`.
+- **security.txt:** `public/.well-known/security.txt` (RFC 9116).
+- **Деплой:** GitHub → Vercel; переменные окружения задать в панели Vercel. После `git push` Vercel собирает проект автоматически, если репозиторий подключён.
+- **MCP и Agent Skills в Cursor:** настраиваются в приложении Cursor (MCP-серверы, пользовательские Skills), а не деплоятся на сайт. В репозитории достаточно `.cursor/rules` для контекста агента.
 
 При изменениях API проверяйте клиенты (`components/AIWritingAgent.tsx` и др.) на совместимость формата ответа.

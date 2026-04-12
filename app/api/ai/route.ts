@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getClientIp } from "@/lib/client-ip";
 
 /* ═══════════════════════════════════════
    Конфигурация моделей
@@ -61,6 +62,27 @@ const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT = 30; // запросов в час
 const RATE_WINDOW = 60 * 60 * 1000;
 
+const ALLOWED_ROLES = new Set(["user", "assistant", "system"]);
+
+function normalizeMessages(
+  messages: unknown
+): { role: string; content: string }[] | null {
+  if (!Array.isArray(messages) || messages.length === 0) return null;
+
+  const out: { role: string; content: string }[] = [];
+
+  for (const msg of messages) {
+    if (!msg || typeof msg !== "object") return null;
+    const role = (msg as { role?: unknown }).role;
+    const content = (msg as { content?: unknown }).content;
+    if (typeof role !== "string" || !ALLOWED_ROLES.has(role)) return null;
+    if (typeof content !== "string") return null;
+    out.push({ role, content });
+  }
+
+  return out;
+}
+
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
   const record = rateLimitMap.get(ip);
@@ -89,10 +111,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Rate limit
-    const ip = req.headers.get("x-forwarded-for")
-             || req.headers.get("x-real-ip")
-             || "unknown";
+    const ip = getClientIp(req);
     if (!checkRateLimit(ip)) {
       return NextResponse.json(
         { error: "Слишком много запросов. Подождите немного и попробуйте снова." },
@@ -103,24 +122,24 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { messages, language, model } = body;
 
-    // Валидация
-    if (!messages || !Array.isArray(messages) || messages.length === 0) {
+    const normalized = normalizeMessages(messages);
+    if (!normalized) {
       return NextResponse.json(
         { error: "Неверный формат сообщений" },
         { status: 400 }
       );
     }
 
-    // Ограничиваем историю (последние 12 сообщений)
-    const trimmedMessages = messages.slice(-12).map(
-      (msg: { role: string; content: string }) => ({
-        role: msg.role,
-        content: msg.content.slice(0, 3000), // макс 3000 символов на сообщение
-      })
-    );
+    const trimmedMessages = normalized.slice(-12).map((msg) => ({
+      role: msg.role,
+      content: msg.content.slice(0, 3000),
+    }));
 
     // Выбор модели
-    const selectedModel = model || DEFAULT_MODEL;
+    const selectedModel =
+      typeof model === "string" && model.length > 0 && model.length < 120
+        ? model
+        : DEFAULT_MODEL;
 
     // Запрос к OpenRouter
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -136,7 +155,13 @@ export async function POST(req: NextRequest) {
         messages: [
           {
             role: "system",
-            content: SYSTEM_PROMPT + `\n\nТекущий язык интерфейса: ${language || "ru"}`,
+            content:
+              SYSTEM_PROMPT +
+              `\n\nТекущий язык интерфейса: ${
+                typeof language === "string" && language.length < 24
+                  ? language
+                  : "ru"
+              }`,
           },
           ...trimmedMessages,
         ],

@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Страница не найдена",
+  description: "Запрашиваемая страница отсутствует. Вернитесь на главную или в раздел поэзии.",
+  robots: { index: false, follow: true },
+};
 
 export default function NotFound() {
   return (

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Mail, Send, Instagram } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import { instagramUrl } from "@/lib/social";
 
 export default function Footer() {
   const { t } = useLanguage();
@@ -52,7 +53,9 @@ export default function Footer() {
               </a>
 
               <a
-                href="#"
+                href={instagramUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 rounded-2xl border border-white/[0.08] bg-white/[0.03] flex items-center justify-center text-pink-300/90 hover:border-pink-400/25 hover:bg-white/[0.06] transition-colors"
                 aria-label="Instagram"
               >

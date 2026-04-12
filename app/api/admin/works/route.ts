@@ -35,10 +35,9 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({ ok: true, data: work });
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : String(error);
+  } catch {
     return NextResponse.json(
-      { error: "Ошибка: " + message },
+      { error: "Внутренняя ошибка сервера" },
       { status: 500 }
     );
   }
