@@ -1,8 +1,7 @@
 import type { ReactNode } from "react";
-import { generateMetadata } from "./metadata";
-import StructuredData from "./StructuredData";
+import WorkSlugStructuredData from "@/components/works/WorkSlugStructuredData";
 
-export { generateMetadata };
+export { generateMetadata } from "./metadata";
 
 export default async function ProseWorkLayout({
   children,
@@ -13,7 +12,7 @@ export default async function ProseWorkLayout({
 }) {
   return (
     <>
-      <StructuredData params={params} />
+      <WorkSlugStructuredData category="prose" params={params} />
       {children}
     </>
   );

@@ -3,7 +3,7 @@ import {
   getPublishedWorks,
   getWorkByPublicSegment,
 } from "@/lib/works-store";
-import ProseWorkPageClient from "./ProseWorkPageClient";
+import WorkPiecePageClient from "@/components/works/WorkPiecePageClient";
 
 export default async function ProseWorkPage({
   params,
@@ -17,16 +17,17 @@ export default async function ProseWorkPage({
     notFound();
   }
 
-  const allProse = (await getPublishedWorks()).filter(
+  const same = (await getPublishedWorks()).filter(
     (w) => w.category === "prose"
   );
 
   return (
-    <ProseWorkPageClient
+    <WorkPiecePageClient
       key={slug}
+      category="prose"
       slug={slug}
       initialWork={work}
-      initialAllProse={allProse}
+      initialSameCategory={same}
     />
   );
 }

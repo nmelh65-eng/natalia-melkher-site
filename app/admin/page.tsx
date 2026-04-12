@@ -2,7 +2,13 @@
 import React, { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import type { TranslatedWork } from "@/types";
+import type { TranslatedWork, WorkCategory } from "@/types";
+import {
+  WORK_CATEGORIES,
+  CATEGORY_LABEL_RU,
+} from "@/lib/work-categories";
+
+type AdminFilter = "all" | "draft" | WorkCategory;
 
 const S = {
   header: { display:"flex" as const, alignItems:"center" as const, justifyContent:"space-between" as const, padding:"20px 32px", borderBottom:"1px solid rgba(255,255,255,0.08)", background:"rgba(255,255,255,0.02)", backdropFilter:"blur(20px)", position:"sticky" as const, top:0, zIndex:10 },
@@ -17,11 +23,28 @@ const S = {
   btn: (color: string) => ({ padding:"6px 14px", borderRadius:10, border:"none", cursor:"pointer" as const, fontSize:12, fontWeight:600, background:color, color:"white", transition:"opacity 0.2s" }),
 };
 
+const CATEGORY_BADGE: Record<WorkCategory, { bg: string; color: string }> = {
+  poetry: { bg: "rgba(168,85,247,0.2)", color: "#c084fc" },
+  prose: { bg: "rgba(245,158,11,0.2)", color: "#fbbf24" },
+  essay: { bg: "rgba(16,185,129,0.2)", color: "#6ee7b7" },
+  notes: { bg: "rgba(14,165,233,0.2)", color: "#7dd3fc" },
+  quotes: { bg: "rgba(244,63,94,0.2)", color: "#fda4af" },
+  inspiration: { bg: "rgba(139,92,246,0.2)", color: "#c4b5fd" },
+};
+
+const FILTERS: AdminFilter[] = ["all", ...WORK_CATEGORIES, "draft"];
+
+function filterLabel(f: AdminFilter): string {
+  if (f === "all") return "Все";
+  if (f === "draft") return "Черновики";
+  return CATEGORY_LABEL_RU[f];
+}
+
 export default function AdminDashboard() {
   const router = useRouter();
   const [works, setWorks] = useState<TranslatedWork[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<"all"|"poetry"|"prose"|"draft">("all");
+  const [filter, setFilter] = useState<AdminFilter>("all");
   const [search, setSearch] = useState("");
   const [deleting, setDeleting] = useState<string | null>(null);
 
@@ -55,9 +78,8 @@ export default function AdminDashboard() {
   };
 
   const filtered = works.filter((w) => {
-    if (filter === "poetry" && w.category !== "poetry") return false;
-    if (filter === "prose"  && w.category !== "prose")  return false;
-    if (filter === "draft"  && w.isPublished)            return false;
+    if (filter !== "all" && filter !== "draft" && w.category !== filter) return false;
+    if (filter === "draft" && w.isPublished) return false;
     if (search && !w.title.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
@@ -66,6 +88,7 @@ export default function AdminDashboard() {
     total:     works.length,
     poetry:    works.filter(w => w.category === "poetry").length,
     prose:     works.filter(w => w.category === "prose").length,
+    other:     works.filter(w => !["poetry","prose"].includes(w.category)).length,
     published: works.filter(w => w.isPublished).length,
     drafts:    works.filter(w => !w.isPublished).length,
     views:     works.reduce((a, w) => a + w.views, 0),
@@ -74,7 +97,6 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      {/* Header */}
       <div style={S.header}>
         <div style={S.logo}>
           <div style={S.logoBox}>НМ</div>
@@ -86,17 +108,17 @@ export default function AdminDashboard() {
         <div style={{ display:"flex", gap:12, alignItems:"center" }}>
           <Link href="/" target="_blank" style={{ color:"#a855f7", fontSize:13, textDecoration:"none" }}>← Сайт</Link>
           <Link href="/admin/works/new" style={{ ...S.btn("linear-gradient(135deg,#7c3aed,#a855f7)"), textDecoration:"none", display:"inline-block", padding:"8px 18px" }}>+ Новое</Link>
-          <button onClick={handleLogout} style={{ ...S.btn("rgba(255,255,255,0.08)"), color:"#9ca3af" }}>Выйти</button>
+          <button type="button" onClick={handleLogout} style={{ ...S.btn("rgba(255,255,255,0.08)"), color:"#9ca3af" }}>Выйти</button>
         </div>
       </div>
 
       <div style={S.main}>
-        {/* Stats grid */}
         <div style={S.grid}>
           {[
             { label:"Всего", value: stats.total, color:"#a855f7" },
             { label:"Стихи", value: stats.poetry, color:"#8b5cf6" },
             { label:"Проза", value: stats.prose, color:"#f59e0b" },
+            { label:"Другие разделы", value: stats.other, color:"#34d399" },
             { label:"Опубликовано", value: stats.published, color:"#10b981" },
             { label:"Черновики", value: stats.drafts, color:"#6b7280" },
             { label:"Просмотры", value: stats.views.toLocaleString(), color:"#3b82f6" },
@@ -109,22 +131,20 @@ export default function AdminDashboard() {
           ))}
         </div>
 
-        {/* Filters */}
         <div style={{ display:"flex", gap:10, marginBottom:20, flexWrap:"wrap" as const, alignItems:"center" }}>
-          {(["all","poetry","prose","draft"] as const).map((f) => (
-            <button key={f} onClick={() => setFilter(f)}
-              style={{ padding:"6px 16px", borderRadius:20, border:"1px solid", fontSize:13, cursor:"pointer",
+          {FILTERS.map((f) => (
+            <button key={f} type="button" onClick={() => setFilter(f)}
+              style={{ padding:"6px 14px", borderRadius:20, border:"1px solid", fontSize:13, cursor:"pointer",
                 borderColor: filter===f ? "#a855f7" : "rgba(255,255,255,0.1)",
                 background:  filter===f ? "rgba(168,85,247,0.2)" : "transparent",
                 color:       filter===f ? "#c084fc" : "#6b7280" }}>
-              {f === "all" ? "Все" : f === "draft" ? "Черновики" : f === "poetry" ? "Стихи" : "Проза"}
+              {filterLabel(f)}
             </button>
           ))}
           <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Поиск..."
             style={{ marginLeft:"auto", padding:"6px 14px", borderRadius:12, border:"1px solid rgba(255,255,255,0.1)", background:"rgba(255,255,255,0.04)", color:"white", fontSize:13, outline:"none", width:200 }} />
         </div>
 
-        {/* Table */}
         {loading ? (
           <div style={{ textAlign:"center", padding:60, color:"#6b7280" }}>Загрузка...</div>
         ) : (
@@ -140,7 +160,9 @@ export default function AdminDashboard() {
               <tbody>
                 {filtered.length === 0 ? (
                   <tr><td colSpan={7} style={{ ...S.td, textAlign:"center", color:"#4b5563", padding:40 }}>Ничего не найдено</td></tr>
-                ) : filtered.map((work) => (
+                ) : filtered.map((work) => {
+                  const b = CATEGORY_BADGE[work.category];
+                  return (
                   <tr key={work.id} style={{ transition:"background 0.15s" }}
                     onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.02)")}
                     onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
@@ -150,15 +172,15 @@ export default function AdminDashboard() {
                     </td>
                     <td style={S.td}>
                       <span style={{ padding:"3px 10px", borderRadius:20, fontSize:12, fontWeight:600,
-                        background: work.category === "poetry" ? "rgba(168,85,247,0.2)" : "rgba(245,158,11,0.2)",
-                        color:      work.category === "poetry" ? "#c084fc" : "#fbbf24" }}>
-                        {work.category === "poetry" ? "Стихи" : "Проза"}
+                        background: b.bg,
+                        color:      b.color }}>
+                        {CATEGORY_LABEL_RU[work.category]}
                       </span>
                     </td>
                     <td style={S.td}>
                       <div style={{ display:"flex", gap:4, flexWrap:"wrap" as const, maxWidth:160 }}>
-                        {work.tags.slice(0,3).map(t => (
-                          <span key={t} style={{ padding:"2px 8px", borderRadius:10, background:"rgba(255,255,255,0.05)", fontSize:11, color:"#6b7280" }}>#{t}</span>
+                        {work.tags.slice(0,3).map(tg => (
+                          <span key={tg} style={{ padding:"2px 8px", borderRadius:10, background:"rgba(255,255,255,0.05)", fontSize:11, color:"#6b7280" }}>#{tg}</span>
                         ))}
                         {work.tags.length > 3 && <span style={{ fontSize:11, color:"#4b5563" }}>+{work.tags.length-3}</span>}
                       </div>
@@ -178,11 +200,11 @@ export default function AdminDashboard() {
                           style={{ ...S.btn("rgba(168,85,247,0.3)"), color:"#c084fc", textDecoration:"none", display:"inline-block", fontSize:12 }}>
                           Ред.
                         </Link>
-                        <button onClick={() => handleToggle(work.id)}
+                        <button type="button" onClick={() => handleToggle(work.id)}
                           style={S.btn(work.isPublished ? "rgba(107,114,128,0.3)" : "rgba(16,185,129,0.3)")}>
                           {work.isPublished ? "Скрыть" : "Публ."}
                         </button>
-                        <button onClick={() => handleDelete(work.id)}
+                        <button type="button" onClick={() => handleDelete(work.id)}
                           disabled={deleting === work.id}
                           style={{ ...S.btn("rgba(239,68,68,0.25)"), color:"#f87171", opacity: deleting===work.id ? 0.5 : 1 }}>
                           Удалить
@@ -190,7 +212,8 @@ export default function AdminDashboard() {
                       </div>
                     </td>
                   </tr>
-                ))}
+                );
+                })}
               </tbody>
             </table>
           </div>

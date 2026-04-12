@@ -1,6 +1,7 @@
 import type { TranslatedWork } from "@/types";
 import { getWorkSlug } from "@/lib/slug";
 import { getPublicSiteUrl } from "@/lib/site-url";
+import { CATEGORY_DEF } from "@/lib/work-categories";
 
 export function buildWorkStructuredDataScripts(
   work: TranslatedWork,
@@ -17,47 +18,46 @@ export function buildWorkStructuredDataScripts(
 
   const slug = getWorkSlug(work);
   const url = `${base}/${work.category}/${slug}`;
-  const sectionName = work.category === "poetry" ? "Поэзия" : "Проза";
+  const sectionName = CATEGORY_DEF[work.category].sectionLabelRu;
   const sectionPath = `${base}/${work.category}`;
 
-  const creative =
-    work.category === "poetry"
-      ? {
-          "@context": "https://schema.org",
-          "@type": "Poem",
-          "@id": `${url}#creative`,
-          name: headline,
-          headline,
-          description,
-          inLanguage: work.language,
-          author,
-          publisher: author,
-          datePublished: work.createdAt,
-          dateModified: work.updatedAt || work.createdAt,
-          url,
-          mainEntityOfPage: { "@type": "WebPage", "@id": url },
-          keywords: work.tags.join(", "),
-          isAccessibleForFree: true,
-          timeRequired: `PT${Math.max(1, work.readingTime)}M`,
-        }
-      : {
-          "@context": "https://schema.org",
-          "@type": "ShortStory",
-          "@id": `${url}#creative`,
-          name: headline,
-          headline,
-          description,
-          inLanguage: work.language,
-          author,
-          publisher: author,
-          datePublished: work.createdAt,
-          dateModified: work.updatedAt || work.createdAt,
-          url,
-          mainEntityOfPage: { "@type": "WebPage", "@id": url },
-          keywords: work.tags.join(", "),
-          isAccessibleForFree: true,
-          timeRequired: `PT${Math.max(1, work.readingTime)}M`,
-        };
+  const commonCreative = {
+    "@context": "https://schema.org",
+    "@id": `${url}#creative`,
+    name: headline,
+    headline,
+    description,
+    inLanguage: work.language,
+    author,
+    publisher: author,
+    datePublished: work.createdAt,
+    dateModified: work.updatedAt || work.createdAt,
+    url,
+    mainEntityOfPage: { "@type": "WebPage" as const, "@id": url },
+    keywords: work.tags.join(", "),
+    isAccessibleForFree: true,
+    timeRequired: `PT${Math.max(1, work.readingTime)}M`,
+  };
+
+  let creative: Record<string, unknown>;
+
+  if (work.category === "poetry") {
+    creative = { ...commonCreative, "@type": "Poem" };
+  } else if (work.category === "prose") {
+    creative = { ...commonCreative, "@type": "ShortStory" };
+  } else if (work.category === "quotes") {
+    creative = {
+      ...commonCreative,
+      "@type": "Quotation",
+      text: description,
+    };
+  } else {
+    creative = {
+      ...commonCreative,
+      "@type": "Article",
+      articleSection: sectionName,
+    };
+  }
 
   const breadcrumbs = {
     "@context": "https://schema.org",

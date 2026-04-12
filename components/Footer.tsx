@@ -82,6 +82,26 @@ export default function Footer() {
                   color: "hover:text-amber-300",
                 },
                 {
+                  href: "/essay",
+                  label: t.nav.essay,
+                  color: "hover:text-emerald-300",
+                },
+                {
+                  href: "/notes",
+                  label: t.nav.notes,
+                  color: "hover:text-sky-300",
+                },
+                {
+                  href: "/quotes",
+                  label: t.nav.quotes,
+                  color: "hover:text-rose-300",
+                },
+                {
+                  href: "/inspiration",
+                  label: t.nav.inspiration,
+                  color: "hover:text-violet-300",
+                },
+                {
                   href: "/about",
                   label: t.nav.about,
                   color: "hover:text-purple-300",

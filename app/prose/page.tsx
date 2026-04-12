@@ -1,6 +1,6 @@
 import { getPublicSiteUrl } from "@/lib/site-url";
-import { ProsePageClient } from "@/components/ProsePageClient";
+import { CategoryWorksPageClient } from "@/components/works/CategoryWorksPageClient";
 
 export default function ProsePage() {
-  return <ProsePageClient siteUrl={getPublicSiteUrl()} />;
+  return <CategoryWorksPageClient category="prose" siteUrl={getPublicSiteUrl()} />;
 }

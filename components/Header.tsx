@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLanguage } from "@/context/LanguageContext";
-import { Sparkles } from "lucide-react";
+import { ChevronDown, Sparkles } from "lucide-react";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function Header() {
@@ -12,14 +12,26 @@ export default function Header() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
 
-  const navItems = [
+  const primaryLinks = [
     { href: "/", label: t.nav.home },
     { href: "/poetry", label: t.nav.poetry },
     { href: "/prose", label: t.nav.prose },
-    { href: "/about", label: t.nav.about },
-    { href: "/contact", label: t.nav.contact },
   ];
+
+  const moreLinks = [
+    { href: "/essay", label: t.nav.essay },
+    { href: "/notes", label: t.nav.notes },
+    { href: "/quotes", label: t.nav.quotes },
+    { href: "/inspiration", label: t.nav.inspiration },
+  ];
+
+  const aboutLink = { href: "/about", label: t.nav.about };
+
+  const mobileNavLinks = [...primaryLinks, ...moreLinks, aboutLink];
+
+  const moreActive = moreLinks.some((l) => pathname.startsWith(l.href));
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -30,6 +42,7 @@ export default function Header() {
 
   useEffect(() => {
     setMobileOpen(false);
+    setMoreOpen(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -47,6 +60,19 @@ export default function Header() {
       document.body.style.overflow = previousOverflow || "";
     };
   }, [mobileOpen]);
+
+  function linkActive(href: string) {
+    return href === "/"
+      ? pathname === "/"
+      : pathname.startsWith(href);
+  }
+
+  function navLinkClass(active: boolean) {
+    return (
+      "relative px-4 lg:px-5 py-2.5 rounded-2xl text-sm font-medium transition-all duration-300 " +
+      (active ? "text-white" : "text-gray-400 hover:text-gray-100")
+    );
+  }
 
   return (
     <header
@@ -87,41 +113,105 @@ export default function Header() {
                 Наталья Мельхер
               </span>
               <span className="hidden 2xl:block text-[10px] text-gray-500 tracking-[0.24em] uppercase truncate">
-                Poetry • Prose • Inspiration
+                Poetry • Prose • More
               </span>
             </div>
           </Link>
 
           <nav className="hidden 2xl:flex items-center gap-1.5 lg:gap-2">
-            {navItems.map((item) => {
-              const active =
-                item.href === "/"
-                  ? pathname === "/"
-                  : pathname.startsWith(item.href);
-
+            {primaryLinks.map((item) => {
+              const active = linkActive(item.href);
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={
-                    "relative px-4 lg:px-5 py-2.5 rounded-2xl text-sm font-medium transition-all duration-300 " +
-                    (active
-                      ? "text-white"
-                      : "text-gray-400 hover:text-gray-100")
-                  }
+                  className={navLinkClass(active)}
                 >
                   <span className="relative z-10">{item.label}</span>
-
                   {active && (
                     <span className="absolute inset-0 rounded-2xl bg-white/[0.05] border border-purple-400/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]" />
                   )}
-
                   {active && (
                     <span className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-gradient-to-r from-purple-400 to-amber-300" />
                   )}
                 </Link>
               );
             })}
+
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setMoreOpen((o) => !o)}
+                className={
+                  navLinkClass(moreActive) +
+                  " inline-flex items-center gap-1.5 " +
+                  (moreOpen ? "text-white" : "")
+                }
+                aria-expanded={moreOpen}
+                aria-haspopup="true"
+              >
+                <span className="relative z-10">{t.nav.more}</span>
+                <ChevronDown
+                  className={
+                    "relative z-10 w-4 h-4 transition-transform " +
+                    (moreOpen ? "rotate-180" : "")
+                  }
+                  strokeWidth={2}
+                  aria-hidden
+                />
+                {(moreActive || moreOpen) && (
+                  <span className="absolute inset-0 rounded-2xl bg-white/[0.05] border border-purple-400/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]" />
+                )}
+              </button>
+
+              {moreOpen && (
+                <>
+                  <button
+                    type="button"
+                    className="fixed inset-0 z-[45] cursor-default bg-transparent"
+                    aria-label="Закрыть меню"
+                    onClick={() => setMoreOpen(false)}
+                  />
+                  <div
+                    className="absolute left-0 top-[calc(100%+10px)] z-[50] min-w-[220px] rounded-2xl border border-white/[0.1] bg-[#0a0a12]/95 backdrop-blur-xl py-2 shadow-[0_20px_50px_rgba(0,0,0,0.45)]"
+                    role="menu"
+                  >
+                    {moreLinks.map((item) => {
+                      const active = linkActive(item.href);
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          role="menuitem"
+                          className={
+                            "block px-4 py-2.5 text-sm font-medium transition-colors " +
+                            (active
+                              ? "text-white bg-white/[0.06]"
+                              : "text-gray-400 hover:text-white hover:bg-white/[0.04]")
+                          }
+                          onClick={() => setMoreOpen(false)}
+                        >
+                          {item.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
+            </div>
+
+            <Link
+              href={aboutLink.href}
+              className={navLinkClass(linkActive(aboutLink.href))}
+            >
+              <span className="relative z-10">{aboutLink.label}</span>
+              {linkActive(aboutLink.href) && (
+                <span className="absolute inset-0 rounded-2xl bg-white/[0.05] border border-purple-400/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]" />
+              )}
+              {linkActive(aboutLink.href) && (
+                <span className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-gradient-to-r from-purple-400 to-amber-300" />
+              )}
+            </Link>
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
@@ -190,11 +280,8 @@ export default function Header() {
               </div>
 
               <nav className="flex flex-col gap-3">
-                {navItems.map((item) => {
-                  const active =
-                    item.href === "/"
-                      ? pathname === "/"
-                      : pathname.startsWith(item.href);
+                {mobileNavLinks.map((item) => {
+                  const active = linkActive(item.href);
 
                   return (
                     <Link
@@ -211,6 +298,12 @@ export default function Header() {
                     </Link>
                   );
                 })}
+                <Link
+                  href="/contact"
+                  className="rounded-3xl px-5 py-4 font-display text-2xl font-semibold text-gray-400 hover:text-white hover:bg-white/[0.03] transition-all duration-300"
+                >
+                  {t.nav.contact}
+                </Link>
               </nav>
             </div>
 
@@ -220,7 +313,7 @@ export default function Header() {
                   Natalia Melkher
                 </div>
                 <div className="text-sm text-gray-400 mt-1">
-                  Poetry • Prose
+                  Poetry • Prose • Essays
                 </div>
               </div>
               <LanguageSwitcher />

@@ -7,7 +7,13 @@ export interface LanguageOption {
   flag: string;
 }
 
-export type WorkCategory = "poetry" | "prose";
+export type WorkCategory =
+  | "poetry"
+  | "prose"
+  | "essay"
+  | "notes"
+  | "quotes"
+  | "inspiration";
 
 export interface Work {
   id: string;
@@ -32,10 +38,31 @@ export interface TranslatedWork extends Work {
 }
 
 export interface TranslationStrings {
-  nav: { home: string; poetry: string; prose: string; about: string; contact: string };
+  nav: {
+    home: string;
+    poetry: string;
+    prose: string;
+    essay: string;
+    notes: string;
+    quotes: string;
+    inspiration: string;
+    more: string;
+    about: string;
+    contact: string;
+  };
   hero: { greeting: string; title: string; subtitle: string; cta: string; ctaSecondary: string };
   sections: {
     latestWorks: string; poetry: string; prose: string; featured: string;
+    essay: string;
+    notes: string;
+    quotes: string;
+    inspiration: string;
+    poetryIntro: string;
+    proseIntro: string;
+    essayIntro: string;
+    notesIntro: string;
+    quotesIntro: string;
+    inspirationIntro: string;
     allWorks: string; readMore: string; backToHome: string; minuteRead: string;
     views: string; likes: string; publishedOn: string; tags: string;
     noWorksFound: string; searchPlaceholder: string;

@@ -3,7 +3,7 @@ import WorkSlugStructuredData from "@/components/works/WorkSlugStructuredData";
 
 export { generateMetadata } from "./metadata";
 
-export default async function PoetryWorkLayout({
+export default async function NotesWorkLayout({
   children,
   params,
 }: {
@@ -12,7 +12,7 @@ export default async function PoetryWorkLayout({
 }) {
   return (
     <>
-      <WorkSlugStructuredData category="poetry" params={params} />
+      <WorkSlugStructuredData category="notes" params={params} />
       {children}
     </>
   );

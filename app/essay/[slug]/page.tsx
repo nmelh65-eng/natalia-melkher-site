@@ -5,7 +5,7 @@ import {
 } from "@/lib/works-store";
 import WorkPiecePageClient from "@/components/works/WorkPiecePageClient";
 
-export default async function PoetryWorkPage({
+export default async function EssayWorkPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
@@ -13,18 +13,16 @@ export default async function PoetryWorkPage({
   const { slug } = await params;
   const work = await getWorkByPublicSegment(slug);
 
-  if (!work || work.category !== "poetry" || !work.isPublished) {
+  if (!work || work.category !== "essay" || !work.isPublished) {
     notFound();
   }
 
-  const same = (await getPublishedWorks()).filter(
-    (w) => w.category === "poetry"
-  );
+  const same = (await getPublishedWorks()).filter((w) => w.category === "essay");
 
   return (
     <WorkPiecePageClient
       key={slug}
-      category="poetry"
+      category="essay"
       slug={slug}
       initialWork={work}
       initialSameCategory={same}

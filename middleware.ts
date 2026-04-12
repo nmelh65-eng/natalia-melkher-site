@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { works } from "@/data/works";
 import { getWorkSlug } from "@/lib/slug";
+import { isWorkCategory } from "@/lib/work-categories";
 
 /**
  * Редирект 308 со старых URL (/poetry/poem-001) на канонические slug.
@@ -11,7 +12,7 @@ export function middleware(request: NextRequest) {
   if (parts.length !== 2) return NextResponse.next();
 
   const [category, segment] = parts;
-  if (category !== "poetry" && category !== "prose") {
+  if (!isWorkCategory(category)) {
     return NextResponse.next();
   }
 
@@ -27,5 +28,12 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/poetry/:path*", "/prose/:path*"],
+  matcher: [
+    "/poetry/:path*",
+    "/prose/:path*",
+    "/essay/:path*",
+    "/notes/:path*",
+    "/quotes/:path*",
+    "/inspiration/:path*",
+  ],
 };

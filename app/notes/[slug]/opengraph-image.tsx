@@ -7,4 +7,4 @@ import {
 export const size = WORK_OG_SIZE;
 export const contentType = WORK_OG_CONTENT_TYPE;
 
-export default createWorkOpengraphImage("prose");
+export default createWorkOpengraphImage("notes");

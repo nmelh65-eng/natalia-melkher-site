@@ -1,15 +1,18 @@
 import { getWorkByPublicSegment } from "@/lib/works-store";
 import { buildWorkStructuredDataScripts } from "@/lib/work-structured-data";
+import type { WorkCategory } from "@/types";
 
-export default async function StructuredData({
+export default async function WorkSlugStructuredData({
+  category,
   params,
 }: {
+  category: WorkCategory;
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
   const work = await getWorkByPublicSegment(slug);
 
-  if (!work || work.category !== "poetry" || !work.isPublished) {
+  if (!work || work.category !== category || !work.isPublished) {
     return null;
   }
 

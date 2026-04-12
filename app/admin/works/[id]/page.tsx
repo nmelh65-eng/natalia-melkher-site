@@ -5,6 +5,8 @@ import Link from "next/link";
 import type { TranslatedWork, WorkCategory, Language } from "@/types";
 import { estimateReadingTime, generateId, truncate } from "@/lib/utils";
 import { workPublicPath } from "@/lib/slug";
+import { WORK_CATEGORIES, CATEGORY_LABEL_RU } from "@/lib/work-categories";
+import { AdminContentEditor } from "@/components/admin/AdminContentEditor";
 
 const LANGS: Language[] = ["ru","en","de","fr","zh","ko"];
 const LANG_NAMES: Record<Language,string> = { ru:"Русский",en:"English",de:"Deutsch",fr:"Français",zh:"中文",ko:"한국어" };
@@ -129,7 +131,12 @@ export default function WorkEditorPage() {
               {activeLang === "ru" ? (
                 <>
                   {input("Заголовок (RU)", work.title, v => setField("title", v), { placeholder:"Название произведения" })}
-                  {input("Текст", work.content, v => setField("content", v), { rows:18, placeholder:"Текст произведения...\n\nРазделяйте строфы двойным переносом строки" })}
+                  <AdminContentEditor
+                    label="Текст"
+                    category={work.category}
+                    value={work.content}
+                    onChange={(v) => setField("content", v)}
+                  />
                   {input("Краткое описание", work.excerpt, v => setField("excerpt", v), { placeholder:"Первые строки (автозаполнение если пусто)" })}
                 </>
               ) : (
@@ -138,10 +145,12 @@ export default function WorkEditorPage() {
                     work.translations[activeLang]?.title || "",
                     v => setTranslation(activeLang, "title", v),
                     { placeholder:"Перевод заголовка" })}
-                  {input("Текст перевода",
-                    work.translations[activeLang]?.content || "",
-                    v => setTranslation(activeLang, "content", v),
-                    { rows:16, placeholder:"Перевод текста..." })}
+                  <AdminContentEditor
+                    label={`Текст перевода (${LANG_NAMES[activeLang]})`}
+                    category={work.category}
+                    value={work.translations[activeLang]?.content || ""}
+                    onChange={(v) => setTranslation(activeLang, "content", v)}
+                  />
                   {input("Краткое описание",
                     work.translations[activeLang]?.excerpt || "",
                     v => setTranslation(activeLang, "excerpt", v),
@@ -158,14 +167,29 @@ export default function WorkEditorPage() {
 
               <div style={{ marginBottom:16 }}>
                 <label style={{ fontSize:13, color:"#9ca3af", display:"block", marginBottom:6 }}>Категория</label>
-                <div style={{ display:"flex", gap:8 }}>
-                  {(["poetry","prose"] as WorkCategory[]).map(cat => (
-                    <button key={cat} onClick={() => setField("category", cat)}
-                      style={{ flex:1, padding:"8px", borderRadius:10, border:"1px solid", fontSize:13, cursor:"pointer",
-                        borderColor: work.category===cat ? (cat==="poetry"?"#a855f7":"#f59e0b") : "rgba(255,255,255,0.1)",
-                        background:  work.category===cat ? (cat==="poetry"?"rgba(168,85,247,0.2)":"rgba(245,158,11,0.2)") : "transparent",
-                        color:       work.category===cat ? (cat==="poetry"?"#c084fc":"#fbbf24") : "#6b7280" }}>
-                      {cat === "poetry" ? "Стихи" : "Проза"}
+                <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8 }}>
+                  {WORK_CATEGORIES.map((cat) => (
+                    <button
+                      key={cat}
+                      type="button"
+                      onClick={() => setField("category", cat)}
+                      style={{
+                        padding: "8px 6px",
+                        borderRadius: 10,
+                        border: "1px solid",
+                        fontSize: 12,
+                        cursor: "pointer",
+                        borderColor:
+                          work.category === cat ? "#a855f7" : "rgba(255,255,255,0.1)",
+                        background:
+                          work.category === cat
+                            ? "rgba(168,85,247,0.2)"
+                            : "transparent",
+                        color:
+                          work.category === cat ? "#e9d5ff" : "#6b7280",
+                      }}
+                    >
+                      {CATEGORY_LABEL_RU[cat]}
                     </button>
                   ))}
                 </div>

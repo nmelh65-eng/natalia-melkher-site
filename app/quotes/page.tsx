@@ -1,6 +1,6 @@
 import { getPublicSiteUrl } from "@/lib/site-url";
 import { CategoryWorksPageClient } from "@/components/works/CategoryWorksPageClient";
 
-export default function PoetryPage() {
-  return <CategoryWorksPageClient category="poetry" siteUrl={getPublicSiteUrl()} />;
+export default function QuotesIndexPage() {
+  return <CategoryWorksPageClient category="quotes" siteUrl={getPublicSiteUrl()} />;
 }

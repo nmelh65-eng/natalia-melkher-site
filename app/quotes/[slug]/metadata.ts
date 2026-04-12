@@ -1,3 +1,3 @@
 import { buildWorkSlugGenerateMetadata } from "@/lib/generate-work-slug-metadata";
 
-export const generateMetadata = buildWorkSlugGenerateMetadata("poetry");
+export const generateMetadata = buildWorkSlugGenerateMetadata("quotes");
