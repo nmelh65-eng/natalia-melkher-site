@@ -132,20 +132,22 @@ export default function HomePage() {
           <div className="absolute bottom-[10%] right-[8%] w-[70px] h-[70px] sm:w-[240px] sm:h-[240px] bg-fuchsia-500/7 rounded-full blur-[32px] sm:blur-[100px]" />
         </div>
 
-        <div className="relative z-10 w-full max-w-[min(100%,58rem)] mx-auto -mt-4 sm:mt-0 px-2">
-          <p className="font-serif text-[0.9375rem] sm:text-lg md:text-xl text-purple-100/85 mb-2 sm:mb-3 italic tracking-[0.04em]">
+        <div className="relative z-10 w-full max-w-[min(100%,58rem)] mx-auto self-stretch -mt-4 sm:mt-0 px-2 flex flex-col">
+          <p className="font-serif text-[0.9375rem] sm:text-lg md:text-xl text-purple-100/85 mb-2 sm:mb-3 italic tracking-[0.04em] text-center">
             {t.hero.greeting}
           </p>
 
-          <h1 className="font-display font-bold gradient-text text-[clamp(3.2rem,7.8vw+1.35rem,9.85rem)] leading-[0.92] sm:leading-[0.88] mb-3 sm:mb-7 pb-1 sm:pb-2 tracking-[0.07em] sm:tracking-[0.11em] md:tracking-[0.14em] w-max max-w-[min(100%,100vw-1.5rem)] mx-auto whitespace-normal md:whitespace-nowrap text-center drop-shadow-[0_4px_36px_rgba(0,0,0,0.45)] [text-shadow:0_0_42px_rgba(168,85,247,0.22)]">
-            <span className="inline-block">{heroTitleParts.first}</span>
-            {heroTitleParts.last ? (
-              <>
-                {" "}
-                <span className="inline-block">{heroTitleParts.last}</span>
-              </>
-            ) : null}
-          </h1>
+          <div className="flex w-full justify-center">
+            <h1 className="font-display font-bold gradient-text text-[clamp(3.2rem,7.8vw+1.35rem,9.85rem)] leading-[0.92] sm:leading-[0.88] mb-3 sm:mb-7 pb-1 sm:pb-2 tracking-[0.07em] sm:tracking-[0.11em] md:tracking-[0.14em] max-w-[min(100%,100vw-1.5rem)] text-center whitespace-normal md:whitespace-nowrap drop-shadow-[0_4px_36px_rgba(0,0,0,0.45)] [text-shadow:0_0_42px_rgba(168,85,247,0.22)]">
+              <span className="inline-block">{heroTitleParts.first}</span>
+              {heroTitleParts.last ? (
+                <>
+                  {" "}
+                  <span className="inline-block">{heroTitleParts.last}</span>
+                </>
+              ) : null}
+            </h1>
+          </div>
 
           <p className="max-w-[17.25rem] min-[400px]:max-w-[18.5rem] sm:max-w-[20rem] md:max-w-[22rem] mx-auto font-serif text-[0.9rem] sm:text-[0.95rem] md:text-[1.05rem] text-gray-300/95 leading-snug sm:leading-relaxed mb-5 sm:mb-8">
             {t.hero.subtitle}
