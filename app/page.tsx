@@ -133,30 +133,32 @@ export default function HomePage() {
         </div>
 
         <div className="relative z-10 w-full max-w-[min(100%,58rem)] mx-auto self-stretch -mt-4 sm:mt-0 px-2 flex flex-col">
-          <p className="font-serif text-[0.9375rem] sm:text-lg md:text-xl text-purple-100/85 mb-2 sm:mb-3 italic tracking-[0.04em] text-center">
-            {t.hero.greeting}
-          </p>
+          <div className="w-full flex flex-col items-center space-y-3 sm:space-y-4 md:space-y-5 mb-8 sm:mb-10 md:mb-12">
+            <p className="font-serif text-base sm:text-xl md:text-2xl text-purple-100/90 italic tracking-[0.04em] text-center max-w-2xl leading-snug">
+              {t.hero.greeting}
+            </p>
 
-          <div className="flex w-full justify-center">
-            <h1 className="font-display font-bold gradient-text text-[clamp(3.2rem,7.8vw+1.35rem,9.85rem)] leading-[0.92] sm:leading-[0.88] mb-3 sm:mb-7 pb-1 sm:pb-2 tracking-[0.07em] sm:tracking-[0.11em] md:tracking-[0.14em] max-w-[min(100%,100vw-1.5rem)] text-center whitespace-normal md:whitespace-nowrap drop-shadow-[0_4px_36px_rgba(0,0,0,0.45)] [text-shadow:0_0_42px_rgba(168,85,247,0.22)]">
-              <span className="inline-block">{heroTitleParts.first}</span>
-              {heroTitleParts.last ? (
-                <>
-                  {" "}
-                  <span className="inline-block">{heroTitleParts.last}</span>
-                </>
-              ) : null}
-            </h1>
+            <div className="flex w-full justify-center">
+              <h1 className="font-display font-bold gradient-text text-[clamp(3.85rem,9.2vw+1.45rem,11.25rem)] leading-[0.9] sm:leading-[0.86] tracking-[0.06em] sm:tracking-[0.1em] md:tracking-[0.13em] max-w-[min(100%,100vw-1.25rem)] text-center whitespace-normal md:whitespace-nowrap drop-shadow-[0_6px_48px_rgba(0,0,0,0.5)] [text-shadow:0_0_52px_rgba(168,85,247,0.28)]">
+                <span className="inline-block">{heroTitleParts.first}</span>
+                {heroTitleParts.last ? (
+                  <>
+                    {" "}
+                    <span className="inline-block">{heroTitleParts.last}</span>
+                  </>
+                ) : null}
+              </h1>
+            </div>
+
+            <p className="max-w-[19rem] min-[400px]:max-w-[21rem] sm:max-w-[24rem] md:max-w-[26rem] mx-auto font-serif text-[1.02rem] sm:text-[1.12rem] md:text-[1.22rem] text-gray-200/95 leading-relaxed sm:leading-[1.65] text-center">
+              {t.hero.subtitle}
+            </p>
           </div>
 
-          <p className="max-w-[17.25rem] min-[400px]:max-w-[18.5rem] sm:max-w-[20rem] md:max-w-[22rem] mx-auto font-serif text-[0.9rem] sm:text-[0.95rem] md:text-[1.05rem] text-gray-300/95 leading-snug sm:leading-relaxed mb-5 sm:mb-8">
-            {t.hero.subtitle}
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3">
             <Link
               href="/poetry"
-              className="group relative inline-flex items-center justify-center min-w-[198px] sm:min-w-[232px] px-5 py-3 sm:px-9 sm:py-3.5 rounded-2xl bg-gradient-to-r from-purple-600 to-fuchsia-500 text-white font-semibold text-[0.92rem] sm:text-lg overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_35px_rgba(168,85,247,0.28)] focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-black"
+              className="group relative inline-flex items-center justify-center min-w-[158px] sm:min-w-[168px] px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-500 text-white font-medium text-sm sm:text-[0.95rem] tracking-wide overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_28px_rgba(168,85,247,0.22)] focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#05060a]"
             >
               <span className="relative z-10">{t.hero.cta}</span>
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-r from-purple-500 via-fuchsia-500 to-amber-400" />
@@ -164,7 +166,7 @@ export default function HomePage() {
 
             <Link
               href="/prose"
-              className="inline-flex items-center justify-center min-w-[198px] sm:min-w-[232px] px-5 py-3 sm:px-9 sm:py-3.5 rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur text-gray-200 font-medium text-[0.92rem] sm:text-lg hover:bg-white/[0.06] hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-black"
+              className="inline-flex items-center justify-center min-w-[158px] sm:min-w-[168px] px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl border border-white/[0.1] bg-white/[0.03] backdrop-blur text-gray-200 font-medium text-sm sm:text-[0.95rem] tracking-wide hover:bg-white/[0.06] hover:text-white transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#05060a]"
             >
               {t.hero.ctaSecondary}
             </Link>
