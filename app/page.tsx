@@ -132,22 +132,26 @@ export default function HomePage() {
           <div className="absolute bottom-[10%] right-[8%] w-[70px] h-[70px] sm:w-[240px] sm:h-[240px] bg-fuchsia-500/7 rounded-full blur-[32px] sm:blur-[100px]" />
         </div>
 
-        <div className="relative z-10 w-full max-w-4xl mx-auto -mt-6 sm:mt-0">
-          <p className="font-serif text-[1rem] sm:text-xl md:text-2xl text-purple-200/90 mb-2 italic tracking-[0.03em]">
+        <div className="relative z-10 w-full max-w-[min(100%,56rem)] mx-auto -mt-4 sm:mt-0 px-1">
+          <p className="font-serif text-[0.9375rem] sm:text-lg md:text-xl text-purple-100/85 mb-2 sm:mb-3 italic tracking-[0.04em]">
             {t.hero.greeting}
           </p>
 
-          <h1 className="font-display text-[2.15rem] leading-[1.02] sm:leading-[0.95] sm:text-[4rem] md:text-[5.2rem] lg:text-[6rem] xl:text-[6.6rem] font-bold gradient-text tracking-tight mb-2 sm:mb-5 pb-2">
-            <span className="block sm:inline">{heroTitleParts.first}</span>
+          <h1 className="font-display font-bold gradient-text tracking-[-0.02em] sm:tracking-tight text-[clamp(2.75rem,6.5vw+1.1rem,7.85rem)] leading-[0.94] sm:leading-[0.9] mb-3 sm:mb-6 pb-1 sm:pb-2 drop-shadow-[0_2px_28px_rgba(0,0,0,0.35)]">
+            <span className="block sm:inline sm:whitespace-nowrap">
+              {heroTitleParts.first}
+            </span>
             {heroTitleParts.last ? (
               <>
                 <span className="hidden sm:inline">&nbsp;</span>
-                <span className="block sm:inline">{heroTitleParts.last}</span>
+                <span className="block sm:inline sm:whitespace-nowrap mt-0.5 sm:mt-0">
+                  {heroTitleParts.last}
+                </span>
               </>
             ) : null}
           </h1>
 
-          <p className="max-w-md sm:max-w-2xl mx-auto font-serif text-[0.95rem] sm:text-lg md:text-xl text-gray-300/95 leading-6 sm:leading-8 mb-4 sm:mb-7">
+          <p className="max-w-lg sm:max-w-2xl mx-auto font-serif text-[0.9375rem] sm:text-lg md:text-[1.15rem] text-gray-300/95 leading-relaxed sm:leading-8 mb-5 sm:mb-8">
             {t.hero.subtitle}
           </p>
 
