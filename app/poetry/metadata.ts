@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { withEnDeHints } from "@/lib/metadata-locale-hints";
+import { getPublicSiteUrl } from "@/lib/site-url";
 
-const BASE =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://natalia-melkher.vercel.app";
+const BASE = getPublicSiteUrl();
 
 const core: Metadata = {
   title: "Поэзия Натальи Мельхер",

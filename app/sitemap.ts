@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next";
 import { getPublishedWorks } from "@/lib/works-store";
 import { getWorkSlug } from "@/lib/slug";
+import { getPublicSiteUrl } from "@/lib/site-url";
 
-const BASE =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://natalia-melkher.vercel.app";
+const BASE = getPublicSiteUrl();
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const works = await getPublishedWorks();

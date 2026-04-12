@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
+import { getPublicSiteUrl } from "@/lib/site-url";
 
-const BASE =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://natalia-melkher.vercel.app";
+const BASE = getPublicSiteUrl();
 
 export default function robots(): MetadataRoute.Robots {
   return {

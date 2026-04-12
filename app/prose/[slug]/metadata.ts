@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { getWorkByPublicSegment } from "@/lib/works-store";
 import { getWorkSlug } from "@/lib/slug";
+import { getPublicSiteUrl } from "@/lib/site-url";
 
-const BASE =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://natalia-melkher.vercel.app";
+const BASE = getPublicSiteUrl();
 
 export async function generateMetadata({
   params,

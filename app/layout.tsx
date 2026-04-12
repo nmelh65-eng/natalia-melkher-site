@@ -10,10 +10,10 @@ import HtmlLangSetter from "@/components/HtmlLangSetter";
 import SkipToContent from "@/components/SkipToContent";
 import GlobalAIButton from "@/components/GlobalAIButton";
 import { AnalyticsPageViews, AnalyticsScripts } from "@/components/WebAnalytics";
+import { getPublicSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
-const BASE =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://natalia-melkher.vercel.app";
+const BASE = getPublicSiteUrl();
 
 const fontHeadline = Playfair_Display({
   subsets: ["latin", "latin-ext", "cyrillic"],

@@ -1,25 +1,24 @@
 import type { TranslatedWork } from "@/types";
 import { getWorkSlug } from "@/lib/slug";
-
-const BASE =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://natalia-melkher.vercel.app";
-
-const AUTHOR = {
-  "@type": "Person" as const,
-  name: "Наталья Мельхер",
-  alternateName: "Natalia Melkher",
-  url: BASE,
-};
+import { getPublicSiteUrl } from "@/lib/site-url";
 
 export function buildWorkStructuredDataScripts(
   work: TranslatedWork,
   headline: string,
   description: string
 ): { creative: string; breadcrumbs: string } {
+  const base = getPublicSiteUrl();
+  const author = {
+    "@type": "Person" as const,
+    name: "Наталья Мельхер",
+    alternateName: "Natalia Melkher",
+    url: base,
+  };
+
   const slug = getWorkSlug(work);
-  const url = `${BASE}/${work.category}/${slug}`;
+  const url = `${base}/${work.category}/${slug}`;
   const sectionName = work.category === "poetry" ? "Поэзия" : "Проза";
-  const sectionPath = `${BASE}/${work.category}`;
+  const sectionPath = `${base}/${work.category}`;
 
   const creative =
     work.category === "poetry"
@@ -31,8 +30,8 @@ export function buildWorkStructuredDataScripts(
           headline,
           description,
           inLanguage: work.language,
-          author: AUTHOR,
-          publisher: AUTHOR,
+          author,
+          publisher: author,
           datePublished: work.createdAt,
           dateModified: work.updatedAt || work.createdAt,
           url,
@@ -49,8 +48,8 @@ export function buildWorkStructuredDataScripts(
           headline,
           description,
           inLanguage: work.language,
-          author: AUTHOR,
-          publisher: AUTHOR,
+          author,
+          publisher: author,
           datePublished: work.createdAt,
           dateModified: work.updatedAt || work.createdAt,
           url,
@@ -68,7 +67,7 @@ export function buildWorkStructuredDataScripts(
         "@type": "ListItem",
         position: 1,
         name: "Главная",
-        item: `${BASE}/`,
+        item: `${base}/`,
       },
       {
         "@type": "ListItem",

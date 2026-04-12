@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getClientIp } from "@/lib/client-ip";
+import { getPublicSiteUrl } from "@/lib/site-url";
 
 /* ═══════════════════════════════════════
    Конфигурация моделей
@@ -20,7 +21,6 @@ const DEFAULT_MODEL = MODELS.free; // бесплатная
 // const DEFAULT_MODEL = MODELS.standard;
 // const DEFAULT_MODEL = MODELS.premium;
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://natalia-melkher.vercel.app";
 const SITE_NAME = "Наталья Мельхер — AI-Муза";
 
 const SYSTEM_PROMPT = `Ты — AI-Муза, литературный помощник на сайте поэтессы Натальи Мельхер.
@@ -102,6 +102,8 @@ function checkRateLimit(ip: string): boolean {
    ═══════════════════════════════════════ */
 export async function POST(req: NextRequest) {
   try {
+    const siteUrl = getPublicSiteUrl();
+
     const apiKey = process.env.OPENROUTER_API_KEY;
 
     if (!apiKey) {
@@ -147,7 +149,7 @@ export async function POST(req: NextRequest) {
       headers: {
         "Authorization": `Bearer ${apiKey}`,
         "Content-Type": "application/json",
-        "HTTP-Referer": SITE_URL,
+        "HTTP-Referer": siteUrl,
         "X-Title": SITE_NAME,
       },
       body: JSON.stringify({
@@ -188,7 +190,7 @@ export async function POST(req: NextRequest) {
           headers: {
             "Authorization": `Bearer ${apiKey}`,
             "Content-Type": "application/json",
-            "HTTP-Referer": SITE_URL,
+            "HTTP-Referer": siteUrl,
             "X-Title": SITE_NAME,
           },
           body: JSON.stringify({
