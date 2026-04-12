@@ -47,3 +47,8 @@ components/Header.tsx.design-pack-4.bak
 components/PoemCard.tsx.design-pack-4.bak
 components/ProseCard.tsx.design-pack-4.bak
 # TERMUX TEMP FILES END
+
+# Локальный экспорт для других ИИ (большие файлы — не в git)
+docs/handoff/PROJECT_FULL_EXPORT.md
+docs/handoff/PROJECT_FULL_EXPORT_PRINT.html
+docs/handoff/PROJECT_FULL_EXPORT.pdf
